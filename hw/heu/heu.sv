@@ -47,6 +47,15 @@ module heu
     .enable_calc(enable_calc)
   );
 
+  heu_calc_unit calc_unit [4:0] (
+    .clk(clk),
+    .rst_n(rst_n),
+    .z(zero_cnts),
+    .en(enable_calc),
+    .d(in_buffer_q),
+    .q(sums)
+  );
+
   heu_sum_unit sum_unit (
     .clk(clk),
     .rst_n(rst_n),
@@ -74,17 +83,4 @@ module heu
     .q(q)
   );
 
-  generate
-    genvar i;
-    for (i = 0; i < 5; i++) begin : calc
-      heu_calc_unit calc_unit (
-        .clk(clk),
-        .rst_n(rst_n),
-        .z(zero_cnts),
-        .en(enable_calc),
-        .d(in_buffer_q[i]),
-        .q(sums[i])
-      );
-    end
-  endgenerate
 endmodule
