@@ -78,7 +78,8 @@ module heu_ctrl_unit
   assign zero_cnts = (state == IDLE) & ipgu_out_ready;
 
   assign sum_go = (state == CALC) & (cnt == 80);
-  assign rotate_in = (state == CALC) & (cnt < 80);
+  assign rotate_in = ((state == CALC) & (cnt < 80)) |
+                     ((state == MOVE) & (cnt < 80));
   assign enable_calc = (state == CALC) & (cnt < 80);
 
   assign shift_out = (state == MOVE) & (cnt < 80);

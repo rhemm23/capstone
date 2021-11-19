@@ -18,7 +18,7 @@ with open('../hw/heu/heu_sum_lut.sv', 'w+') as lut:
   for i in range(401):
 
     init = format(i, 'b').zfill(9)
-    res = format(int((i / 400) * 255), 'b').zfill(8)
+    res = format(int((i * 255) / 400), 'b').zfill(8)
 
     lut.write('      9\'b{0}: q <= 8\'b{1};\n'.format(init, res))
 

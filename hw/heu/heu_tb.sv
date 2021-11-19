@@ -34,12 +34,6 @@ module heu_tb ();
     ipgu_out_ready = 0;
     rdn_in_ready = 0;
 
-    #5;
-    rst_n = 0;
-    #5;
-    rst_n = 1;
-    #5;
-
     // Run 50 random tests
     for (int i = 0; i < 50; i++) begin
 
@@ -76,7 +70,7 @@ module heu_tb ();
       end
       for (int j = 0; j < 80; j++) begin
         for (int k = 0; k < 5; k++) begin
-          results[k][j] = (cdist[d[k][j]] * 256) / 400;
+          results[k][j] = (cdist[d[k][j]] * 255) / 400;
         end
       end
 
@@ -88,16 +82,16 @@ module heu_tb ();
 
       for (int j = 0; j < 80; j++) begin
         for (int k = 0; k < 5; k++) begin
-          if (d[k][j] !== q[k][j]) begin
+          if (results[k][j] != q[k][j]) begin
             $display("Error: Invalid output value for HEU %h, expected %h", q[k][j], d[k][j]);
-            $finish();
+            $stop();
           end
         end
       end
     end
 
     $display("HEU tests passed!");
-    $finish();
+    $stop();
   end
 
   always
