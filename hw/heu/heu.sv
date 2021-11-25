@@ -20,7 +20,7 @@ module heu
   wire [7:0] sum_unit_q [4:0];
   wire [7:0] in_buffer_q [4:0];
   wire [6:0] sums [4:0][255:0];
-  
+
   wire enable_calc;
   wire zero_cnts;
 
