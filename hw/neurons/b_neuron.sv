@@ -1,6 +1,6 @@
-module a_neuron
+module b_neuron
   #(
-    INPUTS = 400
+    INPUTS = 15
   )
   (
     /*
@@ -11,7 +11,7 @@ module a_neuron
     input z,
     input en,
     input wr_weights,
-    input [7:0] d [4:0],
+    input signed [8:0] d,
     input signed [8:0] bias_d,
     input signed [8:0] weights_d [INPUTS-1:0],
 
@@ -29,7 +29,7 @@ module a_neuron
 
   reg signed [31:0] accum;
 
-  reg [8:0] cnt;
+  reg [4:0] cnt;
 
   tanh_lut lut (
     .d(accum_rnd),
@@ -50,13 +50,8 @@ module a_neuron
       cnt <= 0;
     end else if (en) begin
       if (cnt < INPUTS) begin
-        cnt <= cnt + 5;
-        accum <= accum +
-                 ($signed({ 1'b0, d[0] }) * weights[cnt])     +
-                 ($signed({ 1'b0, d[1] }) * weights[cnt + 1]) +
-                 ($signed({ 1'b0, d[2] }) * weights[cnt + 2]) +
-                 ($signed({ 1'b0, d[3] }) * weights[cnt + 3]) +
-                 ($signed({ 1'b0, d[4] }) * weights[cnt + 4]);
+        accum <= accum + (d * weights[cnt]);
+        cnt <= cnt + 1;
       end
     end
   end
