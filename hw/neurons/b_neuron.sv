@@ -58,7 +58,7 @@ module b_neuron
 
   assign accum_abs = accum[31] ? -accum : accum;
 
-  assign accum_rnd = &accum_abs[30:10] ? 8'hFF : accum_abs[9:2];
+  assign accum_rnd = (|accum_abs[30:10]) ? 8'hFF : accum_abs[9:2];
 
   assign q[8] = accum[31];
 

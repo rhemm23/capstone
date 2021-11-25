@@ -96,7 +96,7 @@ module b_neuron_tb();
       end
 
       sum_abs = (sum < 0) ? -sum : sum;
-      tan_in = &sum_abs[30:10] ? 8'hFF : sum_abs[9:2];
+      tan_in = (|sum_abs[30:10]) ? 8'hFF : sum_abs[9:2];
 
       // Let tanh lut propagate
       #1;
