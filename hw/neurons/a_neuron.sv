@@ -50,7 +50,8 @@ module a_neuron
     end else if (en) begin
       if (cnt < INPUTS) begin
         cnt <= cnt + 5;
-        accum <= ($signed({ 1'b0, d[0] }) * weights[cnt])     +
+        accum <= accum +
+                 ($signed({ 1'b0, d[0] }) * weights[cnt])     +
                  ($signed({ 1'b0, d[1] }) * weights[cnt + 1]) +
                  ($signed({ 1'b0, d[2] }) * weights[cnt + 2]) +
                  ($signed({ 1'b0, d[3] }) * weights[cnt + 3]) +
