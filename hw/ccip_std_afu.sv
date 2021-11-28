@@ -72,18 +72,17 @@ module ccip_std_afu (
     pck_cp2af_pwrState_q <= pck_cp2af_pwrState;
     pck_cp2af_error_q <= pck_cp2af_error;
     pck_cp2af_sRx_q <= pck_cp2af_sRx;
-    pck_af2cp_sTx_q <= pck_af2cp_sTx;
+    pck_af2cp_sTx <= pck_af2cp_sTx_q;
   end
 
   /*
-   * AFU CSR
+   * Instantiate AFU
    */
-  ccip_mmio csr (
+  afu afu (
     .clk(pClk),
-    .rst(pck_cp2af_softReset_q),
+    .rst_n(~pck_cp2af_softReset_q),
     .rx(pck_cp2af_sRx_q),
     .tx(pck_af2cp_sTx_q)
   );
-  
 
 endmodule
