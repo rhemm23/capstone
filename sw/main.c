@@ -1,4 +1,5 @@
 #include <inttypes.h>
+#include <stdlib.h>
 
 #include "afu.h"
 #include "afu_json_info.h"
@@ -9,13 +10,9 @@ int main() {
 
   setup_afu(&afu, AFU_ACCEL_UUID);
 
-  uint32_t instructions[64];
+  uint32_t *instructions = calloc(64, sizeof(uint32_t));
 
-  for (int i = 0; i < 64; i++) {
-    instructions[i] = 0;
-  }
-
-  set_afu_buffer(&afu, (void**)&&instructions[0], 512);
+  set_afu_buffer(&afu, (void**)&instructions, 64 * sizeof(uint32_t));
 
   close_afu(&afu);
 
