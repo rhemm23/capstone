@@ -75,6 +75,7 @@ void setup_afu(afu_t *afu, char *uuid) {
   if (fpgaMapMMIO(afu->handle, 0, NULL) != FPGA_OK) {
     close_with_error(afu, "Failed to map fpga mmio space");
   }
+  afu->is_mmio_mapped = true;
 }
 
 uint64_t read_afu_csr(afu_t *afu, afu_csr_t csr) {
