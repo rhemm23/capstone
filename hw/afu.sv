@@ -1,6 +1,7 @@
 
-`include "data_types.vh"
 `include "platform_if.vh"
+
+import data_types::*;
 
 module afu
   (

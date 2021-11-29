@@ -1,5 +1,5 @@
 
-`include "data_types.vh"
+import data_types::*;
 
 module cpu
   (
