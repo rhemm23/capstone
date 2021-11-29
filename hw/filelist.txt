@@ -1,13 +1,17 @@
 afu.json
 
-ccip_std_afu.sv
 afu.sv
-memory.sv
+ccip_std_afu.sv
 circ_fifo.sv
+cpu.sv
+csrs.sv
+data_types_pkg.sv
+in_buffer.sv
+mem_types_pkg.sv
+memory.sv
+out_buffer.sv
 out_fifo.sv
 tanh_lut.sv
-in_buffer.sv
-out_buffer.sv
 
 heu/heu_sum_lut.sv
 heu/heu_sum_unit.sv
