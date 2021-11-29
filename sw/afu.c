@@ -51,7 +51,6 @@ void setup_afu(afu_t *afu, char *uuid) {
   afu->filter = NULL;
   afu->handle = NULL;
   afu->token = NULL;
-  afu->uuid = NULL;
 
   uint32_t num_matches = 0;
 
