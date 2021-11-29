@@ -41,12 +41,12 @@ module csrs
             4'b0,    // afu major revision = 0
             12'b0    // feature ID = 0
           };
-          16'h0002: tx.c2.data <= afu_id[63:0];
-          16'h0004: tx.c2.data <= afu_id[127:64];
-          16'h0006: tx.c2.data <= 0;
-          16'h0008: tx.c2.data <= 0;
-          16'h000A: tx.c2.data <= buffer_addr;
-          default: tx.c2.data <= 0;
+          16'h0002: tx.data <= afu_id[63:0];
+          16'h0004: tx.data <= afu_id[127:64];
+          16'h0006: tx.data <= 0;
+          16'h0008: tx.data <= 0;
+          16'h000A: tx.data <= buffer_addr;
+          default: tx.data <= 0;
         endcase
       end else begin
         tx.mmioRdValid <= 0;

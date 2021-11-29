@@ -1,5 +1,4 @@
 
-`include "mem_types.vh"
 `include "data_types.vh"
 `include "platform_if.vh"
 
@@ -46,20 +45,6 @@ module memory
       mem_rx <= '0;
       tx.c0 <= '0;
       tx.c1 <= '0;
-    end else begin
-      case (state)
-        IDLE: begin
-          case (rd_req_type)
-            INSTR: 
-            RNN_W:
-            DNN_W:
-            IMAGE:
-          endcase
-        end
-        RD_PRG: begin
-
-        end
-      endcase
     end
   end
 

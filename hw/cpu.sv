@@ -1,5 +1,5 @@
 
-`include "mem_types.vh"
+`include "data_types.vh"
 
 module cpu
   (
@@ -17,7 +17,7 @@ module cpu
     output t_mem_tx mem_tx
   );
 
-  always_ff (@posedge clk or negedge rst_n) begin
+  always_ff @(posedge clk or negedge rst_n) begin
     if (!rst_n) begin
       mem_tx <= '0;
     end

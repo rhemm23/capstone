@@ -1,5 +1,5 @@
 
-`include "mem_types.vh"
+`include "data_types.vh"
 `include "platform_if.vh"
 
 module afu

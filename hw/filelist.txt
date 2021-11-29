@@ -7,7 +7,6 @@ cpu.sv
 csrs.sv
 data_types_pkg.sv
 in_buffer.sv
-mem_types_pkg.sv
 memory.sv
 out_buffer.sv
 out_fifo.sv
