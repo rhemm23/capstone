@@ -9,10 +9,13 @@ int main() {
 
   setup_afu(&afu, AFU_ACCEL_UUID);
 
-  uint64_t uuid_l = read_afu_csr(&afu, AFU_ID_L);
-  uint64_t uuid_h = read_afu_csr(&afu, AFU_ID_H);
+  uint32_t instructions[64];
 
-  printf("id_l: %" PRIx64 ", id_h: %" PRIx64 "\n", uuid_l, uuid_h);
+  for (int i = 0; i < 64; i++) {
+    instructions[i] = 0;
+  }
+
+  set_afu_buffer(&afu, (void**)&&instructions[0], 512);
 
   close_afu(&afu);
 

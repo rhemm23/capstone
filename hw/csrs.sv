@@ -24,7 +24,7 @@ module csrs
 
   always_ff @(posedge clk or negedge rst_n) begin
     if (!rst_n) begin
-      buffer_addr <= 0;
+      buffer_addr <= '0;
       tx <= '0;
     end else begin
       if (rx.mmioRdValid) begin
