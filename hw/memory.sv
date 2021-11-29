@@ -1,6 +1,7 @@
 
+`include "mem_types.vh"
+`include "data_types.vh"
 `include "platform_if.vh"
-`include "afu_json_info.vh"
 
 module memory
   (
@@ -9,101 +10,59 @@ module memory
      */
     input clk,
     input rst_n,
+    input t_mem_tx mem_tx,
     input t_if_ccip_Rx rx,
 
     /*
      * Outputs
      */
-    output buf_addr_valid,
-    output mem_data_valid,
-    output [511:0] mem_data,
+    output buffer_addr_valid,
+    output t_mem_rx mem_rx,
     output t_if_ccip_Tx tx
   );
 
-  logic [127:0] afu_id = `AFU_ACCEL_UUID;
+  typedef enum reg [2:0] {
+    IDLE = 3'b000,
+    RD_IMG = 3'b001,
+    RD_PRG = 3'b010,
+    RD_RNN = 3'b011,
+    RD_DNN = 3'b100
+  } mem_state;
 
-  reg [63:0] buffer_addr;
+  mem_state state;
 
-  t_ccip_c0_ReqMmioHdr mmio_hdr;
-  assign mmio_hdr = t_ccip_c0_ReqMmioHdr'(rx.c0.hdr);
+  wire [63:0] buffer_addr;
+
+  csrs ctrl_regs (
+    .clk(clk),
+    .rst_n(rst_n),
+    .rx(rx.c0),
+    .buffer_addr(buffer_addr),
+    .tx(tx.c2)
+  );
 
   always_ff @(posedge clk or negedge rst_n) begin
     if (!rst_n) begin
-      buffer_addr <= 0;
-      tx <= '{ '{ 0, 0 }, '{ 0, 0, 0 }, '{ 0, 0, 0 } };
+      mem_rx <= '0;
+      tx.c0 <= '0;
+      tx.c1 <= '0;
     end else begin
+      case (state)
+        IDLE: begin
+          case (rd_req_type)
+            INSTR: 
+            RNN_W:
+            DNN_W:
+            IMAGE:
+          endcase
+        end
+        RD_PRG: begin
 
-      /*
-       * MMIO read request
-       */
-      if (rx.c0.mmioRdValid) begin
-
-        /*
-         * Echo TID
-         */
-        tx.c2.mmioRdValid <= 1'b1;
-        tx.c2.hdr.tid <= mmio_hdr.tid;
-
-        /*
-         * Set response data
-         */
-        case (mmio_hdr.address)
-
-          /*
-           * AFU Header
-           */
-          16'h0000: tx.c2.data <= {
-            4'b0001, // Feature type = AFU
-            8'b0,    // reserved
-            4'b0,    // afu minor revision = 0
-            7'b0,    // reserved
-            1'b1,    // end of DFH list = 1
-            24'b0,   // next DFH offset = 0
-            4'b0,    // afu major revision = 0
-            12'b0    // feature ID = 0
-          };
-
-          /*
-           * AFU ID lower
-           */
-          16'h0002: tx.c2.data <= afu_id[63:0];
-
-          /*
-           * AFU ID higher
-           */
-          16'h0004: tx.c2.data <= afu_id[127:64];
-
-          /*
-           * Reserved
-           */
-          16'h0006: tx.c2.data <= 64'h0;
-          16'h0008: tx.c2.data <= 64'h0;
-
-          /*
-           * Buffer address
-           */
-          16'h000A: tx.c2.data <= buffer_addr;
-
-          /*
-           * Unknown
-           */
-          default: tx.c2.data <= 64'h0;
-        endcase
-      end else begin
-        tx.c2.mmioRdValid <= 1'b0;
-      end
-
-      /*
-       * MMIO write request
-       */
-      if (rx.c0.mmioWrValid) begin
-        case (mmio_hdr.address)
-          16'h000A: buffer_addr <= rx.c0.data;
-        endcase
-      end
+        end
+      endcase
     end
   end
 
-  assign buf_addr_valid = rx.c0.mmioWrValid && (mmio_hdr.address == 16'h000A);
+  assign buffer_addr_valid = |buffer_addr;
 
 endmodule
