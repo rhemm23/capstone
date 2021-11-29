@@ -1,9 +1,8 @@
 
 `include "platform_if.vh"
 
-import data_types::*;
-
 module memory
+import data_types::*
   (
     /*
      * Inputs
