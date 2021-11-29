@@ -2,7 +2,7 @@
 `include "platform_if.vh"
 
 module afu
-import data_types::*
+import data_types::*;
   (
     /*
      * Inputs

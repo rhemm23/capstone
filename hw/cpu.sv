@@ -1,5 +1,5 @@
 module cpu
-import data_types::*
+import data_types::*;
   (
     /*
      * Inputs
