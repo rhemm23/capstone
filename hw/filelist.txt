@@ -1,11 +1,11 @@
 afu.json
 
+data_types_pkg.sv
 afu.sv
 ccip_std_afu.sv
 circ_fifo.sv
 cpu.sv
 csrs.sv
-data_types_pkg.sv
 in_buffer.sv
 memory.sv
 out_buffer.sv
