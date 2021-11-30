@@ -52,19 +52,18 @@ int main(int argc, char *argv[]) {
 
   afu_t afu;
   setup_afu(&afu, AFU_ACCEL_UUID);
+
+  // Setup buffer
   volatile uint8_t *buffer = (volatile uint8_t*)create_afu_buffer(&afu, buffer_size);
 
-  // Copy program instructions in big endian format
-  uint64_t mem_index = 0;
+  // Copy program instructions
+  volatile uint32_t *program_buffer = (volatile uint32_t*)buffer;
   for (int i = 0; i < MAX_INSTRUCTIONS; i++) {
-    for (int j = 0; j < 4; j++) {
-      buffer[mem_index++] = (uint8_t)(compiled_program[i] >> ((3 - j) * 8));
-    }
+    program_buffer[i] = compiled_program[i];
   }
 
-  printf("First byte: %x\n", buffer[0]);
-
-  sleep(1);
+  // Allow AFU to execute, replace with events in future
+  usleep(100);
 
   close_afu(&afu);
   free(compiled_program);
