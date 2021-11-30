@@ -46,19 +46,28 @@ int main(int argc, char *argv[]) {
   uint32_t *compiled_program;
   compile_program(program_path, &compiled_program);
 
+  /*
+   * Format entire memory buffer
+   */
+  size_t buffer_size = MAX_INSTRUCTIONS * 4;
+  uint8_t *buffer = malloc(buffer_size);
+
+  // Copy program instructions in big endian format
+  uint64_t mem_index = 0;
+  for (int i = 0; i < MAX_INSTRUCTIONS; i++) {
+    for (int j = 0; j < 4; j++) {
+      buffer[mem_index++] = (uint8_t)(compiled_program[i] >> ((3 - j) * 8));
+    }
+  }
+
   afu_t afu;
-
   setup_afu(&afu, AFU_ACCEL_UUID);
-
-  uint32_t *instructions = calloc(64, sizeof(uint32_t));
-
-  set_afu_buffer(&afu, (void**)&instructions, 64 * sizeof(uint32_t));
+  set_afu_buffer(&afu, (void**)&buffer, buffer_size);
 
   /*
    * Cleanup
    */
   close_afu(&afu);
-
   free(compiled_program);
 
   return 0;
