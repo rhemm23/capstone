@@ -24,12 +24,12 @@ import data_types::*;
   } cpu_state;
 
   cpu_state state;
-  t_program program;
+  t_program cpu_program;
 
   always_ff @(posedge clk or negedge rst_n) begin
     if (!rst_n) begin
       state <= WAIT_BUF;
-      program <= '0;
+      cpu_program <= '0;
       mem_tx <= '0;
     end else begin
       case (state)
@@ -43,7 +43,7 @@ import data_types::*;
         end
         WAIT_PROG: if (mem_rx.status == INSTR_VALID) begin
           state <= EXECUTING;
-          program <= mem_rx.cpu_program;
+          cpu_program <= mem_rx.cpu_program;
         end
         EXECUTING: begin
           /* TODO */
