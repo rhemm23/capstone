@@ -54,10 +54,9 @@ int main(int argc, char *argv[]) {
   setup_afu(&afu, AFU_ACCEL_UUID);
 
   // Setup buffer
-  volatile uint8_t *buffer = (volatile uint8_t*)create_afu_buffer(&afu, buffer_size);
+  volatile uint32_t *program_buffer = (volatile uint32_t*)create_afu_buffer(&afu, buffer_size);
 
   // Copy program instructions
-  volatile uint32_t *program_buffer = (volatile uint32_t*)buffer;
   for (int i = 0; i < MAX_INSTRUCTIONS; i++) {
     program_buffer[i] = compiled_program[i];
   }
