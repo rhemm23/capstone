@@ -12,13 +12,15 @@ module ipgu #(RAM_DATA_WIDTH = 8, RAM_ADDR_WIDTH = 18)
     
     //IPGU <-> HEU
     input   rdyHeu, 
-    output  vldIpgu,
-    output  reg [7:0] ipguOutBufferQ [79:0],    
+    output  reg vldIpgu,
+    output  reg [7:0] ipguOutBufferQ [79:0]
 );
 
     //Scaling luts //can probably create scaling reg which optimizes scaling
-    reg numWindows;
-    reg nextNumWindows;
+    reg [3:0] numWindows;
+    reg [3:0] nextNumWindows;
+    reg [2:0] convertI;
+
     always_comb begin
         case(convertI) 
             'd0: begin numWindows <= 15; nextNumWindows <= 12; end
@@ -30,7 +32,7 @@ module ipgu #(RAM_DATA_WIDTH = 8, RAM_ADDR_WIDTH = 18)
          endcase
     end
     
-    logic [RAM_ADDR_WIDTH-1:0] addrRam1, addrRam2;
+    logic [RAM_ADDR_WIDTH-1:0] addrRam1, addrRam2, addrRam1_int;
     assign addrRam1 = csRam1_ext?addrRam1_ext:addrRam1_int;
 
     logic [RAM_DATA_WIDTH-1:0] wrDataRam1, rdDataRam1, rdDataRam2; //rdDataRam2 == wrDataRam1_int
@@ -39,15 +41,13 @@ module ipgu #(RAM_DATA_WIDTH = 8, RAM_ADDR_WIDTH = 18)
     logic weRam1, weRam1_int, weRam2;
     assign weRam1 = csRam1_ext?weRam1_ext:weRam1_int;
 
-    logic csRam1, csRam1_int, csRam2, csRam2_int;
+    logic csRam1, csRam1_int, csRam2, csRam2_int, csRam1_d1, csRam2_d1;
 
     /////////////////////////////////////////////////////
     //more internal signals
     /////////////////////////////////////////////////////
     wire windowDone;
-    assign windowDone = addrYEnd==addrY && addrXEnd==addrdX+1; //last pixel of a windows will be read next 
 
-    reg [2:0] convertI;
     reg convertDone;
     reg [RAM_ADDR_WIDTH-1:0] addrXBegin, addrXEnd, addrYBegin, addrYEnd;
     reg [RAM_ADDR_WIDTH/2-1:0] addrX, addrY;
@@ -55,11 +55,16 @@ module ipgu #(RAM_DATA_WIDTH = 8, RAM_ADDR_WIDTH = 18)
     assign scaledAddr = {(addrY*nextNumWindows)/numWindows, (addrX*nextNumWindows)/numWindows};
     
     assign addrRam1_int = weRam1_int?{scaledAddr}:{addrY, addrX};
-    assign addrRam2 = weRam2_int?{scaledAddr}:{addrY, addrX};
+    assign addrRam2 = weRam2?{scaledAddr}:{addrY, addrX};
 
-    /////////////////////////////////////////////////////
+    assign windowDone = addrYEnd==addrY && addrXEnd==addrX+1; //last pixel of a windows will be read next 
+
     assign csRam1_int = csRam1|csRam2_d1;   
     assign csRam2_int = csRam2|csRam1_d1;
+
+    reg incX, incConvertI, resetConvertI, clrConvertDone;
+    
+    /////////////////////////////////////////////////////
 
     ram #(.DATA_WIDTH(RAM_DATA_WIDTH)) ram1 (
         .clk, .addr(addrRam1), .rdData(rdDataRam1), .wrData(wrDataRam1), 
@@ -71,15 +76,19 @@ module ipgu #(RAM_DATA_WIDTH = 8, RAM_ADDR_WIDTH = 18)
         .cs(csRam2_int), .we(weRam2)
     );
 
-    wire [7:0] ipguOutQFlipped [79:0];
+    logic [7:0] ipguOutQFlipped [79:0];
     
     out_fifo ipgu_out (.clk,.rst_n,    
                         .en((csRam1_int&weRam1_int)|(csRam2_int&weRam2)), //if either RAM is being internally written to, write to buffer as well
                         .d((csRam1_int&weRam1_int)?rdDataRam2:rdDataRam1),
-                        .q(ipguOutQFlipped);  
+                        .q(ipguOutQFlipped));  
      
+/*    generate 
+        for(genvar i=0; i<80; i++)
+            
+    endgenerate*/
     //https://www.amiq.com/consulting/2017/05/29/how-to-pack-data-using-systemverilog-streaming-operators/#reverse_bits
-    assign ipguOutBufferQ = {8<<{ipguOutQFlipped}}; //potential issue	
+    assign ipguOutBufferQ = {<<{ipguOutQFlipped}}; //potential issue    
    
 
     //weRam1_int and weRam2
@@ -98,15 +107,15 @@ module ipgu #(RAM_DATA_WIDTH = 8, RAM_ADDR_WIDTH = 18)
  
     ///////////////////////////////////////////
     // SM states //
-	///////////////////////////////////////////
-	typedef enum reg [1:0] {IDLE, RAM1_SRC, RAM2_SRC, DONE} state_t;	
-	state_t state,nxt_state;
+    ///////////////////////////////////////////
+    typedef enum reg [1:0] {IDLE, RAM1_SRC, RAM2_SRC, WAIT_HEU_RDY} state_t;    
+    state_t state,nxt_state;
 
 
     
     //// Infer state register next ////
-	always_ff @(posedge clk, negedge rst_n)
-		if (!rst_n)
+    always_ff @(posedge clk, negedge rst_n)
+        if (!rst_n)
             state <= IDLE;
         else
             state <= nxt_state;
@@ -135,7 +144,7 @@ module ipgu #(RAM_DATA_WIDTH = 8, RAM_ADDR_WIDTH = 18)
         if(!rst_n)
             addrYBegin <= '0;
         else begin
-            if(windowDone && addrXBegin+20==numWindows[ConvertI]*20) begin //last pixel of a row of windows be read next
+            if(windowDone && addrXBegin+20==numWindows[convertI]*20) begin //last pixel of a row of windows be read next
                 if(convertDone)
                     addrYBegin <= '0;
                 else
@@ -149,7 +158,7 @@ module ipgu #(RAM_DATA_WIDTH = 8, RAM_ADDR_WIDTH = 18)
             addrXBegin <= '0;
         else begin
             if(windowDone) begin //last pixel of a windows will be read next
-                if(addrXBegin+20==numWindows[ConvertI]*20)
+                if(addrXBegin+20==numWindows[convertI]*20)
                     addrXBegin <= '0;
                 else
                     addrXBegin <= addrXBegin+20;
@@ -175,8 +184,10 @@ module ipgu #(RAM_DATA_WIDTH = 8, RAM_ADDR_WIDTH = 18)
         else begin
             if(resetConvertI)
                 convertI <= '0;
-            else(incConvertI)
-                convertI <= convertI+1;
+            else begin 
+                if (incConvertI)
+                    convertI <= convertI+1;
+            end
         end
     end
 
@@ -187,7 +198,7 @@ module ipgu #(RAM_DATA_WIDTH = 8, RAM_ADDR_WIDTH = 18)
         else begin
             if(clrConvertDone)
                 convertDone <= '0;
-            else if(windowDone && addrXEnd+1==numWindows[ConvertI]*20 && addrYEnd+1==numWindows[ConvertI]*20)
+            else if(windowDone && addrXEnd+1==numWindows[convertI]*20 && addrYEnd+1==numWindows[convertI]*20)
                 convertDone <= 1'b1;
         end
     
@@ -197,29 +208,29 @@ module ipgu #(RAM_DATA_WIDTH = 8, RAM_ADDR_WIDTH = 18)
     
 
     //////////////////////////////////////
-	// Implement state tranisiton logic //
-	/////////////////////////////////////
-	always_comb
-		begin
-			//////////////////////
-			// Default outputs //
-			////////////////////
-			nxt_state = state;	
+    // Implement state tranisiton logic //
+    /////////////////////////////////////
+    always_comb
+        begin
+            //////////////////////
+            // Default outputs //
+            ////////////////////
+            nxt_state = state;    
             csRam1 = 1'b0;
             csRam2 = 1'b0;
             incX = '0;
             incConvertI = '0;            
-            resetConvertI = '0;	
+            resetConvertI = '0;    
 
-			case (state)
-				IDLE : begin
+            case (state)
+                IDLE : begin
                     if(initIpgu) begin
                         nxt_state = RAM1_SRC;
                         incX = '1;
                         csRam1 = '1; 
                         resetConvertI = '1;
                     end
-				end 
+                end 
                 RAM1_SRC: begin
                     csRam1 = '1;
                     incX = '1;
@@ -247,6 +258,7 @@ module ipgu #(RAM_DATA_WIDTH = 8, RAM_ADDR_WIDTH = 18)
                             if(convertI[0]) begin
                                 nxt_state = RAM2_SRC;
                                 csRam2 = 1'b1;
+                            end
                             else begin
                                 nxt_state = RAM1_SRC;
                                 csRam1 = 1'b1;
@@ -261,8 +273,8 @@ module ipgu #(RAM_DATA_WIDTH = 8, RAM_ADDR_WIDTH = 18)
                          nxt_state = WAIT_HEU_RDY;
                      end
                 end
-				//don't need a default case since all four states are used 
-			endcase
-		end
+                //don't need a default case since all four states are used 
+            endcase
+        end
 
 endmodule
