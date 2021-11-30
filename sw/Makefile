@@ -10,6 +10,7 @@ OBJS = $(addprefix $(BIN_DIR)/,$(patsubst %.c,%.o,$(SRCS)))
 build: $(BIN_DIR)/afu
 
 ase: $(BIN_DIR)/afu_ase
+	cp ./sample.asm ./bin/
 
 $(BIN_DIR)/afu_ase: $(OBJS)
 	mkdir -p $(BIN_DIR)
