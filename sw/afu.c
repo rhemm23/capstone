@@ -43,7 +43,7 @@ void setup_afu(afu_t *afu, char *uuid) {
   /*
    * Default fields
    */
-  afu->shared_buffer.phy_addr = 0;
+  afu->shared_buffer.iova = 0;
   afu->shared_buffer.wsid = 0;
 
   afu->is_mmio_mapped = false;
