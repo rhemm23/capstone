@@ -34,7 +34,7 @@ import data_types::*;
     end else begin
       case (state)
         WAIT_BUF: if (buffer_addr_valid) begin
-          mem_tx <= { INSTR, '0 };
+          mem_tx <= '{ INSTR, '0 };
           state <= REQ_PROG;
         end
         REQ_PROG: begin

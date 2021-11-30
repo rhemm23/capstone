@@ -74,7 +74,7 @@ import data_types::*;
         RD_PRG: begin
           // Send read request if not almost full
           if (sent_cnt < PROGRAM_PAGES && !rx.c0TxAlmFull) begin
-            tx.c0.hdr <= {
+            tx.c0.hdr <= '{
               eVC_VA,
               2'b00,
               eCL_LEN_1,
