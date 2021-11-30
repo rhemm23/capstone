@@ -36,6 +36,19 @@ class DNN:
 
     self.c = Neuron(data['c'])
 
+  def dict(self):
+    return {
+      'a_layer': {
+        'type1': [[self.a_layer_type1[i][j].dict() for j in range(2)] for i in range(2)],
+        'type2': [[self.a_layer_type2[i][j].dict() for j in range(4)] for i in range(4)],
+        'type3': [self.a_layer_type3[i].dict() for i in range(5)]
+      },
+      'b_type1': self.b_type1.dict(),
+      'b_type2': self.b_type2.dict(),
+      'b_type3': self.b_type3.dict(),
+      'c': self.c.dict()
+    }
+
   def arrange_input(self, input):
     type1_in = []
     for i in range(2):
@@ -148,7 +161,7 @@ class DNN:
     self.c.weights[0] -= DNN_GAMMA * c_err * self.b_type1.activation
     self.c.weights[1] -= DNN_GAMMA * c_err * self.b_type2.activation
     self.c.weights[2] -= DNN_GAMMA * c_err * self.b_type3.activation
-    
+
     self.c.bias -= DNN_BIAS_GAMMA * c_err
 
   def forward(self, input):
