@@ -19,6 +19,43 @@ cel = Celery(
 )
 
 @cel.task
+def weight_train_task(weight_train_task_id, image_set_id, weight_set_id):
+  weight_train_task_id = ObjectId(weight_train_task_id)
+  weight_set_id = ObjectId(weight_set_id)
+  image_set_id = ObjectId(image_set_id)
+  with MongoClient() as client:
+    db = client.capstone
+    weight_train_task = db.weight_train_tasks.find_one_and_update(
+      {
+        '_id': weight_train_task_id
+      },
+      {
+        '$set': {
+          'status': 'RUNNING'
+        }
+      }
+    )
+    for image in weight_train_task['images']:
+      db.weight_train_tasks.update_one(
+        {
+          '_id': weight_train_task_id,
+          'images.id': image['id']
+        },
+        {
+          '$set': {
+            'images.$.status': 'RUNNING'
+          }
+        }
+      )
+      image_doc = db.images.find_one(
+        { '_id': image['_id'] },
+        { 'data': 0 }
+      )
+      
+
+
+
+@cel.task
 def google_drive_task(google_drive_task_id, image_set_id, google_creds):
   google_drive_task_id = ObjectId(google_drive_task_id)
   google_creds = Credentials(**google_creds)

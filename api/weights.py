@@ -4,6 +4,7 @@ from bson.errors import InvalidId
 from common import *
 
 import numpy as np
+import tasks
 import flask
 import math
 
@@ -16,6 +17,40 @@ def generate_new_weight(fan_in, fan_out):
     'bias': 0,
     'weights': weights.tolist()
   }
+
+@weights.route('/api/weight-sets/<id>/train', methods=['POST'])
+@authenticate
+def train_weights(account, id):
+  image_set_id = flask.request.form.get('image_set_id', None)
+  if not image_set_id:
+    return api_error('Missing image set id')
+  try:
+    id = ObjectId(id)
+    image_set_id = ObjectId(image_set_id)
+  except InvalidId:
+    return api_error('Invalid id or image set id')
+  weight_set = db.weight_sets.find_one({ 'account_id': account['_id'], '_id': id })
+  if db.weight_sets.count_documents({ 'account_id': account['_id'], '_id': id }, limit=1) == 0:
+    return api_error('Weight set does not exist')
+  if db.image_sets.count_documents({ 'account_id': account['_id'], '_id': image_set_id }, limit=1) == 0:
+    return api_error('Image set does not exist')
+  results = db.images.find({ 'image_set_id': image_set_id }, projection={ 'name': 1 })
+  images = []
+  for image in results:
+    images.append({
+      'id': image['_id'],
+      'name': image['name'],
+      'status': 'PENDING'
+    })
+  weight_train_task = {
+    'images': images,
+    'status': 'PENDING',
+    'weight_set_id': id,
+    'account_id': account['_id'],
+    'image_set_id': image_set_id
+  }
+  result = db.weight_train_tasks.insert_one(weight_train_task)
+  task = tasks.
 
 @weights.route('/api/weight-sets/<id>', methods=['POST'])
 @authenticate
