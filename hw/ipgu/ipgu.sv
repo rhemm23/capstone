@@ -18,17 +18,18 @@ module ipgu #(RAM_DATA_WIDTH = 8, RAM_ADDR_WIDTH = 18)
 
     //Scaling luts //can probably create scaling reg which optimizes scaling
     reg [3:0] numWindows;
-    reg [3:0] nextNumWindows;
+    reg [(9+6)-1:0] scaleFactor;
     reg [2:0] convertI;
 
     always_comb begin
         case(convertI) 
-            'd0: begin numWindows <= 15; nextNumWindows <= 12; end
-            'd1: begin numWindows <= 12; nextNumWindows <= 9; end
-            'd2: begin numWindows <= 9; nextNumWindows <= 6; end
-            'd3: begin numWindows <= 6; nextNumWindows <= 1; end
-            'd4: begin numWindows <= 1; nextNumWindows <= 1; end
-            default: begin numWindows <= 0; nextNumWindows <= 0; end
+            'd0: begin numWindows <= 15; scaleFactor <= {'0,6'b110011}; end
+            'd1: begin numWindows <= 12; scaleFactor <= {'0,6'b110000}; end
+            'd2: begin numWindows <= 9; scaleFactor <= {'0,6'b101010}; end
+            'd3: begin numWindows <= 6; scaleFactor <= {'0,6'b100000}; end
+            'd4: begin numWindows <= 3; scaleFactor <= {'0,6'b010101}; end
+            'd5: begin numWindows <= 1; scaleFactor <= {9'b1,'0}; end
+            default: begin numWindows <= 0; scaleFactor <= 0; end
          endcase
     end
     
@@ -52,7 +53,13 @@ module ipgu #(RAM_DATA_WIDTH = 8, RAM_ADDR_WIDTH = 18)
     reg [RAM_ADDR_WIDTH/2-1:0] addrXBegin, addrXEnd, addrYBegin, addrYEnd;
     reg [RAM_ADDR_WIDTH/2-1:0] addrX, addrY;
     wire [RAM_ADDR_WIDTH-1:0] scaledAddr;
-    assign scaledAddr = {(addrY*nextNumWindows)/numWindows, (addrX*nextNumWindows)/numWindows};
+
+    wire [6-1:0] wastedDecimalPlacesX, wastedDecimalPlacesY;
+    qmult #(.Q(6), .N(15)) qmultY (.i_multiplicand({addrY,6'b0}), .i_multiplier(scaleFactor), .o_result({scaledAddr[RAM_ADDR_WIDTH-1-:RAM_ADDR_WIDTH/2],wastedDecimalPlacesY}), .ovr());
+
+    qmult #(.Q(6), .N(15)) qmultX (.i_multiplicand({addrX,6'b0}), .i_multiplier(scaleFactor), .o_result({scaledAddr[RAM_ADDR_WIDTH/2-1:0],wastedDecimalPlacesX}), .ovr());
+
+    //assign scaledAddr = {(addrY*nextNumWindows)/numWindows, (addrX*nextNumWindows)/numWindows};
     
     assign addrRam1_int = weRam1_int?{scaledAddr}:{addrY, addrX};
     assign addrRam2 = weRam2?{scaledAddr}:{addrY, addrX};
@@ -147,7 +154,7 @@ module ipgu #(RAM_DATA_WIDTH = 8, RAM_ADDR_WIDTH = 18)
             addrYBegin <= '0;
         else begin
             if(windowDone && addrXBegin+20==numWindows*20) begin //last pixel of a row of windows be read next
-                if(convertDone)
+                if(addrYBegin+20==numWindows*20)
                     addrYBegin <= '0;
                 else
                     addrYBegin <= addrYBegin+20;
@@ -200,13 +207,13 @@ module ipgu #(RAM_DATA_WIDTH = 8, RAM_ADDR_WIDTH = 18)
         else begin
             if(clrConvertDone)
                 convertDone <= '0;
-            else if(windowDone && addrXEnd+1==numWindows*20 && addrYEnd+1==numWindows*20)
+            else if(windowDone && addrXBegin+20==numWindows*20 && addrYBegin+20==numWindows*20)
                 convertDone <= 1'b1;
         end
     
     end
 
-    assign rdyIpgu = convertDone&&convertI==3;//transfer from 60x60 to 20x20 done
+    assign rdyIpgu = convertDone&&convertI==4;//transfer from 60x60 to 20x20 done
     
 
     //////////////////////////////////////
@@ -248,7 +255,7 @@ module ipgu #(RAM_DATA_WIDTH = 8, RAM_ADDR_WIDTH = 18)
                         if(convertDone) begin
                             incConvertI = '1;
                             clrConvertDone = '1;
-                            if(convertI==4)
+                            if(convertI==5)
                                 nxt_state = IDLE;
                             else begin
                                 if(convertI[0])

@@ -36,9 +36,10 @@ wire [7:0] ipguOutBufferQ [79:0];
 	rdyHeu = '0;
         @(posedge clk) rst_n = '1;
         DUT.ram1.mem = '{default:0};
+        DUT.ram2.mem = '{default:0};
         @(posedge clk) initIpgu = '1;
         @(posedge clk) initIpgu = '0;
-        fork
+        fork: hello
             forever begin: vldIpguWait
                 wait(vldIpgu) begin 
                     if(DUT.state==2)$stop();
@@ -46,13 +47,17 @@ wire [7:0] ipguOutBufferQ [79:0];
                     @(posedge clk) rdyHeu = '0;
                 end
             end
-            wait(rdyIpgu) disable vldIpguWait;
-        join
+            wait(rdyIpgu) begin
+		$stop();
+	    end
+//            wait(DUT.ram2.addr_x==204&&DUT.ram2.addr_y==0) $stop;
+        join_any
+	disable hello; 
         wait(vldIpgu) begin
             @(posedge clk) rdyHeu = '1;
             @(posedge clk) rdyHeu = '0;
         end
 
     end
-
+    $stop();
 endmodule
