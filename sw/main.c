@@ -47,9 +47,7 @@ int main(int argc, char *argv[]) {
   uint32_t *compiled_program;
   compile_program(program_path, &compiled_program);
 
-  /*
-   * Format entire memory buffer
-   */
+  // Format entire memory buffer
   size_t buffer_size = MAX_INSTRUCTIONS * 4;
   uint8_t *buffer = malloc(buffer_size);
 
@@ -63,14 +61,18 @@ int main(int argc, char *argv[]) {
 
   afu_t afu;
   setup_afu(&afu, AFU_ACCEL_UUID);
-  set_afu_buffer(&afu, (void**)&buffer, buffer_size);
+  void *buffer = create_afu_buffer(&afu, getpagesize());
 
-  // Give AFU time to execute
+  volatile char *temp = (volatile char*)buffer;
+
+  int i = 0;
+  char *hello_test = "hello!";
+  for (char *t = hello_test; *t != '\0'; t++) {
+    temp[i++] = *t;
+  }
+
   sleep(1);
 
-  /*
-   * Cleanup
-   */
   close_afu(&afu);
   free(compiled_program);
 

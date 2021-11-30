@@ -16,7 +16,7 @@ typedef enum afu_csr {
 } afu_csr_t;
 
 typedef struct afu_buffer {
-  uint64_t phy_addr;
+  uint64_t iova;
   uint64_t wsid;
 } afu_buffer_t;
 
@@ -43,11 +43,6 @@ uint64_t read_afu_csr(afu_t *afu, afu_csr_t csr);
  * Write to an AFU control status register
  */
 void write_afu_csr(afu_t *afu, afu_csr_t csr, uint64_t value);
-
-/*
- * Set the AFU shared memory buffer from an existing buffer
- */
-void set_afu_buffer(afu_t *afu, void **buffer, uint64_t size);
 
 /*
  * Create a new AFU shared memory buffer of a specified size,

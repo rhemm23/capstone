@@ -98,30 +98,29 @@ void write_afu_csr(afu_t *afu, afu_csr_t csr, uint64_t value) {
   }
 }
 
-void set_afu_buffer(afu_t *afu, void **buffer, uint64_t size) {
+void * create_afu_buffer(afu_t *afu, uint64_t size) {
 
-  // Delete existing buffer
-  if (afu->shared_buffer.wsid) {
-    if (fpgaReleaseBuffer(afu->handle, afu->shared_buffer.wsid) != FPGA_OK) {
-      exit_with_error("Failed to release shared memory buffer");
-    }
-  }
+  uint64_t iova;
+  void *buffer;
 
   // Prepare new buffer
-  int flags = (*buffer == NULL) ? 0 : FPGA_BUF_PREALLOCATED;
-  if (fpgaPrepareBuffer(afu->handle, size, buffer, &afu->shared_buffer.wsid, flags) != FPGA_OK) {
+  if (fpgaPrepareBuffer(afu->handle, size, &buffer, &afu->shared_buffer.wsid, 0) != FPGA_OK) {
     close_with_error(afu, "Failed to create shared memory buffer");
   }
 
   // Get physical address and send to AFU
-  if (fpgaGetIOAddress(afu->handle, afu->shared_buffer.wsid, &afu->shared_buffer.phy_addr) != FPGA_OK) {
+  if (fpgaGetIOAddress(afu->handle, afu->shared_buffer.wsid, &iova) != FPGA_OK) {
     close_with_error(afu, "Failed to get shared memory buffer IO address");
   }
-  write_afu_csr(afu, BUFFER_ADDR, afu->shared_buffer.phy_addr >> 6);
-}
 
-void * create_afu_buffer(afu_t *afu, uint64_t size) {
-  void *buffer = NULL;
-  set_afu_buffer(afu, &buffer, size);
+  // Cache align iova
+  iova >>= 6;
+
+  // Notify fpga of buffer
+  write_afu_csr(afu, BUFFER_ADDR, iova);
+
+  // Store buffer info
+  afu->shared_buffer.iova = iova;
+
   return buffer;
 }
