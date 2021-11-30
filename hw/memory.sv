@@ -49,6 +49,7 @@ import data_types::*;
 
   always_ff @(posedge clk or negedge rst_n) begin
     if (!rst_n) begin
+      state <= IDLE;
       recv_cnt <= '0;
       sent_cnt <= '0;
       mem_rx <= '0;
