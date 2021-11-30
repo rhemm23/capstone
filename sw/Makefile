@@ -5,6 +5,9 @@ BIN_DIR = ./bin
 AFU_JSON_INFO = ../hw/afu.json
 AFU_JSON_INFO_HDR = ./afu_json_info.h
 
+OPAE_C_LNK = $(shell find -O3 -L ~ -name libopae-c.so* -print -quit)
+OPAE_C_ASE_LNK = $(shell find -O3 -L ~ -name libopae-c-ase.so* -print -quit)
+
 SRCS = main.c compiler.c afu.c
 OBJS = $(addprefix $(BIN_DIR)/,$(patsubst %.c,%.o,$(SRCS)))
 
@@ -14,11 +17,11 @@ ase: $(BIN_DIR)/afu_ase
 
 $(BIN_DIR)/afu_ase: $(OBJS)
 	mkdir -p $(BIN_DIR)
-	gcc -o $@ $^ $(C_LINK) -lopae-c-ase
+	gcc -o $@ $^ $(OPAE_C_ASE_LNK) $(C_LINK)
 
 $(BIN_DIR)/afu: $(OBJS)
 	mkdir -p $(BIN_DIR)
-	gcc -o $@ $^ $(C_LINK) -lopae-c
+	gcc -o $@ $^ $(OPAE_C_LNK) $(C_LINK)
 
 clean:
 	rm -rf $(BIN_DIR)
