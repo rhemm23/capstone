@@ -1,10 +1,13 @@
-#include <inttypes.h>
+#include <stdbool.h>
 #include <stdlib.h>
 #include <string.h>
 #include <stdio.h>
 
 #include "afu.h"
+#include "compiler.h"
 #include "afu_json_info.h"
+
+#define MAX_INSTRUCTIONS 4096
 
 static void exit_with_error(char *error) {
   fprintf(stderr, "Error: %s\n", error);
@@ -16,7 +19,7 @@ int main(int argc, char *argv[]) {
   /*
    * Progress command line args
    */
-  char *program_path;
+  char *program_path = NULL;
 
   for (int i = 1; i < argc; i++) {
     if (strcmp("--help", argv[i]) == 0 || strcmp("-h", argv[i]) == 0) {
@@ -33,9 +36,16 @@ int main(int argc, char *argv[]) {
       }
     }
   }
+
+  /*
+   * Assure required args are specified
+   */
   if (program_path == NULL) {
     exit_with_error("Missing program path parameter, use --help or -h");
   }
+
+  uint32_t *compiled_program;
+  compile_program(program_path, &compiled_program);
 
   afu_t afu;
 
@@ -45,7 +55,12 @@ int main(int argc, char *argv[]) {
 
   set_afu_buffer(&afu, (void**)&instructions, 64 * sizeof(uint32_t));
 
+  /*
+   * Cleanup
+   */
   close_afu(&afu);
+
+  free(compiled_program);
 
   return 0;
 }
