@@ -20,9 +20,9 @@ int main(int argc, char *argv[]) {
 
   for (int i = 1; i < argc; i++) {
     if (strcmp("--help", argv[i]) == 0 || strcmp("-h", argv[i]) == 0) {
-      printf("Command line arguments:\n\n");
+      printf("\nCommand line arguments:\n\n");
       printf("\t<--help, -h>                      -> Print command line args\n");
-      printf("\t<--program, -p> <path to program> -> CPU program to execute\n");
+      printf("\t<--program, -p> <path to program> -> Specify the CPU program to execute\n\n");
       exit(0);
     }
     if (strcmp("--program", argv[i]) == 0 || strcmp("-p", argv[i]) == 0) {
