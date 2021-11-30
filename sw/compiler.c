@@ -1,5 +1,10 @@
 #include "compiler.h"
 
+static void exit_with_error(char *error) {
+  fprintf(stderr, "Error: %s\n", error);
+  exit(EXIT_FAILURE);
+}
+
 static void compiler_error(char *error, int line_num) {
   fprintf(stderr, "Program Error on line %d: %s\n", line_num, error);
   exit(EXIT_FAILURE);

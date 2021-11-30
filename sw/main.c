@@ -8,8 +8,6 @@
 #include "compiler.h"
 #include "afu_json_info.h"
 
-#define MAX_INSTRUCTIONS 4096
-
 static void exit_with_error(char *error) {
   fprintf(stderr, "Error: %s\n", error);
   exit(EXIT_FAILURE);
