@@ -8,6 +8,8 @@ from pymongo import MongoClient
 from celery import Celery
 from io import BytesIO
 from PIL import Image
+from rnn import RNN
+from dnn import DNN
 
 import numpy as np
 import math
@@ -35,6 +37,11 @@ def weight_train_task(weight_train_task_id, image_set_id, weight_set_id):
         }
       }
     )
+
+    weight_set = db.weight_sets.find_one({ '_id': weight_set_id })
+    rot_nn = RNN(weight_set['weights']['rnn'])
+    det_nn = DNN(weight_set['weights']['dnn'])
+
     for image in weight_train_task['images']:
       db.weight_train_tasks.update_one(
         {
@@ -48,12 +55,65 @@ def weight_train_task(weight_train_task_id, image_set_id, weight_set_id):
         }
       )
       image_doc = db.images.find_one(
-        { '_id': image['_id'] },
+        { '_id': image['id'] },
         { 'data': 0 }
       )
-      
 
+      # Ten epochs
+      for _ in range(10):
 
+        # Train on faces
+        for face in image_doc['faces']:
+          det_in = np.frombuffer(face, dtype=np.uint8).tolist()
+          det_nn.train(det_in, 1)
+        
+        # Train on non-faces
+        for non_face in image_doc['non_faces']:
+          det_in = np.frombuffer(non_face, dtype=np.uint8).tolist()
+          det_nn.train(det_in, 0)
+
+        # Train on rotated samples
+        for sample in image_doc['rotated_samples']:
+          for i in range(36):
+            rot_in = np.frombuffer(sample[i * 10], dtype=np.uint8).tolist()
+            expected_output = [0 for _ in range(36)]
+            expected_output[i] = 1
+            rot_nn.train(rot_in, expected_output)
+
+      db.weight_train_tasks.update_one(
+        {
+          '_id': weight_train_task_id,
+          'images.id': image['id']
+        },
+        {
+          '$set': {
+            'images.$.status': 'DONE'
+          }
+        }
+      )
+
+    updated_weights = {
+      'rnn': rot_nn.dict(),
+      'dnn': det_nn.dict()
+    }
+    db.weight_sets.update_one(
+      { '_id': weight_set_id },
+      {
+        '$set': {
+          'weights': updated_weights
+        }
+      }
+    )
+    weight_train_task = db.weight_train_tasks.find_one_and_update(
+      {
+        '_id': weight_train_task_id
+      },
+      {
+        '$set': {
+          'status': 'DONE'
+        }
+      }
+    )
 
 @cel.task
 def google_drive_task(google_drive_task_id, image_set_id, google_creds):

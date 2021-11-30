@@ -3,7 +3,6 @@ from googleapiclient.errors import HttpError
 from googleapiclient.discovery import build
 from bson.objectid import ObjectId
 from bson.errors import InvalidId
-from uritemplate import api
 from common import *
 
 import tasks
@@ -24,7 +23,7 @@ def get_google_drive_task(account, id):
   files = []
   for file in google_drive_task['files']:
     files.append({
-      'id': str(file['_id']),
+      'name': file['name'],
       'status': file['status']
     })
   return api_success(

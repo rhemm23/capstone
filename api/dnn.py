@@ -1,4 +1,3 @@
-from re import L
 from neuron import Neuron
 
 import math

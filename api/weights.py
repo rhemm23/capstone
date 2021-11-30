@@ -2,6 +2,8 @@ from bson.objectid import ObjectId
 from bson.errors import InvalidId
 
 from common import *
+from rnn import RNN
+from dnn import DNN
 
 import numpy as np
 import tasks
@@ -18,6 +20,69 @@ def generate_new_weight(fan_in, fan_out):
     'weights': weights.tolist()
   }
 
+@weights.route('/api/weight-sets/<id>/test', methods=['POST'])
+@authenticate
+def test_weights(account, id):
+  image_set_id = flask.request.form.get('image_set_id', None)
+  if not image_set_id:
+    return api_error('Missing image set id')
+  try:
+    id = ObjectId(id)
+    image_set_id = ObjectId(image_set_id)
+  except InvalidId:
+    return api_error('Invalid id or image set id')
+  weight_set = db.weight_sets.find_one({ 'account_id': account['_id'], '_id': id })
+  if not weight_set:
+    return api_error('Weight set does not exist')
+  if db.image_sets.count_documents({ 'account_id': account['_id'], '_id': image_set_id }, limit=1) == 0:
+    return api_error('Image set does not exist')
+
+  results = db.images.find({ 'image_set_id': image_set_id })
+
+  rnn = RNN(weight_set['weights']['rnn'])
+  dnn = DNN(weight_set['weights']['dnn'])
+
+  dnn_tot_cnt = 0
+  dnn_pass_cnt = 0
+
+  rnn_tot_cnt = 0
+  rnn_pass_cnt = 0
+
+  for image in results:
+
+    # Test faces
+    for face in image['faces']:
+      dnn_in = np.frombuffer(face, dtype=np.uint8).tolist()
+      dnn_tot_cnt += 1
+      dnn_pass_cnt += 1 if dnn.forward(dnn_in) else 0
+
+    # Test non faces
+    for non_face in image['non_faces']:
+      dnn_in = np.frombuffer(non_face, dtype=np.uint8).tolist()
+      dnn_tot_cnt += 1
+      dnn_pass_cnt += 1 if not dnn.forward(dnn_in) else 0
+
+    # Test rotation samples
+    for sample in image['rotated_samples']:
+      for i in range(36):
+        rot_in = np.frombuffer(sample[i * 10], dtype=np.uint8).tolist()
+        expected = [0 for _ in range(36)]
+        actual = rnn.forward(rot_in)
+        expected[i] = 1
+        rnn_tot_cnt += 1
+        eq = True
+        for j in range(36):
+          if expected[j] != actual[i]:
+            eq = False
+            break
+        rnn_pass_cnt += 1 if eq else 0
+
+  return api_success(
+    rnn_accuracy=round(dnn_pass_cnt / dnn_tot_cnt, 2),
+    dnn_accuracy=round(rnn_pass_cnt / rnn_tot_cnt, 2)
+  )
+
+
 @weights.route('/api/weight-sets/<id>/train', methods=['POST'])
 @authenticate
 def train_weights(account, id):
@@ -29,7 +94,6 @@ def train_weights(account, id):
     image_set_id = ObjectId(image_set_id)
   except InvalidId:
     return api_error('Invalid id or image set id')
-  weight_set = db.weight_sets.find_one({ 'account_id': account['_id'], '_id': id })
   if db.weight_sets.count_documents({ 'account_id': account['_id'], '_id': id }, limit=1) == 0:
     return api_error('Weight set does not exist')
   if db.image_sets.count_documents({ 'account_id': account['_id'], '_id': image_set_id }, limit=1) == 0:
@@ -49,8 +113,21 @@ def train_weights(account, id):
     'account_id': account['_id'],
     'image_set_id': image_set_id
   }
-  result = db.weight_train_tasks.insert_one(weight_train_task)
-  task = tasks.
+  weight_train_task_id = db.weight_train_tasks.insert_one(weight_train_task).inserted_id
+  task = tasks.weight_train_task.delay(
+    str(weight_train_task_id),
+    str(image_set_id),
+    str(id)
+  )
+  db.weight_train_tasks.update_one(
+    { '_id': weight_train_task_id },
+    {
+      '$set': {
+        'task_id': task.id
+      }
+    }
+  )
+  return api_success(id=str(weight_train_task_id))
 
 @weights.route('/api/weight-sets/<id>', methods=['POST'])
 @authenticate
