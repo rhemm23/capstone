@@ -11,15 +11,14 @@ OBJS = $(addprefix $(BIN_DIR)/,$(patsubst %.c,%.o,$(SRCS)))
 build: $(BIN_DIR)/afu
 
 ase: $(BIN_DIR)/afu_ase
-	cp ./sample.asm ./bin/
 
 $(BIN_DIR)/afu_ase: $(OBJS)
 	mkdir -p $(BIN_DIR)
-	gcc -o $@ $^ $(shell readlink -f libopae-c-ase.so) $(C_LINK)
+	gcc -o $@ $^ $(C_LINK) -lopae-c-ase
 
 $(BIN_DIR)/afu: $(OBJS)
 	mkdir -p $(BIN_DIR)
-	gcc -o $@ $^ $(shell readlink -f libopae-c.so) $(C_LINK)
+	gcc -o $@ $^ $(C_LINK) -lopae-c
 
 clean:
 	rm -rf $(BIN_DIR)
