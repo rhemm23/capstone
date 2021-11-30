@@ -49,7 +49,7 @@ module ipgu #(RAM_DATA_WIDTH = 8, RAM_ADDR_WIDTH = 18)
     wire windowDone;
 
     reg convertDone;
-    reg [RAM_ADDR_WIDTH-1:0] addrXBegin, addrXEnd, addrYBegin, addrYEnd;
+    reg [RAM_ADDR_WIDTH/2-1:0] addrXBegin, addrXEnd, addrYBegin, addrYEnd;
     reg [RAM_ADDR_WIDTH/2-1:0] addrX, addrY;
     wire [RAM_ADDR_WIDTH-1:0] scaledAddr;
     assign scaledAddr = {(addrY*nextNumWindows)/numWindows, (addrX*nextNumWindows)/numWindows};
@@ -96,6 +96,8 @@ module ipgu #(RAM_DATA_WIDTH = 8, RAM_ADDR_WIDTH = 18)
         if(!rst_n) begin
             weRam1_int <= '0;
             weRam2 <= '0;
+            csRam1_d1 <= '0; //similar to above
+            csRam2_d1 <= '0;
         end
         else begin
             weRam1_int <= csRam2&!weRam2; //if reading from Ram2, write to Ram1 in next cycle
@@ -144,7 +146,7 @@ module ipgu #(RAM_DATA_WIDTH = 8, RAM_ADDR_WIDTH = 18)
         if(!rst_n)
             addrYBegin <= '0;
         else begin
-            if(windowDone && addrXBegin+20==numWindows[convertI]*20) begin //last pixel of a row of windows be read next
+            if(windowDone && addrXBegin+20==numWindows*20) begin //last pixel of a row of windows be read next
                 if(convertDone)
                     addrYBegin <= '0;
                 else
@@ -158,7 +160,7 @@ module ipgu #(RAM_DATA_WIDTH = 8, RAM_ADDR_WIDTH = 18)
             addrXBegin <= '0;
         else begin
             if(windowDone) begin //last pixel of a windows will be read next
-                if(addrXBegin+20==numWindows[convertI]*20)
+                if(addrXBegin+20==numWindows*20)
                     addrXBegin <= '0;
                 else
                     addrXBegin <= addrXBegin+20;
@@ -168,8 +170,8 @@ module ipgu #(RAM_DATA_WIDTH = 8, RAM_ADDR_WIDTH = 18)
     //addrXEnd and addrYEnd
     always_ff @(posedge clk, negedge rst_n) begin
         if(!rst_n) begin
-            addrXEnd <= '0;
-            addrYEnd <= '0;
+            addrXEnd <= 19;
+            addrYEnd <= 19;
         end
         else begin
             addrXEnd <= addrXBegin+20-1;
@@ -198,13 +200,13 @@ module ipgu #(RAM_DATA_WIDTH = 8, RAM_ADDR_WIDTH = 18)
         else begin
             if(clrConvertDone)
                 convertDone <= '0;
-            else if(windowDone && addrXEnd+1==numWindows[convertI]*20 && addrYEnd+1==numWindows[convertI]*20)
+            else if(windowDone && addrXEnd+1==numWindows*20 && addrYEnd+1==numWindows*20)
                 convertDone <= 1'b1;
         end
     
     end
 
-    assign rdyHeu = convertDone&&convertI==3;//transfer from 60x60 to 20x20 done
+    assign rdyIpgu = convertDone&&convertI==3;//transfer from 60x60 to 20x20 done
     
 
     //////////////////////////////////////
@@ -221,7 +223,8 @@ module ipgu #(RAM_DATA_WIDTH = 8, RAM_ADDR_WIDTH = 18)
             incX = '0;
             incConvertI = '0;            
             resetConvertI = '0;    
-
+            vldIpgu = '0;
+            clrConvertDone = '0;
             case (state)
                 IDLE : begin
                     if(initIpgu) begin
@@ -244,6 +247,7 @@ module ipgu #(RAM_DATA_WIDTH = 8, RAM_ADDR_WIDTH = 18)
                         vldIpgu = '0;
                         if(convertDone) begin
                             incConvertI = '1;
+                            clrConvertDone = '1;
                             if(convertI==4)
                                 nxt_state = IDLE;
                             else begin

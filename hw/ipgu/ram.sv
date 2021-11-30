@@ -1,6 +1,6 @@
 //https://www.chipverify.com/verilog/verilog-single-port-ram
 
-module single_port_sync_ram
+module ram
 # (     parameter ADDR_WIDTH_X  = $clog2(DEPTH_X),
         parameter ADDR_WIDTH_Y  = $clog2(DEPTH_Y), //X and Y
         parameter DATA_WIDTH    = 8,
