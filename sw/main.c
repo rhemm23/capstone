@@ -62,6 +62,8 @@ int main(int argc, char *argv[]) {
     }
   }
 
+  printf("First byte: %x\n", buffer[0]);
+
   sleep(1);
 
   close_afu(&afu);
