@@ -91,7 +91,7 @@ import data_types::*;
 
           // Check for read responses
           if (rx.c0.rspValid && rx.c0.hdr.resp_type == eRSP_RDLINE) begin
-            mem_rx.cpu_program[(rx.c0.hdr.mdata * 512) +: 512] = rx.c0.data;
+            mem_rx.cpu_program[(rx.c0.hdr.mdata * 512) +: 512] <= rx.c0.data;
             recv_cnt <= recv_cnt + 1;
           end
 
