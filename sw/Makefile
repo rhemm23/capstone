@@ -11,11 +11,11 @@ build: $(BIN_DIR)/afu
 
 ase: $(BIN_DIR)/afu_ase
 
-$(BIN_DIR)/afu_ase: $(SRCS)
+$(BIN_DIR)/afu_ase: $(AFU_JSON_INFO_HDR) $(SRCS)
 	mkdir -p $(BIN_DIR)
 	gcc -o $@ $^ $(C_LINK) -lopae-c-ase
 
-$(BIN_DIR)/afu: $(SRCS)
+$(BIN_DIR)/afu: $(AFU_JSON_INFO_HDR) $(SRCS)
 	mkdir -p $(BIN_DIR)
 	gcc -o $@ $^ $(C_LINK) -lopae-c
 

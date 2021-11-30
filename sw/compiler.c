@@ -18,7 +18,7 @@ void compile_program(char *program_path, uint32_t **compiled_program) {
     exit_with_error("Could not open specified program");
   }
 
-  char *line;
+  char *line = NULL;
   size_t len;
   ssize_t cnt;
 
