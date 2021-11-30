@@ -116,7 +116,7 @@ void set_afu_buffer(afu_t *afu, void **buffer, uint64_t size) {
   if (fpgaGetIOAddress(afu->handle, afu->shared_buffer.wsid, &afu->shared_buffer.phy_addr) != FPGA_OK) {
     close_with_error(afu, "Failed to get shared memory buffer IO address");
   }
-  write_afu_csr(afu, BUFFER_ADDR, afu->shared_buffer.phy_addr >> 6);
+  write_afu_csr(afu, BUFFER_ADDR, afu->shared_buffer.phy_addr);
 }
 
 void * create_afu_buffer(afu_t *afu, uint64_t size) {
