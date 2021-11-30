@@ -61,7 +61,7 @@ int main(int argc, char *argv[]) {
 
   afu_t afu;
   setup_afu(&afu, AFU_ACCEL_UUID);
-  void *buffer = create_afu_buffer(&afu, getpagesize());
+  void *buffer = create_afu_buffer(&afu, getpagesize() * 256);
 
   volatile char *temp = (volatile char*)buffer;
 
