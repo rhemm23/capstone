@@ -1,15 +1,8 @@
 C_LINK = -luuid -ljson-c -lpthread
 
 BIN_DIR = ./bin
-
 AFU_JSON_INFO = ../hw/afu.json
 AFU_JSON_INFO_HDR = ./afu_json_info.h
-
-OPAE_C_LNK = $(shell find -O3 -L ~ -name libopae-c.so* -print -quit)
-OPAE_C_ASE_LNK = $(shell find -O3 -L ~ -name libopae-c-ase.so* -print -quit)
-
-OPAE_C_SO = $(shell readlink -f $(OPAE_C_LNK))
-OPAE_C_ASE_SO = $(shell readlink -f $(OPAE_C_ASE_LNK))
 
 SRCS = main.c compiler.c afu.c
 OBJS = $(addprefix $(BIN_DIR)/,$(patsubst %.c,%.o,$(SRCS)))
@@ -20,11 +13,11 @@ ase: $(BIN_DIR)/afu_ase
 
 $(BIN_DIR)/afu_ase: $(SRCS)
 	mkdir -p $(BIN_DIR)
-	gcc -static -o $@ $^ $(OPAE_C_ASE_SO) $(C_LINK)
+	gcc -o $@ $^ $(C_LINK) -L~/opae/lib -lopae-c-ase
 
 $(BIN_DIR)/afu: $(SRCS)
 	mkdir -p $(BIN_DIR)
-	gcc -static -o $@ $^ $(OPAE_C_SO) $(C_LINK)
+	gcc -o $@ $^ $(C_LINK) -L~/opae/lib -lopae-c
 
 clean:
 	rm -rf $(BIN_DIR)
