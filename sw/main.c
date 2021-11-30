@@ -1,4 +1,5 @@
 #include <stdbool.h>
+#include <unistd.h>
 #include <stdint.h>
 #include <stdlib.h>
 #include <string.h>
@@ -63,6 +64,9 @@ int main(int argc, char *argv[]) {
   afu_t afu;
   setup_afu(&afu, AFU_ACCEL_UUID);
   set_afu_buffer(&afu, (void**)&buffer, buffer_size);
+
+  // Give AFU time to execute
+  sleep(1);
 
   /*
    * Cleanup
