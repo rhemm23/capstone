@@ -13,11 +13,11 @@ ase: $(BIN_DIR)/afu_ase
 
 $(BIN_DIR)/afu_ase: $(SRCS)
 	mkdir -p $(BIN_DIR)
-	gcc -o $@ $^ $(C_LINK) -L~/opae/lib -lopae-c-ase
+	gcc -o $@ $^ $(C_LINK) -lopae-c-ase
 
 $(BIN_DIR)/afu: $(SRCS)
 	mkdir -p $(BIN_DIR)
-	gcc -o $@ $^ $(C_LINK) -L~/opae/lib -lopae-c
+	gcc -o $@ $^ $(C_LINK) -lopae-c
 
 clean:
 	rm -rf $(BIN_DIR)
