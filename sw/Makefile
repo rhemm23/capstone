@@ -4,7 +4,7 @@ BIN_DIR = ./bin
 AFU_JSON_INFO = ../hw/afu.json
 AFU_JSON_INFO_HDR = ./afu_json_info.h
 
-SRCS = main.c afu.c
+SRCS = main.c compiler.c afu.c
 OBJS = $(addprefix $(BIN_DIR)/,$(patsubst %.c,%.o,$(SRCS)))
 
 build: $(BIN_DIR)/afu
