@@ -5,7 +5,7 @@ package data_types;
    */
   typedef logic [31:0] t_instruction;
 
-  typedef t_instruction [63:0] t_program;
+  typedef t_instruction [4095:0] t_program;
 
   /*
    * Image types
@@ -83,7 +83,7 @@ package data_types;
   /*
    * Memory types
    */
-  typedef logic [63:0] t_mem_addr;
+  typedef logic [31:0] t_mem_addr;
 
   typedef enum logic [2:0] {
     NONE = 3'b000,
