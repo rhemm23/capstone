@@ -100,6 +100,12 @@ void write_afu_csr(afu_t *afu, afu_csr_t csr, uint64_t value) {
 
 void * create_afu_buffer(afu_t *afu, uint64_t size) {
 
+  // Page align size
+  int page_size = getpagesize();
+  if (size % page_size != 0) {
+    size += page_size - (size % page_size);
+  }
+
   uint64_t iova;
   void *buffer;
 

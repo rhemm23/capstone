@@ -44,37 +44,28 @@ int main(int argc, char *argv[]) {
     exit_with_error("Missing program path parameter, use --help or -h");
   }
 
-  // uint32_t *compiled_program;
-  // compile_program(program_path, &compiled_program);
+  uint32_t *compiled_program;
+  compile_program(program_path, &compiled_program);
 
-  // // Format entire memory buffer
-  // size_t buffer_size = MAX_INSTRUCTIONS * 4;
-  // uint8_t *buffer = malloc(buffer_size);
-
-  // // Copy program instructions in big endian format
-  // uint64_t mem_index = 0;
-  // for (int i = 0; i < MAX_INSTRUCTIONS; i++) {
-  //   for (int j = 0; j < 4; j++) {
-  //     buffer[mem_index++] = (uint8_t)(compiled_program[i] >> ((3 - j) * 8));
-  //   }
-  // }
+  // Size of entire shared memory buffer
+  uint64_t buffer_size = MAX_INSTRUCTIONS * 4;
 
   afu_t afu;
   setup_afu(&afu, AFU_ACCEL_UUID);
-  void *buffer = create_afu_buffer(&afu, getpagesize() * 256);
+  volatile uint8_t *buffer = (volatile uint8_t*)create_afu_buffer(&afu, buffer_size);
 
-  volatile char *temp = (volatile char*)buffer;
-
-  int i = 0;
-  char *hello_test = "hello!";
-  for (char *t = hello_test; *t != '\0'; t++) {
-    temp[i++] = *t;
+  // Copy program instructions in big endian format
+  uint64_t mem_index = 0;
+  for (int i = 0; i < MAX_INSTRUCTIONS; i++) {
+    for (int j = 0; j < 4; j++) {
+      buffer[mem_index++] = (uint8_t)(compiled_program[i] >> ((3 - j) * 8));
+    }
   }
 
   sleep(1);
 
   close_afu(&afu);
-  //free(compiled_program);
+  free(compiled_program);
 
   return 0;
 }
