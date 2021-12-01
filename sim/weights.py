@@ -5,8 +5,8 @@ import math
 import sys
 
 def read_neuron(file, num_inputs):
-  bias = struct.unpack('f', file.read(4))
-  weights = struct.unpack('f' * num_inputs, file.read(4 * num_inputs))
+  bias = struct.unpack('f', file.read(4))[0]
+  weights = list(struct.unpack('f' * num_inputs, file.read(4 * num_inputs)))
   return (bias, weights)
 
 def pack_weight(weight):

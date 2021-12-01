@@ -1,7 +1,15 @@
+from PIL import Image, ImageDraw
+from pymongo import MongoClient
+from weights import *
+from ipgu import ipgu
+from heu import heu
 from rnn import *
 from dnn import *
 
+import getopt
 import math
+import dlib
+import sys
 
 RNN_GAMMA = 0.05
 RNN_BIAS_GAMMA = 0.01
@@ -74,3 +82,126 @@ def train_dnn(sub_image, expected_output, dnw):
   for i in range(3):
     dnw[4][1][i] -= DNN_GAMMA * c_err * b_out[i]
   dnw[4] = (dnw[4][0] - DNN_BIAS_GAMMA * c_err, dnw[4][1])
+
+def train_rnn_image(image, rnw):
+
+  detector = dlib.get_frontal_face_detector()
+  predictor = dlib.shape_predictor('shape_predictor_5_face_landmarks.dat')
+
+  faces = detector(image)
+
+  print('Detected {0} faces..'.format(len(faces)))
+
+  face_dets = []
+  for face in faces:
+    landmarks = predictor(image=image, box=face)
+    reye = [
+      (landmarks.part(0).x + landmarks.part(1).x) / 2,
+      (landmarks.part(0).y + landmarks.part(1).y) / 2
+    ]
+    leye = [
+      (landmarks.part(2).x + landmarks.part(3).x) / 2,
+      (landmarks.part(2).y + landmarks.part(3).y) / 2
+    ]
+
+    ex = abs(reye[0] - leye[0])
+    ey = abs(reye[1] - leye[1])
+
+    rot = math.degrees(math.atan2(ey, ex))
+    if reye[1] < leye[1]:
+      rot = 360 - rot
+    
+    face_dets.append([
+      [
+        face.left(),
+        face.top(),
+        face.right(),
+        face.bottom()
+      ],
+      -1,
+      None,
+      rot
+    ])
+
+  image = image.tolist()
+  sub_images, sub_images_bb = ipgu(image)
+  face_sub_image_indices = []
+
+  for i in range(len(sub_images_bb)):
+    for face_det in face_dets:
+      bb = sub_images_bb[i]
+      intersect = max(0, min(bb[2], face_det[0][2]) - max(bb[0], face_det[0][0])) * \
+                  max(0, min(bb[3], face_det[0][3]) - max(bb[1], face_det[0][1]))
+      union = (bb[2] - bb[0]) * (bb[3] - bb[1]) + \
+              (face_det[0][2] - face_det[0][0]) * (face_det[0][3] - face_det[0][1]) - intersect
+      ratio = intersect / union
+      if ratio > face_det[1]:
+        face_det[1] = ratio
+        face_det[2] = i
+    
+  for face_det in face_dets:
+    face_sub_image_indices.append(face_det[2])
+
+  for i in range(len(sub_images)):
+    heu(sub_images[i])
+    if i in face_sub_image_indices:
+      rot = None
+      for face_det in face_dets:
+        if face_det[2] == i:
+          rot = face_det[3]
+          break
+      expected = [0 for _ in range(36)]
+      expected[round(rot / 10) % 36] = 1
+      train_rnn(sub_images[i], expected, rnw)
+
+if __name__ == '__main__':
+  rnw_path = None
+  dnw_path = None
+  sys_args = sys.argv[1:]
+  try:
+    args, vals = getopt.getopt(sys_args, 'r:d:', ['rnw =', 'dnw ='])
+    for arg, val in args:
+      if arg in ('-r', '--rnw'):
+        rnw_path = val
+      elif arg in ('-d', '--dnw'):
+        dnw_path = val
+  except getopt.error as err:
+    print(str(err))
+    exit()
+  if not rnw_path:
+    print('Error: No rotational neural net weight specified')
+    exit()
+
+  rnw = read_rnn_weights(rnw_path) if rnw_path else None
+  dnw = read_dnn_weights(dnw_path) if dnw_path else None
+
+  client = MongoClient()
+  db = client.capstone
+
+  # Ten epochs
+  for _ in range(10):
+
+    cnt = 0
+    for image in db.images.find():
+
+      w = image['width']
+      h = image['height']
+      data = image['data']
+
+      image = Image.frombuffer('L', (w, h), data)
+
+      if w > h:
+        pad = (w - 300) // 2
+        image = image.crop((pad, 0, pad + 300, 300))
+      elif h > w:
+        pad = (h - 300) // 2
+        image = image.crop((0, pad, 300, pad + 300))
+
+      train_rnn_image(np.asarray(image), rnw)
+
+      cnt += 1
+      print('Completed image number: {}'.format(cnt))
+
+      # Write weights every 100 images
+      if cnt % 100 == 0:
+        write_rnn_weights(rnw_path, rnw)

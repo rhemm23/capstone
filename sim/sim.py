@@ -1,5 +1,7 @@
 from weights import *
 
+from ipgu import ipgu
+
 import getopt
 import struct
 import sys
@@ -46,7 +48,3 @@ if __name__ == '__main__':
     for j in range(300):
       row.append(image[(i * 300) + j])
     img_data.append(row)
-
-  
-
-  print(results)

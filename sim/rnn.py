@@ -17,7 +17,7 @@ def rnn_layer_out(sub_image, weights):
   for i in range(36):
     act = weights[2][i][0]
     for j in range(15):
-      act += b_out[j] * weights[1][i][1][j]
+      act += b_out[j] * weights[2][i][1][j]
     c_out.append(tanh(act))
   return (a_out, b_out, c_out)
 

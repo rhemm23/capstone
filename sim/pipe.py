@@ -6,7 +6,7 @@ from rnn import rnn
 from dnn import dnn
 
 def pipeline(image, rnw, dnw):
-  sub_images = ipgu(image)
+  sub_images, _ = ipgu(image)
   results = []
   for sub_image in sub_images:
     heu(sub_image)
