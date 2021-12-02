@@ -21,7 +21,7 @@ wire [ADDR_WIDTH_Y-1:0] addr_y;
 assign addr_x = addr[ADDR_WIDTH_X-1:0];
 assign addr_y = addr[ADDR_WIDTH_X+:ADDR_WIDTH_Y];
 
-reg [DATA_WIDTH-1:0] mem [DEPTH_X][DEPTH_Y];
+reg [DATA_WIDTH-1:0] mem [DEPTH_Y-1:0][DEPTH_X-1:0];
 
 always @ (posedge clk) begin
     if(cs&we)

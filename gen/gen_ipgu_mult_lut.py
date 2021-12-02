@@ -10,7 +10,7 @@ with open('../hw/ipgu/ipgu_mult_lut.sv', 'w+') as lut:
   lut.write('    /*\n')
   lut.write('     * Outputs\n')
   lut.write('     */\n')
-  lut.write('    output wire [8:0] addrOut\n')
+  lut.write('    output wire [8-1:0] addrOut\n')
   lut.write('  );\n\n')
   ratios = [0.8, 0.75, 2/3, 0.5, 1/3]
   numAddr = [300, 240, 180, 120, 60, 20]
@@ -25,11 +25,11 @@ with open('../hw/ipgu/ipgu_mult_lut.sv', 'w+') as lut:
       for j in range(numAddr[i]):
 
           init = format(j, 'b').zfill(numBits)
-          res = format(int((j * ratio)), 'b').zfill(9)
-          lut.write(('      '+str(numBits)+'\'b'+init+': q['+str(i)+'] <= 9\'b'+res+';\n'))
+          res = format(int((j * ratio)), 'b').zfill(8)
+          lut.write(('      '+str(numBits)+'\'b'+init+': q['+str(i)+'] <= 8\'b'+res+';\n'))
 
       lut.write('      default: q['+str(i)+'] <= \'0;\n')
       lut.write('    endcase\n')
   lut.write('  end\n\n')
-  lut.write('  assign addrOut = scaleNum<5?q[scaleNum]:\'1\n')
+  lut.write('  assign addrOut = scaleNum<5?q[scaleNum]:\'1;\n')
   lut.write('endmodule\n')

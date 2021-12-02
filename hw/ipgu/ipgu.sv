@@ -33,7 +33,8 @@ module ipgu #(RAM_DATA_WIDTH = 8, RAM_ADDR_WIDTH = 18)
          endcase
     end
     
-    logic [RAM_ADDR_WIDTH-1:0] addrRam1, addrRam2, addrRam1_int;
+    logic [RAM_ADDR_WIDTH-1:0] addrRam1, addrRam1_int;
+    logic [($clog2(240)*2)-1:0]  addrRam2;
     assign addrRam1 = csRam1_ext?addrRam1_ext:addrRam1_int;
 
     logic [RAM_DATA_WIDTH-1:0] wrDataRam1, rdDataRam1, rdDataRam2; //rdDataRam2 == wrDataRam1_int
@@ -52,18 +53,19 @@ module ipgu #(RAM_DATA_WIDTH = 8, RAM_ADDR_WIDTH = 18)
     reg convertDone;
     reg [RAM_ADDR_WIDTH/2-1:0] addrXBegin, addrXEnd, addrYBegin, addrYEnd;
     reg [RAM_ADDR_WIDTH/2-1:0] addrX, addrY;
-    wire [RAM_ADDR_WIDTH-1:0] scaledAddr;
+    reg [$clog2(240)-1:0] scaledX, scaledY;
+    wire [$clog2(240)-1:0] lutAddrX, lutAddrY;
 
     wire [6-1:0] wastedDecimalPlacesX, wastedDecimalPlacesY;
     
-    ipgu_mult_lut lutX(.scaleNum(convertI), .addr(addrX), .addrOut(scaledAddr[RAM_ADDR_WIDTH/2-1:0]));
-    ipgu_mult_lut lutY(.scaleNum(convertI), .addr(addrY), .addrOut(scaledAddr[RAM_ADDR_WIDTH-1-:RAM_ADDR_WIDTH/2]));
+    ipgu_mult_lut lutX(.scaleNum(convertI), .addr(addrX), .addrOut(lutAddrX));
+    ipgu_mult_lut lutY(.scaleNum(convertI), .addr(addrY), .addrOut(lutAddrY));
 
 
     //assign scaledAddr = {(addrY*nextNumWindows)/numWindows, (addrX*nextNumWindows)/numWindows};
     
-    assign addrRam1_int = weRam1_int?{scaledAddr}:{addrY, addrX};
-    assign addrRam2 = weRam2?{scaledAddr}:{addrY, addrX};
+    assign addrRam1_int = weRam1_int ? {1'b0,scaledY,1'b0, scaledX} : {addrY, addrX};
+    assign addrRam2 = weRam2 ? {scaledY,scaledX} : {addrY[$clog2(240)-1:0],addrX[$clog2(240)-1:0]};
 
     assign windowDone = addrYEnd==addrY && addrXEnd==addrX+1; //last pixel of a windows will be read next 
 
@@ -84,7 +86,7 @@ module ipgu #(RAM_DATA_WIDTH = 8, RAM_ADDR_WIDTH = 18)
         .cs(csRam2_int), .we(weRam2)
     );
 
-    logic [7:0] ipguOutQFlipped [79:0];
+    logic [7:0] ipguOutQFlipped [399:0];
     
     out_fifo #(.Q_DEPTH(400)) ipgu_out(.clk,.rst_n,    
                         .en((csRam1_int&weRam1_int)|(csRam2_int&weRam2)), //if either RAM is being internally written to, write to buffer as well
@@ -120,7 +122,7 @@ module ipgu #(RAM_DATA_WIDTH = 8, RAM_ADDR_WIDTH = 18)
     ///////////////////////////////////////////
     // SM states //
     ///////////////////////////////////////////
-    typedef enum reg [1:0] {IDLE, RAM1_SRC, RAM2_SRC, WAIT_HEU_RDY} state_t;    
+    typedef enum reg [2:0] {IDLE, RAM1_SRC, COMPLETE_LAST_WRITE, RAM2_SRC, WAIT_HEU_RDY} state_t;    
     state_t state,nxt_state;
 
 
@@ -216,6 +218,12 @@ module ipgu #(RAM_DATA_WIDTH = 8, RAM_ADDR_WIDTH = 18)
     
     end
 
+    //scaledAddr lut output transferred to scaled Addr with 1 cycle delay
+    always_ff @(posedge clk) begin
+        scaledX <= lutAddrX;
+        scaledY <= lutAddrY;
+    end
+
     assign rdyIpgu = convertDone&&convertI==4;//transfer from 60x60 to 20x20 done
     
 
@@ -248,13 +256,15 @@ module ipgu #(RAM_DATA_WIDTH = 8, RAM_ADDR_WIDTH = 18)
                     csRam1 = '1;
                     incX = '1;
                     if(addrX==addrXEnd && addrY==addrYEnd) begin
-                        nxt_state = WAIT_HEU_RDY;
+                        nxt_state = COMPLETE_LAST_WRITE;
                     end
+                end
+                COMPLETE_LAST_WRITE: begin
+        	    nxt_state = WAIT_HEU_RDY;
                 end
                 WAIT_HEU_RDY: begin
                     vldIpgu = '1;
                     if(rdyHeu) begin
-                        vldIpgu = '0;
                         if(convertDone) begin
                             incConvertI = '1;
                             clrConvertDone = '1;
@@ -284,8 +294,11 @@ module ipgu #(RAM_DATA_WIDTH = 8, RAM_ADDR_WIDTH = 18)
                      csRam2 = '1; 
                      incX = '1;
                      if(addrX==addrXEnd && addrY==addrYEnd) begin
-                         nxt_state = WAIT_HEU_RDY;
+                         nxt_state = COMPLETE_LAST_WRITE;
                      end
+                end
+                default: begin
+                     nxt_state = IDLE;
                 end
                 //don't need a default case since all four states are used 
             endcase

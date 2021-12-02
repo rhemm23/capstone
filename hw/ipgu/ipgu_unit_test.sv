@@ -47,46 +47,63 @@ module ipgu_unit_test;
         @(posedge clk) initIpgu = '1;
         @(posedge clk) initIpgu = '0;
         fork: hello
+            begin 
             forever begin: vldIpguWait
                 wait(vldIpgu) begin 
                     if(DUT.state==2)$stop();
-                    @(posedge clk) rdyHeu = '1;
-                    @(posedge clk) begin void'(checkOutBuffer()); rdyHeu = '0; end
+                    rdyHeu = '1;  void'(checkOutBuffer()); 
+                    @(posedge clk) rdyHeu = '0;
+		    @(posedge clk);
                 end
-            end
+            end end
             wait(rdyIpgu) begin
             $stop();
             end
 //            wait(DUT.ram2.addr_x==204&&DUT.ram2.addr_y==0) $stop;
         join_any
         disable hello; 
-        wait(vldIpgu) begin
-            @(posedge clk) rdyHeu = '1;
-            @(posedge clk) begin void'(checkOutBuffer()); rdyHeu = '0; end
+        repeat(2) begin 
+          wait(vldIpgu) begin
+              rdyHeu = '1;  void'(checkOutBuffer()); 
+              @(posedge clk) rdyHeu = '0;
+              @(posedge clk);
+          end
         end
         $stop();
     end
 
 
     function void checkOutBuffer();
-        static logic [7:0] rowVals[19:0][299:0] = initMemVals[(windowNum/(dims[conversionI]/20))*10+:20];
+        automatic logic [7:0] rowVals[19:0][299:0] = initMemVals[(windowNum/(dims[conversionI]/10-1))*10+:20];
 //        static bit [7:0] windowVals[4:0] = rowVals[19:0][(windowNum%(dims[conversionI]/20))*10+:20];
-        static logic [7:0] windowVals[4:0][79:0];
-	static int colsBegin =(windowNum%(dims[conversionI]/20))*10;
+        automatic logic [7:0] windowVals[4:0][79:0];
+	automatic int colsBegin =(windowNum%(dims[conversionI]/10-1))*10;
         for(int i=0; i<5; i++) begin
             for(int j=0; j<4; j++)
                 windowVals[i][(j+1)*20-1-:20] = (rowVals[i*4+j][colsBegin+:20]);    
         end
 
-        if(ipguOutBufferQ!=windowVals)
+        if(ipguOutBufferQ!=windowVals) begin
+            $display("%p\n\n%p \n\n %d,%d\n\n", ipguOutBufferQ[0][19:0], windowVals[0][19:0], (windowNum/(dims[conversionI]/20))*10,colsBegin);
             $stop(); 
+        end
+        else begin
+//            $display("%p\n\n%p \n\n %d \n %d,%d\n", ipguOutBufferQ[0][19:0], windowVals[0][19:0], ipguOutBufferQ[0][0], (windowNum/(dims[conversionI]/20))*10,colsBegin);
+//$stop();
+            $display("Tests passed for windowNum %d conversionI %d converting from %d to %d",windowNum, conversionI, dims[conversionI], dims[conversionI+1]);
+            //$display("%p and %p", ipguOutBufferQ, windowVals);
+        end
         windowNum++;
-        if(windowNum==dims[conversionI]) begin
+        if(windowNum==(dims[conversionI]/10-1)*(dims[conversionI]/10-1)) begin
+            logic [7:0] tempMem [299:0][299:0];
+            tempMem = '{default:0}; 
             conversionI++;
             windowNum = 0;
-            foreach(initMemVals[i,j]) begin
-                initMemVals[i*dims[conversionI]/dims[conversionI-1]][j*dims[conversionI]/dims[conversionI-1]] = initMemVals[i][j];
-            end
+            for (int i=0;i<dims[conversionI-1];i++) 
+	    for (int j=0;j<dims[conversionI-1];j++) begin
+                tempMem[i*dims[conversionI]/dims[conversionI-1]][j*dims[conversionI]/dims[conversionI-1]] = initMemVals[i][j];
+	    end
+            initMemVals = tempMem; 
         end
     endfunction
 endmodule
