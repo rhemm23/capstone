@@ -7,9 +7,11 @@ from retinaface import RetinaFace
 from pymongo import MongoClient
 from celery import Celery
 from io import BytesIO
+from ipgu import ipgu
 from PIL import Image
 from rnn import RNN
 from dnn import DNN
+from heu import heu
 
 import numpy as np
 import math
@@ -76,6 +78,7 @@ def weight_train_task(weight_train_task_id, image_set_id, weight_set_id):
         for sample in image_doc['rotated_samples']:
           for i in range(36):
             rot_in = np.frombuffer(sample[i * 10], dtype=np.uint8).tolist()
+            heu(rot_in)
             expected_output = [0 for _ in range(36)]
             expected_output[i] = 1
             rot_nn.train(rot_in, expected_output)
@@ -261,26 +264,31 @@ def google_drive_task(google_drive_task_id, image_set_id, google_creds):
 
         rotated_samples.append(face_rot_samples)
 
-      temp_cropped = cropped.crop((0, 0, 300, 300))
+      pad_x = (rw - 300) // 2
+      pad_y = (rh - 300) // 2
+
+      cropped = cropped.crop((pad_x, pad_y, 300 + pad_x, 300 + pad_y))
       non_face_sub_images = []
 
-      # Search for sub images in initial 300x300 not in a facial region
-      for y in range(0, 300, 20):
-        for x in range(0, 300, 20):
-          valid = True
-          for bbox in face_bboxes:
-            x0, y0, x1, y1 = bbox
-            if (x >= x0 and x < x1) or (x + 20 >= x0 and x + 20 < x1) or (y >= y0 and y < y1) or (y + 20 >= y0 and y + 20 < y1):
-              valid = False
-              break
-          if valid:
-            sub_image = temp_cropped.crop((x, y, x + 20, y + 20))
-            non_face_sub_images.append(np.asarray(sub_image).tobytes())
+      sub_images, sub_images_bb = ipgu(np.asarray(cropped).reshape((300, 300)).tolist())
+
+      for i in range(len(sub_images)):
+        valid = True
+        for face_bb in face_bboxes:
+          bb = sub_images_bb[i]
+          intersect = max(0, min(bb[2], face_bb[2]) - max(bb[0], face_bb[0])) * \
+                      max(0, min(bb[3], face_bb[3]) - max(bb[1], face_bb[1]))
+          union = (bb[2] - bb[0]) * (bb[3] - bb[1]) + \
+                  (face_bb[2] - face_bb[0]) * (face_bb[3] - face_bb[1]) - intersect
+          ratio = intersect / union
+          if ratio > 0.5:
+            valid = False
+            break
+        if valid:
+          non_face_sub_images.append(np.asarray(sub_images[i]).tobytes())
 
       db.images.insert_one({
         'name': file['name'],
-        'width': rw,
-        'height': rh,
         'data': np.asarray(cropped).tobytes(),
         'faces': face_sub_images,
         'image_set_id': image_set_id,
@@ -298,3 +306,13 @@ def google_drive_task(google_drive_task_id, image_set_id, google_creds):
           }
         }
       )
+    google_drive_task = db.google_drive_tasks.find_one_and_update(
+      {
+        '_id': google_drive_task_id
+      },
+      {
+        '$set': {
+          'status': 'DONE'
+        }
+      }
+    )

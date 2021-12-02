@@ -4,6 +4,7 @@ from bson.errors import InvalidId
 from common import *
 from rnn import RNN
 from dnn import DNN
+from heu import heu
 
 import numpy as np
 import tasks
@@ -37,7 +38,7 @@ def test_weights(account, id):
   if db.image_sets.count_documents({ 'account_id': account['_id'], '_id': image_set_id }, limit=1) == 0:
     return api_error('Image set does not exist')
 
-  results = db.images.find({ 'image_set_id': image_set_id })
+  results = db.images.find({ 'image_set_id': image_set_id }).limit(500)
 
   rnn = RNN(weight_set['weights']['rnn'])
   dnn = DNN(weight_set['weights']['dnn'])
@@ -66,6 +67,7 @@ def test_weights(account, id):
     for sample in image['rotated_samples']:
       for i in range(36):
         rot_in = np.frombuffer(sample[i * 10], dtype=np.uint8).tolist()
+        heu(rot_in)
         expected = [0 for _ in range(36)]
         actual = rnn.forward(rot_in)
         expected[i] = 1
@@ -81,7 +83,6 @@ def test_weights(account, id):
     rnn_accuracy=round(dnn_pass_cnt / dnn_tot_cnt, 2),
     dnn_accuracy=round(rnn_pass_cnt / rnn_tot_cnt, 2)
   )
-
 
 @weights.route('/api/weight-sets/<id>/train', methods=['POST'])
 @authenticate

@@ -35,14 +35,65 @@ def get_google_drive_task(account, id):
 @google_drive_tasks.route('/api/google-drive-tasks', methods=['GET'])
 @authenticate
 def get_google_drive_tasks(account):
-  results = db.google_drive_tasks.find({ 'account_id': account['_id'] })
-  tasks = []
-  for task in results:
-    tasks.append({
-      'id': str(task['_id']),
-      'status': task['status']
-    })
-  return api_success(google_drive_tasks=tasks)
+  pipeline = [
+    {
+      '$match': {
+        'account_id': account['_id']
+      }
+    },
+    {
+      '$project': {
+        '_id': 0,
+        'id': {
+          '$toString': '$_id'
+        },
+        'status': 1,
+        'percent_complete': {
+          '$toInt': {
+            '$multiply': [
+              {
+                '$divide': [
+                  {
+                    '$reduce': {
+                      'input': '$files',
+                      'initialValue': 0,
+                      'in': {
+                        '$add': [
+                          '$$value',
+                          {
+                            '$cond': {
+                              'if': {
+                                '$in': [
+                                  '$$this.status',
+                                  [
+                                    'FAILED',
+                                    'SUCCESS'
+                                  ]
+                                ]
+                              },
+                              'then': 1,
+                              'else': 0
+                            }
+                          }
+                        ]
+                      }
+                    }
+                  },
+                  {
+                    '$size': '$files'
+                  }
+                ]
+              },
+              100
+            ]
+          }
+        }
+      }
+    }
+  ]
+  return api_success(
+    google_drive_tasks=list(db.google_drive_tasks.aggregate(pipeline))
+  )
 
 @google_drive_tasks.route('/api/google-drive-tasks', methods=['POST'])
 @authenticate

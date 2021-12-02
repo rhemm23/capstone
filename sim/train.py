@@ -17,6 +17,9 @@ RNN_BIAS_GAMMA = 0.01
 DNN_GAMMA = 0.05
 DNN_BIAS_GAMMA = 0.01
 
+test_cnt = 0
+pass_cnt = 0
+
 def dtanh(value):
   return 1 - math.tanh(value)**2
 
@@ -90,7 +93,7 @@ def train_rnn_image(image, rnw):
 
   faces = detector(image)
 
-  print('Detected {0} faces..'.format(len(faces)))
+  #print('Detected {0} faces..'.format(len(faces)))
 
   face_dets = []
   for face in faces:
@@ -152,7 +155,20 @@ def train_rnn_image(image, rnw):
           break
       expected = [0 for _ in range(36)]
       expected[round(rot / 10) % 36] = 1
-      train_rnn(sub_images[i], expected, rnw)
+      rnn_out = rnn(sub_images[i], rnw)
+      global test_cnt
+      global pass_cnt
+      test_cnt += 1
+      valid = True
+      for i in range(36):
+        if rnn_out[i] != expected[i]:
+          print('Expected: {}'.format(expected))
+          print('Actual: {}'.format(rnn_out))
+          valid=False
+          break
+      if valid:
+        pass_cnt += 1
+      #train_rnn(sub_images[i], expected, rnw)
 
 if __name__ == '__main__':
   rnw_path = None
@@ -179,7 +195,7 @@ if __name__ == '__main__':
   db = client.capstone
 
   # Ten epochs
-  for _ in range(10):
+  for _ in range(1):
 
     cnt = 0
     for image in db.images.find():
@@ -200,8 +216,10 @@ if __name__ == '__main__':
       train_rnn_image(np.asarray(image), rnw)
 
       cnt += 1
-      print('Completed image number: {}'.format(cnt))
+      #print('Completed image number: {}'.format(cnt))
 
       # Write weights every 100 images
       if cnt % 100 == 0:
-        write_rnn_weights(rnw_path, rnw)
+        print('{} images'.format(cnt))
+        print('Accuracy: {}%'.format(round((pass_cnt / test_cnt) * 100, 2)))
+        #write_rnn_weights(rnw_path, rnw)
