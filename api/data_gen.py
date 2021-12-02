@@ -37,9 +37,10 @@ if os.path.exists(SAVE_PATH):
 
 # Read spec
 with open(SPEC_PATH, 'r') as spec:
-  images = spec.readlines()
+  images = spec.read().splitlines()
 
 for image in images[completed:]:
+  image = os.path.join(TRAIN_DIR, image)
   img = cv2.imread(image)
   img = cv2.cvtColor(img, cv2.COLOR_BGR2RGB)
   pil = Image.fromarray(img).convert('L')

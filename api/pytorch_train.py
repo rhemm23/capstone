@@ -1,3 +1,4 @@
+from pathlib import Path as path
 from pymongo import MongoClient
 from torch.utils import data
 from torch import nn
@@ -10,7 +11,8 @@ import torch
 import sys
 import os
 
-MODEL_PATH = './model.tar'
+MODELS_DIR = os.path.join(path.home(), '.models')
+MODEL_PATH = os.path.join(MODELS_DIR, 'model.tar')
 
 device = 'cuda:0' if torch.cuda.is_available() else 'cpu'
 device = torch.device(device)
@@ -43,13 +45,14 @@ class Net(nn.Module):
   def __init__(self):
     super(Net, self).__init__()
 
-    self.conv1 = nn.Conv2d(1, 6, 3)
-    self.conv2 = nn.Conv2d(6, 16, 3, padding=1)
+    self.conv1 = nn.Conv2d(1, 64, 3)
+    self.conv2 = nn.Conv2d(64, 64, 3, padding=1)
 
-    self.lin1 = nn.Linear(256, 64)
-    self.lin2 = nn.Linear(64, 36)
+    self.lin1 = nn.Linear(1024, 128)
+    self.lin2 = nn.Linear(128, 36)
 
     self.maxpool = nn.MaxPool2d(2, stride=2)
+    self.dropout = nn.Dropout(p=0.25)
     self.flatten = nn.Flatten()
 
     self.relu = nn.ReLU()
@@ -58,8 +61,10 @@ class Net(nn.Module):
   def forward(self, x):
     x = self.maxpool(self.relu(self.conv1(x)))
     x = self.maxpool(self.relu(self.conv2(x)))
+    x = self.dropout(x)
     x = self.flatten(x)
     x = self.relu(self.lin1(x))
+    x = self.dropout(x)
     return self.softmax(self.lin2(x))
 
 model = Net()
@@ -68,7 +73,7 @@ model.to(device)
 criterion = nn.CrossEntropyLoss()
 optimizer = optim.SGD(model.parameters(), lr=0.01, momentum=0.9)
 
-if os.path.isfile(MODEL_PATH):
+if os.path.exists(MODEL_PATH):
   checkpoint = torch.load(MODEL_PATH, map_location=device)
   model.load_state_dict(checkpoint['model_state_dict'])
   optimizer.load_state_dict(checkpoint['optimizer_state_dict'])
@@ -78,6 +83,8 @@ def save_model():
     'model_state_dict': model.state_dict(),
     'optimizer_state_dict': optimizer.state_dict()
   }
+  if not os.path.isdir(MODELS_DIR):
+    os.mkdir(MODELS_DIR)
   torch.save(state, MODEL_PATH)
 
 def signal_handler(sig, frame):
@@ -88,7 +95,7 @@ def signal_handler(sig, frame):
 signal.signal(signal.SIGINT, signal_handler)
 
 dataset = RotatedImageDataset()
-test_dataset = RotatedImageDataset(5000)
+test_dataset = RotatedImageDataset(10000)
 
 dataloader = data.DataLoader(dataset, batch_size=50)
 test_dataloader = data.DataLoader(test_dataset, batch_size=50)
@@ -99,7 +106,7 @@ for i in range(10):
   model.train()
   for input, target in dataloader:
     batch_cnt += 1
-    if batch_cnt % 1000 == 0:
+    if batch_cnt % 100 == 0:
       print('Epoch {} Batch: {}'.format(i, batch_cnt))
     optimizer.zero_grad()
     output = model(input)
