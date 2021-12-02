@@ -6,7 +6,7 @@ with open('../hw/iru/iru_cos_lut.sv', 'w+') as lut:
   lut.write('    /*\n')
   lut.write('     * Inputs\n')
   lut.write('     */\n')
-  lut.write('    input [5:0] d,\n\n')
+  lut.write('    input [35:0] d,\n\n')
   lut.write('    /*\n')
   lut.write('     * Outputs\n')
   lut.write('     */\n')
@@ -16,12 +16,14 @@ with open('../hw/iru/iru_cos_lut.sv', 'w+') as lut:
   lut.write('    case (d)\n')
 
   for i in range(36):
-    init = format(i, 'b').zfill(6)
+    init = ''
+    for j in range(36):
+      init += '1' if j == i else '0'
     value = math.cos(math.radians(i * 10))
     sign = '1' if value < 0 else '0'
     res = format(int(128 * abs(value)), 'b').zfill(8)
 
-    lut.write('      9\'b{0}: q <= 8\'b{1}{2};\n'.format(init, sign, res))
+    lut.write('      36\'b{0}: q <= 8\'b{1}{2};\n'.format(init, sign, res))
 
   lut.write('      default: q <= 0;\n')
   lut.write('    endcase\n')
