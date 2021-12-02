@@ -13,7 +13,7 @@ module ipgu #(RAM_DATA_WIDTH = 8, RAM_ADDR_WIDTH = 18)
     //IPGU <-> HEU
     input   rdyHeu, 
     output  reg vldIpgu,
-    output  reg [7:0] ipguOutBufferQ [79:0]
+    output  reg [7:0] ipguOutBufferQ [4:0][79:0]
 );
 
     //Scaling luts //can probably create scaling reg which optimizes scaling
@@ -55,9 +55,10 @@ module ipgu #(RAM_DATA_WIDTH = 8, RAM_ADDR_WIDTH = 18)
     wire [RAM_ADDR_WIDTH-1:0] scaledAddr;
 
     wire [6-1:0] wastedDecimalPlacesX, wastedDecimalPlacesY;
-    qmult #(.Q(6), .N(15)) qmultY (.i_multiplicand({addrY,6'b0}), .i_multiplier(scaleFactor), .o_result({scaledAddr[RAM_ADDR_WIDTH-1-:RAM_ADDR_WIDTH/2],wastedDecimalPlacesY}), .ovr());
+    
+    ipgu_mult_lut lutX(.scaleNum(convertI), .addr(addrX), .addrOut(scaledAddr[RAM_ADDR_WIDTH/2-1:0]));
+    ipgu_mult_lut lutY(.scaleNum(convertI), .addr(addrY), .addrOut(scaledAddr[RAM_ADDR_WIDTH-1-:RAM_ADDR_WIDTH/2]));
 
-    qmult #(.Q(6), .N(15)) qmultX (.i_multiplicand({addrX,6'b0}), .i_multiplier(scaleFactor), .o_result({scaledAddr[RAM_ADDR_WIDTH/2-1:0],wastedDecimalPlacesX}), .ovr());
 
     //assign scaledAddr = {(addrY*nextNumWindows)/numWindows, (addrX*nextNumWindows)/numWindows};
     
@@ -85,19 +86,21 @@ module ipgu #(RAM_DATA_WIDTH = 8, RAM_ADDR_WIDTH = 18)
 
     logic [7:0] ipguOutQFlipped [79:0];
     
-    out_fifo ipgu_out (.clk,.rst_n,    
+    out_fifo #(.Q_DEPTH(400)) ipgu_out(.clk,.rst_n,    
                         .en((csRam1_int&weRam1_int)|(csRam2_int&weRam2)), //if either RAM is being internally written to, write to buffer as well
                         .d((csRam1_int&weRam1_int)?rdDataRam2:rdDataRam1),
-                        .q(ipguOutQFlipped));  
+                        .q({<<8{ipguOutQFlipped}}));  
      
 /*    generate 
         for(genvar i=0; i<80; i++)
             
     endgenerate*/
     //https://www.amiq.com/consulting/2017/05/29/how-to-pack-data-using-systemverilog-streaming-operators/#reverse_bits
-    assign ipguOutBufferQ = {<<{ipguOutQFlipped}}; //potential issue    
-   
-
+    generate 
+    for(genvar i=0; i<5; i++) begin
+        assign ipguOutBufferQ[i] = ipguOutQFlipped[(i+1)*80-1-:80]; //potential issue    
+    end
+    endgenerate
     //weRam1_int and weRam2
     always_ff @(posedge clk, negedge rst_n) begin
         if(!rst_n) begin
@@ -157,7 +160,7 @@ module ipgu #(RAM_DATA_WIDTH = 8, RAM_ADDR_WIDTH = 18)
                 if(addrYBegin+20==numWindows*20)
                     addrYBegin <= '0;
                 else
-                    addrYBegin <= addrYBegin+20;
+                    addrYBegin <= addrYBegin+10;
             end
         end
 
@@ -170,7 +173,7 @@ module ipgu #(RAM_DATA_WIDTH = 8, RAM_ADDR_WIDTH = 18)
                 if(addrXBegin+20==numWindows*20)
                     addrXBegin <= '0;
                 else
-                    addrXBegin <= addrXBegin+20;
+                    addrXBegin <= addrXBegin+10;
             end
         end
     

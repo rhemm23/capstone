@@ -25,9 +25,9 @@ reg [DATA_WIDTH-1:0] mem [DEPTH_X][DEPTH_Y];
 
 always @ (posedge clk) begin
     if(cs&we)
-        mem[addr_x][addr_y] <= wrData;
+        mem[addr_y][addr_x] <= wrData;
     if(cs&!we)
-        rdData <= mem[addr_x][addr_y];
+        rdData <= mem[addr_y][addr_x];
 end
 
 endmodule
