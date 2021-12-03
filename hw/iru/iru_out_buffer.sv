@@ -17,7 +17,7 @@ module iru_out_buffer
     output [7:0] q [4:0][79:0]
   );
 
-  reg [7:0] data [19:0][19:0]
+  reg [7:0] data [19:0][19:0];
 
   always_ff @(posedge clk or negedge rst_n) begin
     if (!rst_n || z) begin
@@ -36,10 +36,10 @@ module iru_out_buffer
   end
 
   generate
-    genvar buffer, row;
+    genvar buffer, r;
     for (buffer = 0; buffer < 5; buffer++) begin : buffer_g
       for (r = 0; r < 4; r++) begin : r_g
-        assign q[buffer][r * 20] = data[(buffer * 4) + r]
+        assign q[buffer][r * 20 +: 20] = data[(buffer * 4) + r];
       end
     end
   endgenerate

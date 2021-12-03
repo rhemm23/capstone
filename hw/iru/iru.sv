@@ -36,8 +36,6 @@ module iru
   wire write_in;
 
   iru_comp_unit comp_units [4:0] (
-    .clk(clk),
-    .rst_n(rst_n),
     .rnn_out(rnn_out),
     .row_d(row_d),
     .col_d(col_d),
@@ -77,7 +75,8 @@ module iru
     .wr(wr),
     .d(in_buffer_q),
     .row(row_q),
-    .col(col_q)
+    .col(col_q),
+    .q(q)
   );
 
   generate

@@ -22,7 +22,7 @@ with open('../hw/iru/iru_sin_lut.sv', 'w+') as lut:
     init[i] = '1'
     value = math.sin(math.radians(i * 10))
     res = Bits(int=int(128 * value), length=9)
-    lut.write('      36\'b{0}: q <= 8\'b{1};\n'.format(''.join(init), res.bin))
+    lut.write('      36\'b{0}: q <= 8\'b{1};\n'.format(''.join(init)[::-1], res.bin))
 
   lut.write('      default: q <= 0;\n')
   lut.write('    endcase\n')
