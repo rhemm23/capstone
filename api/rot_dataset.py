@@ -7,7 +7,8 @@ client = MongoClient()
 db = client.capstone
 
 class RotatedImageDataset(data.IterableDataset):
-  def __init__(self, count=None, lin=False):
+  def __init__(self, count=None, lin=False, use_cuda=True):
+    self.use_cuda = use_cuda
     self.count = count
     self.lin = lin
 
@@ -19,10 +20,19 @@ class RotatedImageDataset(data.IterableDataset):
         data[i] = data[i] / 256
       dat = None
       if self.lin:
-        dat = torch.tensor(data).cuda()
+        if self.use_cuda:
+          dat = torch.tensor(data).cuda()
+        else:
+          dat = torch.tensor(data)
       else:
-        dat = torch.tensor([np.array(data).reshape((20, 20)).tolist()]).cuda()
-      lab = torch.tensor(int(rot['rotation'] / 10)).cuda()
+        if self.use_cuda:
+          dat = torch.tensor([np.array(data).reshape((20, 20)).tolist()]).cuda()
+        else:
+          dat = torch.tensor([np.array(data).reshape((20, 20)).tolist()])
+      if self.use_cuda:
+        lab = torch.tensor(int(rot['rotation'] / 10)).cuda()
+      else:
+        lab = torch.tensor(int(rot['rotation'] / 10))
       return (dat, lab)
     else:
       raise StopIteration

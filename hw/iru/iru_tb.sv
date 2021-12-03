@@ -46,8 +46,6 @@ module iru_tb();
   );
 
   iru_comp_unit comp_unit (
-    .clk(clk),
-    .rst_n(rst_n),
     .rnn_out(rnn_out),
     .row_d(row_d),
     .col_d(col_d),
@@ -129,7 +127,7 @@ module iru_tb();
                 end
                 $write("\n");
               end
-              $display("Error: Expected %h, actual %h", expected[k][l], d[k][l]);
+              $display("Error: Expected %h, actual %h", expected[k][l], q[k][l]);
               $stop();
             end
           end

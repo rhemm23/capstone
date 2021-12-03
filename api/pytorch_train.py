@@ -12,18 +12,27 @@ import torch
 import sys
 import os
 
-lin = len(sys.argv) > 1 and sys.argv[1]
+args = sys.argv[1:]
+lin = 'lin' in args
+use_cuda = 'cuda' in args
+
 model_path = './model_{}.tar'.format('lin' if lin else 'conv')
-device = torch.device('cuda:0' if torch.cuda.is_available() else 'cpu')
+device = torch.device('cuda:0') if use_cuda else None
 
 model = LinNet() if lin else ConvNet()
-model.to(device)
+if use_cuda:
+  model.to(device)
 
 criterion = nn.CrossEntropyLoss()
 optimizer = optim.SGD(model.parameters(), lr=0.01, momentum=0.9)
 
 if os.path.isfile(model_path):
-  model.load_state_dict(torch.load(model_path, map_location=device))
+  state = None
+  if use_cuda:
+    torch.load(model_path, map_location=device)
+  else:
+    torch.load(model_path)
+  model.load_state_dict(state)
 
 def signal_handler(sig, frame):
   print('Saving model...')
@@ -32,11 +41,11 @@ def signal_handler(sig, frame):
 
 signal.signal(signal.SIGINT, signal_handler)
 
-dataset = RotatedImageDataset(250000)
-test_dataset = RotatedImageDataset(50000)
+dataset = RotatedImageDataset(250000, lin=lin, use_cuda=use_cuda)
+test_dataset = RotatedImageDataset(50000, lin=lin, use_cuda=use_cuda)
 
-dataloader = data.DataLoader(dataset, batch_size=50)
-test_dataloader = data.DataLoader(test_dataset, batch_size=50)
+dataloader = data.DataLoader(dataset, batch_size=36)
+test_dataloader = data.DataLoader(test_dataset, batch_size=36)
 
 for i in range(10):
   batch_cnt = 0
