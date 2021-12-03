@@ -1,3 +1,5 @@
+from bitstring import Bits
+
 import math
 
 with open('../hw/iru/iru_sin_lut.sv', 'w+') as lut:
@@ -16,14 +18,11 @@ with open('../hw/iru/iru_sin_lut.sv', 'w+') as lut:
   lut.write('    case (d)\n')
 
   for i in range(36):
-    init = ''
-    for j in range(36):
-      init += '1' if j == i else '0'
+    init = ['0' for _ in range(36)]
+    init[i] = '1'
     value = math.sin(math.radians(i * 10))
-    sign = '1' if value < 0 else '0'
-    res = format(int(128 * abs(value)), 'b').zfill(8)
-
-    lut.write('      36\'b{0}: q <= 8\'b{1}{2};\n'.format(init, sign, res))
+    res = Bits(int=int(128 * value), length=9)
+    lut.write('      36\'b{0}: q <= 8\'b{1};\n'.format(''.join(init), res.bin))
 
   lut.write('      default: q <= 0;\n')
   lut.write('    endcase\n')
