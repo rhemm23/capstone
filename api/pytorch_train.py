@@ -29,9 +29,9 @@ optimizer = optim.SGD(model.parameters(), lr=0.01, momentum=0.9)
 if os.path.isfile(model_path):
   state = None
   if use_cuda:
-    torch.load(model_path, map_location=device)
+    state = torch.load(model_path, map_location=device)
   else:
-    torch.load(model_path)
+    state = torch.load(model_path)
   model.load_state_dict(state)
 
 def signal_handler(sig, frame):
