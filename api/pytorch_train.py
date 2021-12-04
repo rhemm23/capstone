@@ -9,29 +9,31 @@ import torch.optim as optim
 
 import signal
 import torch
+import json
 import sys
 import os
 
 args = sys.argv[1:]
 lin = 'lin' in args
 use_cuda = 'cuda' in args
+use_json = 'json' in args
 
-model_path = './model_{}.tar'.format('lin' if lin else 'conv')
-device = torch.device('cuda:0') if use_cuda else None
+device = torch.device('cuda:0' if use_cuda else 'cpu')
+model_path = './model_{}.{}'.format('lin' if lin else 'conv', 'json' if use_json else 'tar')
 
 model = LinNet() if lin else ConvNet()
-if use_cuda:
-  model.to(device)
+model.to(device)
 
 criterion = nn.CrossEntropyLoss()
 optimizer = optim.SGD(model.parameters(), lr=0.01, momentum=0.9)
 
 if os.path.isfile(model_path):
   state = None
-  if use_cuda:
-    state = torch.load(model_path, map_location=device)
+  if use_json:
+    with open(model_path, 'r') as file:
+      state = json.load(file)
   else:
-    state = torch.load(model_path)
+    state = torch.load(model_path, map_location=device)
   model.load_state_dict(state)
 
 def signal_handler(sig, frame):
@@ -41,8 +43,8 @@ def signal_handler(sig, frame):
 
 signal.signal(signal.SIGINT, signal_handler)
 
-dataset = RotatedImageDataset(250000, lin=lin, use_cuda=use_cuda)
-test_dataset = RotatedImageDataset(50000, lin=lin, use_cuda=use_cuda)
+dataset = RotatedImageDataset(250000, lin=lin, device=device)
+test_dataset = RotatedImageDataset(50000, lin=lin, device=device)
 
 dataloader = data.DataLoader(dataset, batch_size=36)
 test_dataloader = data.DataLoader(test_dataset, batch_size=36)
@@ -77,4 +79,8 @@ for i in range(10):
 
   print('Accuracy: {}%'.format(round(pass_cnt / cnt * 100)))
 
-torch.save(model.state_dict(), model_path)
+if use_json:
+  with open(model_path, 'w+') as file:
+    json.save(model.state_dict(), file)
+else:
+  torch.save(model.state_dict(), model_path)
