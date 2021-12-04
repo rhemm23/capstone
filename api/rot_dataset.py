@@ -20,19 +20,10 @@ class RotatedImageDataset(data.IterableDataset):
         data[i] = data[i] / 256
       dat = None
       if self.lin:
-        if self.device:
-          dat = torch.tensor(data).to(device=device)
-        else:
-          dat = torch.tensor(data)
+        dat = torch.tensor(data).to(device=self.device)
       else:
-        if self.use_cuda:
-          dat = torch.tensor([np.array(data).reshape((20, 20)).tolist()]).to(device=device)
-        else:
-          dat = torch.tensor([np.array(data).reshape((20, 20)).tolist()])
-      if self.use_cuda:
-        lab = torch.tensor(int(rot['rotation'] / 10)).to(device=device)
-      else:
-        lab = torch.tensor(int(rot['rotation'] / 10))
+        dat = torch.tensor([np.array(data).reshape((20, 20)).tolist()]).to(device=self.device)
+      lab = torch.tensor(int(rot['rotation'] / 10)).to(device=self.device)
       return (dat, lab)
     else:
       raise StopIteration
