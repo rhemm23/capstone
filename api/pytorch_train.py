@@ -43,13 +43,13 @@ def signal_handler(sig, frame):
 
 signal.signal(signal.SIGINT, signal_handler)
 
-dataset = RotatedImageDataset(250000, lin=lin, device=device)
-test_dataset = RotatedImageDataset(50000, lin=lin, device=device)
+dataset = RotatedImageDataset(1080, lin=lin, device=device)
+test_dataset = RotatedImageDataset(1080, lin=lin, device=device)
 
 dataloader = data.DataLoader(dataset, batch_size=36)
 test_dataloader = data.DataLoader(test_dataset, batch_size=36)
 
-for i in range(10):
+for i in range(10000):
   batch_cnt = 0
   tot_loss = 0
   model.train()
@@ -81,6 +81,6 @@ for i in range(10):
 
 if use_json:
   with open(model_path, 'w+') as file:
-    json.save(model.state_dict(), file)
+    json.dump(model.state_dict(), file)
 else:
   torch.save(model.state_dict(), model_path)

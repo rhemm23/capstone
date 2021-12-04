@@ -4,7 +4,7 @@ class LinNet(nn.Module):
   def __init__(self):
     super(LinNet, self).__init__()
 
-    self.lin1 = nn.Linear(400, 15)
+    self.lin1 = nn.Linear(400, 25)
     self.lin2 = nn.Linear(25, 25)
     self.lin3 = nn.Linear(25, 25)
     self.lin4 = nn.Linear(25, 36)
