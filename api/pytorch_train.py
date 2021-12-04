@@ -1,4 +1,3 @@
-from torch.utils import data
 from torch import nn
 
 from rot_dataloader import RotatedImageDataLoader
