@@ -29,7 +29,7 @@ static void die(char *error) {
 }
 
 static double to_double(int16_t value) {
-  return value / 4096;
+  return (double)value / (double)4096;
 }
 
 static int16_t read_value(FILE *weight_file) {
@@ -40,7 +40,25 @@ static int16_t read_value(FILE *weight_file) {
   return (((int16_t)bytes[0]) << 8) | ((int16_t)bytes[1]);
 }
 
-static int net_forward(net_t *net, uint8_t *sub_image) {
+static void print_net(net_t *net) {
+  for (int i = 0; i < net->layer_cnt; i++) {
+    printf("Layer: %d\n", i);
+    for (int j = 0; j < net->layers[i]->neuron_cnt; j++) {
+      printf("\tNeuron: %d\n", j);
+      printf("\t\tBias: %.6f\n", to_double(net->layers[i]->neurons[j]->bias));
+      printf("\t\tWeights: [");
+      for (int k = 0; k < net->layers[i]->neurons[j]->weight_cnt; k++) {
+        if (k > 0) {
+          printf(", ");
+        }
+        printf("%.6f", to_double(net->layers[i]->neurons[j]->weights[k]));
+      }
+      printf("]\n");
+    }
+  }
+}
+
+static int net_forward(net_t *net, const uint8_t *sub_image) {
   double *layers_out[net->layer_cnt];
   for (int i = 0; i < net->layer_cnt; i++) {
     layers_out[i] = (double*)malloc(sizeof(double) * net->layers[i]->neuron_cnt);
@@ -49,7 +67,7 @@ static int net_forward(net_t *net, uint8_t *sub_image) {
       for (int k = 0; k < net->layers[i]->neurons[j]->weight_cnt; k++) {
         double weight = to_double(net->layers[i]->neurons[j]->weights[k]);
         if (i == 0) {
-          activation += weight * ((double)sub_image[k] / (double)1);
+          activation += weight * ((double)sub_image[k] / (double)256);
         } else {
           activation += weight * layers_out[i - 1][k];
         }
@@ -75,7 +93,7 @@ static int net_forward(net_t *net, uint8_t *sub_image) {
       max_index = i;
     }
   }
-  return i;
+  return max_index;
 }
 
 int main(int argc, char *argv[]) {
@@ -105,7 +123,7 @@ int main(int argc, char *argv[]) {
     net->layers[i]->neuron_cnt = layer_sizes[i];
     net->layers[i]->neurons = (neuron_t**)malloc(sizeof(neuron_t*) * layer_sizes[i]);
     for (int j = 0; j < layer_sizes[i]; j++) {
-      int neuron_weight_cnt = (j == 0) ? 400 : layer_sizes[i - 1];
+      int neuron_weight_cnt = (i == 0) ? 400 : layer_sizes[i - 1];
       net->layers[i]->neurons[j] = (neuron_t*)malloc(sizeof(neuron_t));
       net->layers[i]->neurons[j]->bias = read_value(weight_file);
       net->layers[i]->neurons[j]->weight_cnt = neuron_weight_cnt;
@@ -125,25 +143,35 @@ int main(int argc, char *argv[]) {
   bson_t *query;
   bson_t *opts;
 
+  int test_cnt = 1080;
+
   mongoc_init();
   client = mongoc_client_new("mongodb://127.0.0.1/");
   database = mongoc_client_get_database(client, "capstone");
   rot_data = mongoc_database_get_collection(database, "rot_data");
 
   query = bson_new();
-  opts = BCON_NEW("limit", BCON_INT64(1080));
+  opts = BCON_NEW("limit", BCON_INT64(test_cnt));
 
   cursor = mongoc_collection_find_with_opts(rot_data, query, opts, NULL);
 
+  int pass_cnt = 0;
   while (mongoc_cursor_next(cursor, &doc)) {
     bson_iter_t iter;
-    if (bson_iter_init(&iter, doc) && bson_iter_find(&iter, "data")) {
-      uint32_t image_data_len;
-      const uint8_t *image_data;
-      bson_iter_binary(&iter, NULL, &image_data_len, &image_data);
-      printf("Found image with buffer length %d\n", image_data_len);
+    bson_iter_init(&iter, doc);
+    bson_iter_find(&iter, "data");
+    uint32_t image_data_len;
+    const uint8_t *image_data;
+    bson_iter_binary(&iter, NULL, &image_data_len, &image_data);
+    bson_iter_find(&iter, "rotation");
+    int32_t rotation = bson_iter_int32(&iter) / 10;
+    if (rotation == net_forward(net, image_data)) {
+      pass_cnt++;
     }
   }
+
+  int accuracy = (int)(((float)pass_cnt / (float)test_cnt) * 100);
+  printf("Accuracy: %d%%\n", accuracy);
 
   bson_destroy(query);
   bson_destroy(opts);
