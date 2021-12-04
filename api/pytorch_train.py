@@ -1,8 +1,9 @@
 from torch.utils import data
 from torch import nn
 
+from rot_dataloader import RotatedImageDataLoader
 from rot_dataset import RotatedImageDataset
-from conv_net import ConvNet
+
 from lin_net import LinNet
 
 from torch_model_loader import TorchModelLoader
@@ -13,7 +14,6 @@ import torch.optim as optim
 
 import signal
 import torch
-import json
 import sys
 import os
 
@@ -45,7 +45,7 @@ criterion = nn.CrossEntropyLoss()
 optimizer = optim.SGD(model.parameters(), lr=0.01, momentum=0.9)
 
 def save_model():
-  loader.save(model.state_dict(), model_path)
+  loader.save(model_path, model)
 
 def signal_handler(sig, frame):
   print('Saving model...')
@@ -57,10 +57,10 @@ signal.signal(signal.SIGINT, signal_handler)
 dataset = RotatedImageDataset(1080, device=device)
 test_dataset = RotatedImageDataset(1080, device=device)
 
-dataloader = data.DataLoader(dataset, batch_size=36)
-test_dataloader = data.DataLoader(test_dataset, batch_size=36)
+dataloader = RotatedImageDataLoader(dataset, device)
+test_dataloader = RotatedImageDataLoader(test_dataset, device)
 
-for i in range(10000):
+for i in range(100000):
   batch_cnt = 0
   tot_loss = 0
   model.train()
