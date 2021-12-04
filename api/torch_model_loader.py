@@ -1,8 +1,8 @@
 import torch
 
 class TorchModelLoader:
-  def save(self, state_dict, path):
-    torch.save(state_dict, path)
+  def save(self, path, model):
+    torch.save(model.state_dict(), path)
 
   def load(self, path, model, device):
     state_dict = torch.load(path, map_location=device)

@@ -25,9 +25,12 @@ loader = None
 if 'json' in args:
   model_path += '.json'
   loader = JsonModelLoader()
-elif 'bin' in args:
-  model_path += '.bin'
-  loader = BinModelLoader()
+elif 'bin8' in args:
+  model_path += '8.bin'
+  loader = BinModelLoader(8)
+elif 'bin16' in args:
+  model_path += '16.bin'
+  loader = BinModelLoader(16)
 else:
   model_path += '.tar'
   loader = TorchModelLoader()
@@ -35,11 +38,11 @@ else:
 model = LinNet()
 model.to(device)
 
-criterion = nn.CrossEntropyLoss()
-optimizer = optim.SGD(model.parameters(), lr=0.01, momentum=0.9)
-
 if os.path.isfile(model_path):
   loader.load(model_path, model, device)
+
+criterion = nn.CrossEntropyLoss()
+optimizer = optim.SGD(model.parameters(), lr=0.01, momentum=0.9)
 
 def save_model():
   loader.save(model.state_dict(), model_path)
@@ -63,8 +66,6 @@ for i in range(10000):
   model.train()
   for input, target in dataloader:
     batch_cnt += 1
-    if batch_cnt % 1000 == 0:
-      print('Epoch {} Batch: {}'.format(i, batch_cnt))
     optimizer.zero_grad()
     output = model(input)
     loss = criterion(output, target)
@@ -72,19 +73,20 @@ for i in range(10000):
     optimizer.step()
     tot_loss += loss.item()
 
-  print('Epoch {} Loss: {}'.format(i, tot_loss))
+  if i % 100 == 0:
+    print('Epoch {} Loss: {}'.format(i, tot_loss))
 
-  cnt = 1
-  pass_cnt = 0
+    cnt = 1
+    pass_cnt = 0
 
-  model.eval()
-  for input, target in test_dataloader:
-    output = model(input).tolist()
-    target = target.tolist()
-    for i in range(len(output)):
-      cnt += 1
-      pass_cnt += 1 if target[i] == output[i].index(max(output[i])) else 0
+    model.eval()
+    for input, target in test_dataloader:
+      output = model(input).tolist()
+      target = target.tolist()
+      for i in range(len(output)):
+        cnt += 1
+        pass_cnt += 1 if target[i] == output[i].index(max(output[i])) else 0
 
-  print('Accuracy: {}%'.format(round(pass_cnt / cnt * 100)))
+    print('Accuracy: {}%'.format(round(pass_cnt / cnt * 100)))
 
 save_model()

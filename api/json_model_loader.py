@@ -2,7 +2,8 @@ import torch
 import json
 
 class JsonModelLoader:
-  def save(self, state_dict, path):
+  def save(self, path, model):
+    state_dict = model.state_dict()
     with open(path, 'w+') as file:
       res = {}
       for name in state_dict:

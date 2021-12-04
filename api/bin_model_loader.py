@@ -1,31 +1,44 @@
-from bitstring import Bits, BitArray
+from bitstring import Bits, BitArray, CreationError
 
 import torch
+import math
 
 class BinModelLoader:
-  def read_float(self):
-    value = Bits(uint=self.bytes[self.byte_cnt], length=8).int
-    self.byte_cnt += 1
-    return value / 256
+  def __init__(self, bit_cnt):
+    self.bit_cnt = bit_cnt
+    self.byte_size = math.ceil(bit_cnt / 8)
+    self.factor = 2**(bit_cnt - 4)
 
-  def save(self, state_dict, path):
+  def read_float(self):
+    value = Bits(bytes=self.bytes[self.byte_cnt:self.byte_cnt + self.byte_size], length=self.bit_cnt).int
+    self.byte_cnt += self.byte_size
+    return value / self.factor
+
+  def to_float(self, value):
+    try:
+      scaled = int(value * self.factor)
+      return Bits(int=scaled, length=self.bit_cnt).bytes
+    except CreationError:
+      print('Invalid value: {}'.format(value))
+      exit()
+
+  def save(self, path, model):
     layers = []
+    state_dict = model.state_dict()
     for name in state_dict:
       layer = name.split('.')[0]
       if layer not in layers:
         layers.append(layer)
-    binary = BitArray()
+    data = bytes()
     for layer in layers:
       bias = state_dict[layer + '.bias'].tolist()
       weights = state_dict[layer + '.weight'].tolist()
       for i in range(len(bias)):
-        bias_f = int(bias[i] * 256)
-        binary.append(Bits(int=bias_f, length=8))
+        data += self.to_float(bias[i])
         for weight in weights[i]:
-          weight_f = int(weight * 256)
-          binary.append(Bits(int=weight_f, length=8))
+          data += self.to_float(weight)
     with open(path, 'wb+') as file:
-      file.write(binary.bytes)
+      file.write(data)
 
   def load(self, path, model, device):
     with open(path, 'rb') as file:
