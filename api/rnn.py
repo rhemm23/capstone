@@ -8,7 +8,7 @@ class RNN:
     self.b_layer = []
     self.c_layer = []
     for i in range(15):
-      self.a_layer.append(Neuron(data['a_layer'][i]))
+      self.a_layer.append(Neuron())
     for i in range(15):
       self.b_layer.append(Neuron(data['b_layer'][i]))
     for i in range(36):

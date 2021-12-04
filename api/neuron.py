@@ -1,9 +1,9 @@
 import math
 
 class Neuron:
-  def __init__(self, data):
-    self.bias = data['bias']
-    self.weights = data['weights']
+  def __init__(self, bias, weights):
+    self.weights = weights
+    self.bias = bias
 
   def forward(self, inputs):
     act = self.bias

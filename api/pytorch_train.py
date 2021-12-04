@@ -5,6 +5,9 @@ from rot_dataset import RotatedImageDataset
 from conv_net import ConvNet
 from lin_net import LinNet
 
+from json_model_loader import JsonModelLoader
+from bin_model_loader import BinModelLoader
+
 import torch.optim as optim
 
 import signal
@@ -21,6 +24,7 @@ use_json = 'json' in args
 device = torch.device('cuda:0' if use_cuda else 'cpu')
 model_path = './model_{}.{}'.format('lin' if lin else 'conv', 'json' if use_json else 'tar')
 
+loader = JsonModelLoader() if use_json else BinModelLoader()
 model = LinNet() if lin else ConvNet()
 model.to(device)
 
@@ -28,17 +32,15 @@ criterion = nn.CrossEntropyLoss()
 optimizer = optim.SGD(model.parameters(), lr=0.01, momentum=0.9)
 
 if os.path.isfile(model_path):
-  state = None
-  if use_json:
-    with open(model_path, 'r') as file:
-      state = json.load(file)
-  else:
-    state = torch.load(model_path, map_location=device)
+  state = loader.load(model_path, device)
   model.load_state_dict(state)
+
+def save_model():
+  loader.save(model.state_dict(), model_path)
 
 def signal_handler(sig, frame):
   print('Saving model...')
-  torch.save(model.state_dict(), model_path)
+  save_model()
   sys.exit(0)
 
 signal.signal(signal.SIGINT, signal_handler)
@@ -79,8 +81,4 @@ for i in range(10000):
 
   print('Accuracy: {}%'.format(round(pass_cnt / cnt * 100)))
 
-if use_json:
-  with open(model_path, 'w+') as file:
-    json.dump(model.state_dict(), file)
-else:
-  torch.save(model.state_dict(), model_path)
+save_model()
