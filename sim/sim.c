@@ -7,6 +7,9 @@
 #include <mongoc/mongoc.h>
 #include <bson/bson.h>
 
+#define FRAC_BITS 10
+#define FACTOR 4096
+
 typedef struct neuron {
   int16_t bias;
   int weight_cnt;
@@ -29,7 +32,7 @@ static void die(char *error) {
 }
 
 static double to_double(int16_t value) {
-  return (double)value / (double)4096;
+  return (double)value / (double)FACTOR;
 }
 
 static int16_t read_value(FILE *weight_file) {
@@ -59,35 +62,58 @@ static void print_net(net_t *net) {
 }
 
 static int net_forward(net_t *net, const uint8_t *sub_image) {
-  double *layers_out[net->layer_cnt];
+  int16_t *layers_out[net->layer_cnt];
   for (int i = 0; i < net->layer_cnt; i++) {
-    layers_out[i] = (double*)malloc(sizeof(double) * net->layers[i]->neuron_cnt);
+    layers_out[i] = (int16_t*)malloc(sizeof(int16_t) * net->layers[i]->neuron_cnt);
     for (int j = 0; j < net->layers[i]->neuron_cnt; j++) {
-      double activation = to_double(net->layers[i]->neurons[j]->bias);
+      int32_t activation = (int32_t)net->layers[i]->neurons[j]->bias;
       for (int k = 0; k < net->layers[i]->neurons[j]->weight_cnt; k++) {
-        double weight = to_double(net->layers[i]->neurons[j]->weights[k]);
-        if (i == 0) {
-          activation += weight * ((double)sub_image[k] / (double)256);
+        int16_t weight = net->layers[i]->neurons[j]->weights[k];
+        int16_t input = (i == 0) ? ((int16_t)sub_image[k]) : layers_out[i - 1][k];
+        int32_t result = (((int32_t)input) * ((int32_t)weight)) >> FRAC_BITS;
+        int16_t rounded_res;
+        if (result > INT16_MAX) {
+          rounded_res = INT16_MAX;
+        } else if (result < INT16_MIN) {
+          rounded_res = INT16_MIN;
         } else {
-          activation += weight * layers_out[i - 1][k];
+          rounded_res = (int16_t)result;
         }
+        if (i == net->layer_cnt - 1 && j == 0) {
+          printf("weight: %.6f, input: %.6f, result: %.6f\n", to_double(weight), to_double(input), to_double(rounded_res));
+        }
+        activation += (int32_t)rounded_res;
+      }
+      int16_t rounded_activation;
+      if (activation > INT16_MAX) {
+        rounded_activation = INT16_MAX;
+      } else if (activation < INT16_MIN) {
+        rounded_activation = INT16_MIN;
+      } else {
+        rounded_activation = (int16_t)activation;
+      }
+      if (i == net->layer_cnt - 1 && j == 0) {
+        printf("%.6f\n", to_double(activation));
       }
       if (i != net->layer_cnt - 1) {
-        layers_out[i][j] = tanh(activation);
+        double tanh_res = tanh((double)rounded_activation / (double)FACTOR);
+        layers_out[i][j] = (int16_t)(tanh_res * FACTOR);
       } else {
-        layers_out[i][j] = activation;
+        layers_out[i][j] = rounded_activation;
       }
     }
   }
   double e_sum = 0;
   int output_size = net->layers[net->layer_cnt - 1]->neuron_cnt;
   for (int i = 0; i < output_size; i++) {
-    e_sum += exp(layers_out[net->layer_cnt - 1][i]);
+    double prob = (double)layers_out[net->layer_cnt - 1][i] / (double)FACTOR;
+    e_sum += exp(prob);
   }
   int max_index = 0;
   double current_max = -DBL_MAX;
   for (int i = 0; i < output_size; i++) {
-    double prob = layers_out[net->layer_cnt - 1][i] / e_sum;
+    double temp = (double)layers_out[net->layer_cnt - 1][i] / (double)FACTOR;
+    double prob = temp / e_sum;
     if (prob > current_max) {
       current_max = prob;
       max_index = i;

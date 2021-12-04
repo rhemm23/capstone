@@ -1,4 +1,8 @@
+from qtorch.quant.quant_function import *
 from torch import nn
+
+from qtorch.auto_low import sequential_lower
+from qtorch.optim import OptimLP
 
 from rot_dataloader import RotatedImageDataLoader
 from rot_dataset import RotatedImageDataset
@@ -12,6 +16,7 @@ from bin_model_loader import BinModelLoader
 import torch.optim as optim
 
 import signal
+import qtorch
 import torch
 import sys
 import os
@@ -34,7 +39,14 @@ else:
   model_path += '.tar'
   loader = TorchModelLoader()
 
-model = LinNet()
+forward_num = qtorch.FixedPoint(wl=16, fl=10)
+
+model = sequential_lower(
+  LinNet(),
+  layer_types=['linear'],
+  forward_number=forward_num,
+  forward_rounding='nearest',
+)
 model.to(device)
 
 if os.path.isfile(model_path):
@@ -42,6 +54,9 @@ if os.path.isfile(model_path):
 
 criterion = nn.CrossEntropyLoss()
 optimizer = optim.SGD(model.parameters(), lr=0.01, momentum=0.9)
+
+weight_quant = lambda x : fixed_point_quantize(x, wl=16, fl=10)
+optimizer = OptimLP(optimizer, weight_quant=weight_quant)
 
 def save_model():
   loader.save(model_path, model)

@@ -1,14 +1,23 @@
+from qtorch.auto_low import sequential_lower
+
 from lin_net import LinNet
 
 from torch_model_loader import TorchModelLoader
 from json_model_loader import JsonModelLoader
 from bin_model_loader import BinModelLoader
 
+import qtorch
 import torch
 import sys
 
+forward_num = qtorch.FixedPoint(wl=16, fl=10)
+
 device = torch.device('cpu')
-model = LinNet()
+model = sequential_lower(
+  LinNet(),
+  layer_types=['linear'],
+  forward_number=forward_num
+)
 
 out_path = None
 out_loader = None

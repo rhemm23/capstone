@@ -7,7 +7,7 @@ class BinModelLoader:
   def __init__(self, bit_cnt):
     self.bit_cnt = bit_cnt
     self.byte_size = math.ceil(bit_cnt / 8)
-    self.factor = 2**(bit_cnt - 4)
+    self.factor = 2**(bit_cnt - 6)
 
   def read_float(self):
     value = Bits(bytes=self.bytes[self.byte_cnt:self.byte_cnt + self.byte_size], length=self.bit_cnt).int
@@ -26,7 +26,7 @@ class BinModelLoader:
     layers = []
     state_dict = model.state_dict()
     for name in state_dict:
-      layer = name.split('.')[0]
+      layer = name.rsplit('.', 1)[0]
       if layer not in layers:
         layers.append(layer)
     data = bytes()
@@ -46,7 +46,7 @@ class BinModelLoader:
       self.byte_cnt = 0
       layers = []
       for name, weights in model.named_parameters():
-        parts = name.split('.')
+        parts = name.rsplit('.', 1)
         if parts[1] == 'weight' and parts[0] not in layers:
           shape = weights.shape
           layers.append((parts[0], shape[0], shape[1]))
