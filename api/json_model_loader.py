@@ -9,10 +9,10 @@ class JsonModelLoader:
         res[name] = state_dict[name].tolist()
       json.dump(res, file)
 
-  def load(self, path, device):
+  def load(self, path, model, device):
     state = {}
     with open(path, 'r') as file:
       res = json.load(file)
       for name in res:
         state[name] = torch.tensor(res[name]).to(device=device)
-    return state
+    model.load_state_dict(state)

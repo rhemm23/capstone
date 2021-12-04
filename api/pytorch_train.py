@@ -5,6 +5,7 @@ from rot_dataset import RotatedImageDataset
 from conv_net import ConvNet
 from lin_net import LinNet
 
+from torch_model_loader import TorchModelLoader
 from json_model_loader import JsonModelLoader
 from bin_model_loader import BinModelLoader
 
@@ -17,23 +18,28 @@ import sys
 import os
 
 args = sys.argv[1:]
-lin = 'lin' in args
-use_cuda = 'cuda' in args
-use_json = 'json' in args
+device = torch.device('cuda:0' if ('cuda' in args) else 'cpu')
+model_path = './model'
 
-device = torch.device('cuda:0' if use_cuda else 'cpu')
-model_path = './model_{}.{}'.format('lin' if lin else 'conv', 'json' if use_json else 'tar')
+loader = None
+if 'json' in args:
+  model_path += '.json'
+  loader = JsonModelLoader()
+elif 'bin' in args:
+  model_path += '.bin'
+  loader = BinModelLoader()
+else:
+  model_path += '.tar'
+  loader = TorchModelLoader()
 
-loader = JsonModelLoader() if use_json else BinModelLoader()
-model = LinNet() if lin else ConvNet()
+model = LinNet()
 model.to(device)
 
 criterion = nn.CrossEntropyLoss()
 optimizer = optim.SGD(model.parameters(), lr=0.01, momentum=0.9)
 
 if os.path.isfile(model_path):
-  state = loader.load(model_path, device)
-  model.load_state_dict(state)
+  loader.load(model_path, model, device)
 
 def save_model():
   loader.save(model.state_dict(), model_path)
@@ -45,8 +51,8 @@ def signal_handler(sig, frame):
 
 signal.signal(signal.SIGINT, signal_handler)
 
-dataset = RotatedImageDataset(1080, lin=lin, device=device)
-test_dataset = RotatedImageDataset(1080, lin=lin, device=device)
+dataset = RotatedImageDataset(1080, device=device)
+test_dataset = RotatedImageDataset(1080, device=device)
 
 dataloader = data.DataLoader(dataset, batch_size=36)
 test_dataloader = data.DataLoader(test_dataset, batch_size=36)
