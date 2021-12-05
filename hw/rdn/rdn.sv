@@ -1,4 +1,9 @@
 module rdn
+  #(
+    parameter NUM_A_NEURONS = 15,
+    parameter NUM_B_NEURONS = 15,
+    parameter NUM_C_NEURONS = 36
+  )
   (
     /*
      * Inputs
@@ -16,12 +21,12 @@ module rdn
     output in_ready,
     output out_ready,
     output weight_valid,
-    output [35:0] net_out,
+    output [NUM_C_NEURONS-1:0] net_out,
     output [7:0] q [4:0][79:0]
   );
 
-  wire [8:0] a_layer_q [14:0];
-  wire [8:0] b_layer_q [14:0];
+  wire [15:0] a_layer_q [NUM_A_NEURONS-1:0];
+  wire [15:0] b_layer_q [NUM_B_NEURONS-1:0];
 
   wire [7:0] in_buffer_q [4:0];
 
@@ -44,10 +49,10 @@ module rdn
   wire [3:0] b_sel;
   wire [5:0] c_sel;
 
-  wire [8:0] b_layer_in;
-  wire [8:0] c_layer_in;
+  wire [15:0] b_layer_in;
+  wire [15:0] c_layer_in;
 
-  wire [8:0] weight_bus [400:0];
+  wire [15:0] weight_bus [400:0];
 
   rdn_weight_ld weight_loader (
     .clk(clk),
@@ -106,7 +111,7 @@ module rdn
 
   generate
     genvar i;
-    for (i = 0; i < 15; i++) begin : a_layer
+    for (i = 0; i < NUM_A_NEURONS; i++) begin : a_layer
       a_neuron a (
         .clk(clk),
         .rst_n(rst_n),
@@ -119,8 +124,8 @@ module rdn
         .q(a_layer_q[i])
       );
     end
-    for (i = 0; i < 15; i++) begin : b_layer
-      b_neuron b (
+    for (i = 0; i < NUM_B_NEURONS; i++) begin : b_layer
+      b_neuron #(INPUTS = NUM_A_NEURONS) b (
         .clk(clk),
         .rst_n(rst_n),
         .z(z_b_layer),
@@ -128,12 +133,12 @@ module rdn
         .wr_weights((b_sel == i) & write_b),
         .d(b_layer_in),
         .bias_d(weight_bus[0]),
-        .weights_d(weight_bus[15:1]),
+        .weights_d(weight_bus[NUM_A_NEURONS:1]),
         .q(b_layer_q[i])
       );
     end
-    for (i = 0; i < 36; i++) begin : c_layer
-      c_neuron c (
+    for (i = 0; i < NUM_C_NEURONS; i++) begin : c_layer
+      c_neuron #(INPUTS = NUM_B_NEURONS) c (
         .clk(clk),
         .rst_n(rst_n),
         .z(z_c_layer),
@@ -141,7 +146,7 @@ module rdn
         .wr_weights((c_sel == i) & write_c),
         .d(c_layer_in),
         .bias_d(weight_bus[0]),
-        .weights_d(weight_bus[15:1]),
+        .weights_d(weight_bus[NUM_B_NEURONS:1]),
         .q(net_out[i])
       );
     end
