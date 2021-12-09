@@ -83,8 +83,8 @@ module iru_tb();
         for (int k = 0; k < 5; k++) begin
           for (int l = 0; l < 80; l++) begin
             d[k][l] = $urandom();
-            cur_x = (k * 4) + (l / 20);
-            cur_y = (l % 20);
+            cur_y = (k * 4) + (l / 20);
+            cur_x = (l % 20);
             row_d = cur_y[4:0];
             col_d = cur_x[4:0];
             #5;
