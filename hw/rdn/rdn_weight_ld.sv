@@ -20,15 +20,15 @@ module rdn_weight_ld
     output signed [15:0] a_weight_bus,
     output signed [15:0] b_weight_bus,
     output signed [15:0] c_weight_bus,
-    output [$clog2(NUM_A_NEURONS):0] a_sel,
-    output [$clog2(NUM_B_NEURONS):0] b_sel,
-    output [$clog2(NUM_C_NEURONS):0] c_sel,
+    output [$clog2(NUM_A_NEURONS)-1:0] a_sel,
+    output [$clog2(NUM_B_NEURONS)-1:0] b_sel,
+    output [$clog2(NUM_C_NEURONS)-1:0] c_sel,
     output logic write_a,
     output logic write_b,
     output logic write_c,
     output [8:0] a_weight_sel,
-    output [$clog2(NUM_A_NEURONS):0] b_weight_sel,
-    output [$clog2(NUM_B_NEURONS):0] c_weight_sel,
+    output [$clog2(NUM_A_NEURONS)-1:0] b_weight_sel,
+    output [$clog2(NUM_B_NEURONS)-1:0] c_weight_sel,
     output logic weight_valid,
     output logic req_mem
   );
@@ -41,9 +41,9 @@ module rdn_weight_ld
   // Sequential logic
   reg [4:0] word_cnt;
   reg [8:0] weight_cnt;
-  reg [$clog2(NUM_A_NEURONS):0] a_cnt; 
-  reg [$clog2(NUM_B_NEURONS):0] b_cnt;
-  reg [$clog2(NUM_C_NEURONS):0] c_cnt;
+  reg [$clog2(NUM_A_NEURONS)-1:0] a_cnt; 
+  reg [$clog2(NUM_B_NEURONS)-1:0] b_cnt;
+  reg [$clog2(NUM_C_NEURONS)-1:0] c_cnt;
   reg signed [15:0] a_weight_block [31:0];
   reg signed [15:0] b_weight_block  [NUM_A_NEURONS:0];
   reg signed [15:0] c_weight_block  [NUM_B_NEURONS:0];
@@ -60,8 +60,8 @@ module rdn_weight_ld
   assign b_weight_bus = b_weight_block[word_cnt];
   assign c_weight_bus = c_weight_block[word_cnt];
   assign a_weight_sel = weight_cnt;
-  assign b_weight_sel = weight_cnt[$clog2(NUM_A_NEURONS):0];
-  assign c_weight_sel = weight_cnt[$clog2(NUM_B_NEURONS):0];
+  assign b_weight_sel = weight_cnt[$clog2(NUM_A_NEURONS)-1:0];
+  assign c_weight_sel = weight_cnt[$clog2(NUM_B_NEURONS)-1:0];
 
 
   // Counts what word is being load from the mem block

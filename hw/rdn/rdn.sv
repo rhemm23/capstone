@@ -11,9 +11,11 @@ module rdn
     input clk,
     input rst_n,
     input load_weights,
+    input mem_ready,
     input heu_out_ready,
     input iru_in_ready,
     input [7:0] d [4:0][79:0],
+    input [15:0] mem_data [31:0],
 
     /*
      * Outputs
@@ -21,6 +23,7 @@ module rdn
     output in_ready,
     output out_ready,
     output weight_valid,
+    output req_mem,
     output [NUM_C_NEURONS-1:0] net_out,
     output [7:0] q [4:0][79:0]
   );
@@ -52,15 +55,15 @@ module rdn
   wire [15:0] b_layer_in;
   wire [15:0] c_layer_in;
 
-  wire [15:0] weight_bus [400:0];
+  wire signed [15:0] a_weight_bus;
+  wire signed [15:0] b_weight_bus;
+  wire signed [15:0] c_weight_bus;a_weight_sel
+
+  wire [8:0] a_weight_sel;
+  wire [$clog2(15)-1:0] b_weight_sel;
+  wire [$clog2(15)-1:0] c_weight_sel;
 
   rdn_weight_ld weight_loader (
-    .clk(clk),
-    .rst_n(rst_n),
-    .go(load_weights),
-    .mem_ready(/* TODO */),
-    .mem_data(/* TODO */),
-    .weight_bus(weight_bus),
     .a_sel(a_sel),
     .b_sel(b_sel),
     .c_sel(c_sel),
@@ -68,6 +71,34 @@ module rdn
     .write_b(write_b),
     .write_c(write_c),
     .weight_valid(weight_valid)
+  );
+  (
+  /*
+    * Inputs
+    */
+  .clk(clk),
+  .rst_n(rst_n),
+  .go(load_weights),
+  .mem_ready(mem_ready),
+  .mem_data(mem_data),
+
+  /*
+    * logics
+    */
+  .a_weight_bus(a_weight_bus),
+  .b_weight_bus(b_weight_bus),
+  .c_weight_bus(c_weight_bus),
+  .a_sel(a_sel),
+  .b_sel(b_sel),
+  .c_sel(c_sel),
+  .write_a(write_a),
+  .write_b(write_b),
+  .write_c(write_c),
+  .a_weight_sel(a_weight_sel),
+  .b_weight_sel(b_weight_sel),
+  .c_weight_sel(c_weight_sel),
+  .weight_valid(weight_valid),
+  .req_mem(req_mem)
   );
 
   rdn_ctrl_unit ctrl_unit (
@@ -117,36 +148,39 @@ module rdn
         .rst_n(rst_n),
         .z(z_a_layer),
         .en(en_a_layer),
-        .wr_weights((a_sel == i) & write_a),
+        .wr_weights((a_sel == i) && write_a),
+        .a_weight_sel(a_weight_sel), //TODO add
         .d(in_buffer_q),
-        .bias_d(weight_bus[0]),
-        .weights_d(weight_bus[400:1]),
+        .bias_d(a_weight_bus), // TODO fix
+        .weights_d(a_weight_bus), // TODO fix
         .q(a_layer_q[i])
       );
     end
     for (i = 0; i < NUM_B_NEURONS; i++) begin : b_layer
-      b_neuron #(INPUTS = NUM_A_NEURONS) b (
+      b_neuron #(.INPUTS(NUM_A_NEURONS)) b (
         .clk(clk),
         .rst_n(rst_n),
         .z(z_b_layer),
         .en(en_b_layer),
-        .wr_weights((b_sel == i) & write_b),
+        .wr_weights((b_sel == i) && write_b),
+        .b_weight_sel(b_weight_sel), // TODO add
         .d(b_layer_in),
-        .bias_d(weight_bus[0]),
-        .weights_d(weight_bus[NUM_A_NEURONS:1]),
+        .bias_d(b_weight_bus),// TODO fix
+        .weights_d(b_weight_bus),// TODO fix
         .q(b_layer_q[i])
       );
     end
     for (i = 0; i < NUM_C_NEURONS; i++) begin : c_layer
-      c_neuron #(INPUTS = NUM_B_NEURONS) c (
+      c_neuron #(.INPUTS(NUM_B_NEURONS)) c (
         .clk(clk),
         .rst_n(rst_n),
         .z(z_c_layer),
         .en(en_c_layer),
-        .wr_weights((c_sel == i) & write_c),
+        .wr_weights((c_sel == i) && write_c),
+        .c_weight_sel(c_weight_sel), // TODO add
         .d(c_layer_in),
-        .bias_d(weight_bus[0]),
-        .weights_d(weight_bus[NUM_B_NEURONS:1]),
+        .bias_d(c_weight_bus),// TODO fix
+        .weights_d(c_weight_bus),// TODO fix
         .q(net_out[i])
       );
     end
