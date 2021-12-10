@@ -62,7 +62,7 @@ module memory
             tx.c0.valid <= 0;
           end
         end
-        WAIT: begin if (rx.c0.rspValid && rx.c0.hdr.resp_type == eRSP_RDLINE && rx.c0.hdr.mdata == 16'h0000) begin
+        WAIT: if (rx.c0.rspValid && rx.c0.hdr.resp_type == eRSP_RDLINE && rx.c0.hdr.mdata == 16'h0000) begin
           state <= IDLE;
         end
       endcase
