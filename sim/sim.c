@@ -7,7 +7,7 @@
 #include <mongoc/mongoc.h>
 #include <bson/bson.h>
 
-#define FRAC_BITS 10
+#define WEIGHT_FRAC_BITS 13
 #define FACTOR 4096
 
 typedef struct neuron {
@@ -66,60 +66,69 @@ static int net_forward(net_t *net, const uint8_t *sub_image) {
   for (int i = 0; i < net->layer_cnt; i++) {
     layers_out[i] = (int16_t*)malloc(sizeof(int16_t) * net->layers[i]->neuron_cnt);
     for (int j = 0; j < net->layers[i]->neuron_cnt; j++) {
-      int32_t activation = (int32_t)net->layers[i]->neurons[j]->bias;
+      int32_t accumulation = (int32_t)net->layers[i]->neurons[j]->bias;
+
+      // Loop through # of weights for neuron, equals # of inputs
       for (int k = 0; k < net->layers[i]->neurons[j]->weight_cnt; k++) {
-        int16_t weight = net->layers[i]->neurons[j]->weights[k];
-        int16_t input = (i == 0) ? ((int16_t)sub_image[k]) : layers_out[i - 1][k];
-        int32_t result = (((int32_t)input) * ((int32_t)weight)) >> FRAC_BITS;
-        int16_t rounded_res;
-        if (result > INT16_MAX) {
-          rounded_res = INT16_MAX;
-        } else if (result < INT16_MIN) {
-          rounded_res = INT16_MIN;
-        } else {
-          rounded_res = (int16_t)result;
-        }
-        if (i == net->layer_cnt - 1 && j == 0) {
-          printf("weight: %.6f, input: %.6f, result: %.6f\n", to_double(weight), to_double(input), to_double(rounded_res));
-        }
-        activation += (int32_t)rounded_res;
+        int16_t weight = net->layers[i]->neurons[j]->weights[k]; // Make sure weights are converted to +/-2.13
+        int16_t input = (i == 0) ? (((int16_t)sub_image[k]) << 5) : layers_out[i - 1][k];
+        int32_t result = (((int16_t)input) * ((int16_t)weight)) >> WEIGHT_FRAC_BITS;
+        accumulation += result;
       }
-      int16_t rounded_activation;
-      if (activation > INT16_MAX) {
-        rounded_activation = INT16_MAX;
-      } else if (activation < INT16_MIN) {
-        rounded_activation = INT16_MIN;
+
+      // Round Accumulation for Activation funtion.
+      uint8_t rounded_accum;
+      bool accum_positive = false;
+      if (accumulation >= 0) {
+        accum_positive = true;
+      }
+      (accumulation >>= 7);
+      if (accumulation > 255) {
+        rounded_accum = 255;
+      } else if (accumulation < -255) {
+        rounded_accum = 255;
       } else {
-        rounded_activation = (int16_t)activation;
+        rounded_accum = ((uint8_t)accumulation);
       }
-      if (i == net->layer_cnt - 1 && j == 0) {
-        printf("%.6f\n", to_double(activation));
+      
+      // Create tanh rom array
+      uint8_t tanh_rom [256];
+      for (int k = 0; k < 256; k++) {
+        double tanh_x = 0.015625 * k;
+        uint8_t temp = (uint8_t)(tanh(tanh_x) * 128);
+        tanh_rom[k] = temp;
       }
+
+
       if (i != net->layer_cnt - 1) {
-        double tanh_res = tanh((double)rounded_activation / (double)FACTOR);
-        layers_out[i][j] = (int16_t)(tanh_res * FACTOR);
+        int16_t activation_output;
+        activation_output = (int16_t)tanh_rom[rounded_accum];
+        if (!accum_positive) {
+          activation_output = -(activation_output);
+        }
+        layers_out[i][j] = activation_output;
       } else {
-        layers_out[i][j] = rounded_activation;
+        int16_t c_output;
+        c_output = (int16_t)rounded_accum;
+        if (!accum_positive) {
+          c_output = -(c_output);
+        }
+        layers_out[i][j] = c_output;
       }
     }
   }
-  double e_sum = 0;
-  int output_size = net->layers[net->layer_cnt - 1]->neuron_cnt;
-  for (int i = 0; i < output_size; i++) {
-    double prob = (double)layers_out[net->layer_cnt - 1][i] / (double)FACTOR;
-    e_sum += exp(prob);
-  }
-  int max_index = 0;
-  double current_max = -DBL_MAX;
-  for (int i = 0; i < output_size; i++) {
-    double temp = (double)layers_out[net->layer_cnt - 1][i] / (double)FACTOR;
-    double prob = temp / e_sum;
-    if (prob > current_max) {
-      current_max = prob;
-      max_index = i;
+
+  // Selects the max C neuron's output
+  int max_c_index;
+  int16_t temp_max = INT16_MIN;
+  for(int neurons = 0; neurons < 36; neurons++) {
+    int16_t temp = layers_out[net->layer_cnt-1][neurons];
+    if (temp >= temp_max) {
+      temp_max = temp;
+      max_c_index = neurons;
     }
   }
-  return max_index;
+  return max_c_index;
 }
 
 int main(int argc, char *argv[]) {
