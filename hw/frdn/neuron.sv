@@ -12,7 +12,7 @@ module neuron
     input start,
     input [63:0] data [INPUTS - 1:0],
     input write_weight,
-    input [$clog2(INPUTS + 1) - 1:0] weight_sel,
+    input [8:0] weight_sel,
     input [63:0] weight_bus,
 
     /*
