@@ -17,21 +17,27 @@ module afu
   );
 
   wire [31:0] address;
-  wire [511:0] data;
+  wire [511:0] read_data;
+  wire [511:0] write_data;
 
   wire data_valid;
-  wire request_valid;
+  wire write_done;
+  wire read_request_valid;
+  wire write_request_valid;
   wire buffer_addr_valid;
 
   memory mem (
     .clk(clk),
     .rst_n(rst_n),
-    .request_valid(request_valid),
+    .read_request_valid(read_request_valid),
+    .write_request_valid(write_request_valid),
     .address(address),
+    .data_d(write_data)
     .rx(rx),
     .buffer_addr_valid(buffer_addr_valid),
     .data_valid(data_valid),
-    .data(data),
+    .write_done(write_done),
+    .data_q(read_data),
     .tx(tx)
   );
 
