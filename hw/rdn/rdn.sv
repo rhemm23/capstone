@@ -57,7 +57,7 @@ module rdn
 
   wire signed [15:0] a_weight_bus;
   wire signed [15:0] b_weight_bus;
-  wire signed [15:0] c_weight_bus;a_weight_sel
+  wire signed [15:0] c_weight_bus;
 
   wire [8:0] a_weight_sel;
   wire [$clog2(15)-1:0] b_weight_sel;

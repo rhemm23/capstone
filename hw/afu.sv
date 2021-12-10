@@ -2,7 +2,6 @@
 `include "platform_if.vh"
 
 module afu
-import data_types::*;
   (
     /*
      * Inputs
@@ -17,27 +16,33 @@ import data_types::*;
     output t_if_ccip_Tx tx
   );
 
-  t_mem_rx mem_rx;
-  t_mem_tx mem_tx;
+  wire [31:0] address;
+  wire [511:0] data;
 
+  wire data_valid;
+  wire request_valid;
   wire buffer_addr_valid;
 
   memory mem (
     .clk(clk),
     .rst_n(rst_n),
-    .mem_tx(mem_tx),
+    .request_valid(request_valid),
+    .address(address),
     .rx(rx),
     .buffer_addr_valid(buffer_addr_valid),
-    .mem_rx(mem_rx),
+    .data_valid(data_valid),
+    .data(data),
     .tx(tx)
   );
 
-  cpu cpu (
+  ctrl_unit ctrl (
     .clk(clk),
     .rst_n(rst_n),
     .buffer_addr_valid(buffer_addr_valid),
-    .mem_rx(mem_rx),
-    .mem_tx(mem_tx)
+    .data_valid(data_valid),
+    .data(data),
+    .address(address),
+    .request_valid(request_valid)
   );
 
 endmodule

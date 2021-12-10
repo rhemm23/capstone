@@ -62,7 +62,7 @@ int main(int argc, char *argv[]) {
   }
 
   // Allow AFU to execute, replace with events in future
-  sleep(1);
+  sleep(10);
 
   close_afu(&afu);
   free(compiled_program);

@@ -59,7 +59,7 @@ module iru
     .write_out(write_out)
   );
 
-  in_buffer in_buf (
+  iru_in_buffer in_buffer (
     .clk(clk),
     .rst_n(rst_n),
     .wr(write_in),

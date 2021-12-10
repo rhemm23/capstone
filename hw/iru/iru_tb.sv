@@ -1,22 +1,8 @@
 module iru_tb();
 
-  int expected [4:0][79:0];
-
-  int buffer;
-  int index;
-
-  int cur_x;
-  int cur_y;
-
-  int new_x;
-  int new_y;
-
   logic [7:0] d [4:0][79:0];
 
   logic [35:0] rnn_out;
-
-  logic [4:0] row_d;
-  logic [4:0] col_d;
 
   logic rnn_out_ready;
   logic bcau_in_ready;
@@ -26,12 +12,11 @@ module iru_tb();
 
   wire [7:0] q [4:0][79:0];
 
-  wire [4:0] row_q;
-  wire [4:0] col_q;
-
   wire out_ready;
   wire in_ready;
-  wire valid;
+
+  int in_fd;
+  int out_fd;
 
   iru dut (
     .clk(clk),
@@ -45,15 +30,6 @@ module iru_tb();
     .q(q)
   );
 
-  iru_comp_unit comp_unit (
-    .rnn_out(rnn_out),
-    .row_d(row_d),
-    .col_d(col_d),
-    .valid(valid),
-    .row_q(row_q),
-    .col_q(col_q)
-  );
-
   initial begin
 
     clk = 0;
@@ -62,80 +38,48 @@ module iru_tb();
     rnn_out_ready = 0;
     bcau_in_ready = 0;
 
-    for (int i = 0; i < 50; i++) begin
-      for (int j = 0; j < 36; j++) begin
+    rnn_out = 36'b000000000000000001000000000000000000;
 
-        rst_n = 1;
-        #1;
-        rst_n = 0;
-        #1;
-        rst_n = 1;
-        #1;
+    in_fd = $fopen("image.bin", "rb");
 
-        for (int k = 0; k < 36; k++) begin
-          rnn_out[k] = (j == k) ? 1'b1 : 1'b0;
-        end
-        for (int k = 0; k < 5; k++) begin
-          for (int l = 0; l < 80; l++) begin
-            expected[k][l] = 0;
-          end
-        end
-        for (int k = 0; k < 5; k++) begin
-          for (int l = 0; l < 80; l++) begin
-            d[k][l] = $urandom();
-            cur_y = (k * 4) + (l / 20);
-            cur_x = (l % 20);
-            row_d = cur_y[4:0];
-            col_d = cur_x[4:0];
-            #5;
-            if (valid) begin
-              expected[row_q][col_q] = d[k][l];
-            end
-          end
-        end
+    if (in_fd == 0) begin
+      $display("Could not open image file");
+      $stop();
+    end
+    if ($fread(d, in_fd) != 400) begin
+      $display("Could not read from image file");
+      $stop();
+    end
 
-        @(posedge clk);
-        rnn_out_ready = 1;
-        @(posedge clk);
-        rnn_out_ready = 0;
-        @(posedge clk);
+    rst_n = 0;
+    #1;
+    rst_n = 1;
+    #1;
 
-        @(posedge out_ready);
-        for (int k = 0; k < 5; k++) begin
-          for (int l = 0; l < 80; l++) begin
-            if (q[k][l] !== expected[k][l]) begin
-              $write("Q\n\n");
-              for (int x = 0; x < 5; x++) begin
-                for (int y = 0; y < 80; y++) begin
-                  if (y > 0) begin
-                    $write(" ");
-                  end
-                  $write("%h", q[x][y]);
-                  if ((y + 1) % 20 == 0) begin
-                    $write("\n");
-                  end
-                end
-                $write("\n");
-              end
-              $write("EXPECTED\n\n");
-              for (int x = 0; x < 5; x++) begin
-                for (int y = 0; y < 80; y++) begin
-                  if (y > 0) begin
-                    $write(" ");
-                  end
-                  $write("%h", expected[x][y]);
-                end
-                $write("\n");
-              end
-              $display("Error: Expected %h, actual %h", expected[k][l], q[k][l]);
-              $stop();
-            end
-          end
-        end
+    @(posedge clk);
+    rnn_out_ready = 1;
+    @(posedge clk);
+    rnn_out_ready = 0;
+    @(posedge clk);
+
+    @(posedge out_ready);
+
+    out_fd = $fopen("result.bin", "wb+");
+
+    if (out_fd == 0) begin
+      $display("Could not open result file");
+      $stop();
+    end
+    for (int y = 0; y < 5; y++) begin
+      for (int x = 0; x < 80; x++) begin
+        $fwrite(out_fd, "%c", q[y][x]);
       end
     end
 
-    $display("IRU tests passed!");
+    $fclose(in_fd);
+    $fclose(out_fd);
+
+    $display("Done");
     $stop();
   end
 

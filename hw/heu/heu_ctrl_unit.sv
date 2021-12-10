@@ -6,8 +6,8 @@ module heu_ctrl_unit
     input clk,
     input rst_n,
     input sum_ready,
-    input rdn_in_ready,
-    input ipgu_out_ready,
+    input next_in_ready,
+    input prev_out_ready,
 
     /*
      * Outputs
@@ -40,7 +40,7 @@ module heu_ctrl_unit
       cnt <= 7'h00;
     end else begin
       case (state)
-        IDLE: if (ipgu_out_ready) begin
+        IDLE: if (prev_out_ready) begin
           state <= CALC;
           cnt <= 7'h00;
         end
@@ -57,7 +57,7 @@ module heu_ctrl_unit
         end
         MOVE: begin
           if (cnt == 80) begin
-            if (rdn_in_ready) begin
+            if (next_in_ready) begin
               state <= IDLE;
             end else begin
               state <= DONE;
@@ -66,7 +66,7 @@ module heu_ctrl_unit
             cnt <= cnt + 1;
           end
         end
-        DONE: if (rdn_in_ready) begin
+        DONE: if (next_in_ready) begin
           state <= IDLE;
         end
       endcase
@@ -74,8 +74,8 @@ module heu_ctrl_unit
   end
 
   assign in_ready = (state == IDLE);
-  assign write_in = (state == IDLE) & ipgu_out_ready;
-  assign zero_cnts = (state == IDLE) & ipgu_out_ready;
+  assign write_in = (state == IDLE) & prev_out_ready;
+  assign zero_cnts = (state == IDLE) & prev_out_ready;
 
   assign sum_go = (state == CALC) & (cnt == 80);
   assign rotate_in = ((state == CALC) & (cnt < 80)) |

@@ -1,9 +1,9 @@
 import torch
 
 class RotatedImageDataLoader:
-  def __init__(self, dataset, device, batch_size=36):
+  def __init__(self, dataset, device, batch_size=36, dtype=torch.float):
     self.batches = []
-    images = torch.empty((batch_size, 400), device=device)
+    images = torch.empty((batch_size, 400), device=device, dtype=dtype)
     labels = torch.empty(batch_size, device=device, dtype=int)
     cnt = 0
     for image, label in dataset:
@@ -12,7 +12,7 @@ class RotatedImageDataLoader:
       cnt += 1
       if cnt == batch_size:
         self.batches.append((images, labels))
-        images = torch.empty((batch_size, 400), device=device)
+        images = torch.empty((batch_size, 400), device=device, dtype=dtype)
         labels = torch.empty(batch_size, device=device, dtype=int)
         cnt = 0
     if cnt > 0:
