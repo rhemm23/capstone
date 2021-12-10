@@ -3,6 +3,9 @@
  * Calculate e^x using the taylor series
  */
 module fp_exp
+  #(
+    ITERATIONS = 2
+  )
   (
     /*
      * Inputs
@@ -25,18 +28,24 @@ module fp_exp
     WAIT_ADD_X = 4'b0010,
     MULT_X = 4'b0011,
     WAIT_MULT_X = 4'b0100,
-    DIV_2 = 4'b0101,
-    WAIT_DIV_2 = 4'b0110,
-    ADD_X_SQ = 4'b0111,
-    WAIT_ADD_X_SQ = 4'b1000,
+    CONV_FACT = 4'b0101,
+    WAIT_CONV_FACT = 4'b0110,
+    DIV_FACT = 4'b0111,
+    WAIT_DIV_FACT = 4'b1000,
     DONE = 4'b1001
   } exp_state;
 
   exp_state state;
 
+  reg [5:0] cnt;
+
+  reg [63:0] fp_factorial;
+  reg [63:0] factorial;
+
   reg [63:0] x;
-  reg [63:0] x_sq;
   reg [63:0] sum;
+  reg [63:0] prod;
+  reg [63:0] prod_div;
 
   reg [63:0] div_a;
   reg [63:0] div_b;
@@ -49,6 +58,7 @@ module fp_exp
 
   reg start_adder;
   reg start_mult;
+  reg start_conv;
   reg start_div;
 
   wire div_done;
@@ -59,6 +69,18 @@ module fp_exp
 
   wire mult_done;
   wire [63:0] mult_c;
+
+  wire conv_done;
+  wire [63:0] conv_out;
+
+  long_to_fp conv (
+    .clk(clk),
+    .rst_n(rst_n),
+    .long_in(factorial),
+    .start(start_conv),
+    .fp_out(conv_out),
+    .done(conv_done)
+  );
 
   fp_mult mult (
     .clk(clk),
@@ -94,6 +116,7 @@ module fp_exp
     if (!rst_n) begin
       start_adder <= 1'b0;
       start_mult <= 1'b0;
+      start_conv <= 1'b0;
       start_div <= 1'b0;
       state <= IDLE;
     end else begin
@@ -101,59 +124,67 @@ module fp_exp
         IDLE: if (start) begin
           sum <= 64'h3ff0000000000000;
           x <= fp_in;
+          cnt <= 1;
+          prod <= fp_in;
+          prod_div <= fp_in;
+          factorial <= 1;
           state <= ADD_X;
         end
         ADD_X: begin
           start_adder <= 1'b1;
           add_a <= sum;
-          add_b <= x;
+          add_b <= prod_div;
           state <= WAIT_ADD_X;
         end
         WAIT_ADD_X: begin
           if (add_done) begin
             sum <= add_c;
-            state <= MULT_X;
+            if (cnt == ITERATIONS) begin
+              state <= DONE;
+            end else begin
+              state <= MULT_X;
+              cnt <= cnt + 1;
+              factorial <= factorial * (cnt + 1);
+            end
           end
           start_adder <= 1'b0;
         end
         MULT_X: begin
           start_mult <= 1'b1;
-          mult_a <= x;
+          mult_a <= prod;
           mult_b <= x;
           state <= WAIT_MULT_X;
         end
         WAIT_MULT_X: begin
           if (mult_done) begin
-            x_sq <= mult_c;
-            state <= DIV_2;
+            prod <= mult_c;
+            state <= CONV_FACT;
           end
           start_mult <= 1'b0;
         end
-        DIV_2: begin
-          start_div <= 1'b1;
-          div_a <= x_sq;
-          div_b <= 64'h4000000000000000;
-          state <= WAIT_DIV_2;
+        CONV_FACT: begin
+          start_conv <= 1'b1;
+          state <= WAIT_CONV_FACT;
         end
-        WAIT_DIV_2: begin
+        WAIT_CONV_FACT: begin
+          if (conv_done) begin
+            fp_factorial <= conv_out;
+            state <= DIV_FACT;
+          end
+          start_conv <= 1'b0;
+        end
+        DIV_FACT: begin
+          start_div <= 1'b1;
+          div_a <= prod;
+          div_b <= fp_factorial;
+          state <= WAIT_DIV_FACT;
+        end
+        WAIT_DIV_FACT: begin
           if (div_done) begin
-            x_sq <= div_c;
-            state <= ADD_X_SQ;
+            prod_div <= div_c;
+            state <= ADD_X;
           end
           start_div <= 1'b0;
-        end
-        ADD_X_SQ: begin
-          start_adder <= 1'b1;
-          add_a <= sum;
-          add_b <= x_sq;
-          state <= WAIT_ADD_X_SQ;
-        end
-        WAIT_ADD_X_SQ: begin
-          if (add_done) begin
-            sum <= add_c;
-            state <= DONE;
-          end
-          start_adder <= 1'b0;
         end
         DONE: begin
           state <= IDLE;
