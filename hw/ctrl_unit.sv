@@ -78,11 +78,10 @@ module ctrl_unit
     end
   end
 
-  assign write_request_valid = (state == WRITE_PROGRAM_PAGE);
   assign write_data = { 512 { 1'b1 } };
 
   assign address = cnt;
-  assign write_request_valid = 0;
   assign read_request_valid = (state == FETCH_PROGRAM_PAGE);
+  assign write_request_valid = (state == WRITE_PROGRAM_PAGE);
 
 endmodule
