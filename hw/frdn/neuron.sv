@@ -1,6 +1,7 @@
 module neuron
   #(
-    INPUTS = 400
+    INPUTS = 400,
+    USE_TANH = 1
   )
   (
     /*
@@ -133,7 +134,11 @@ module neuron
           if (add_done) begin
             accum <= add_c;
             if (cnt + 1 == INPUTS) begin
-              state <= CALC_TANH;
+              if (USE_TANH) begin
+                state <= CALC_TANH;
+              end else begin
+                state <= DONE;
+              end
             end else begin
               cnt <= cnt + 1;
               state <= WEIGHT_PRODUCT;

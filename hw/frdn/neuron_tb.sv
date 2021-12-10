@@ -50,7 +50,7 @@ module neuron_tb();
       data[i] = $realtobits($itor(temp) / 256.0);
 
       temp = $urandom();
-      weights[i] = $itor(temp) / 512.0;
+      weights[i] = $itor(temp) / 512000.0;
     end
 
     for (integer i = 0; i < 400; i++) begin
