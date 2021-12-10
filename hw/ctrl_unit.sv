@@ -26,8 +26,6 @@ module ctrl_unit
 
   ctrl_unit_state state;
 
-  int i;
-
   reg [31:0] cnt;
   reg [31:0] instructions [4095:0];
 
@@ -35,7 +33,9 @@ module ctrl_unit
 
   always_ff @(posedge clk or negedge rst_n) begin
     if (!rst_n) begin
-      instructons <= '{ 4096 { '0 } };
+      for (integer i = 0; i < 4096; i++) begin
+        instructons[i] <= 32'h00000000;
+      end
       state <= WAIT_BUFFER;
       cnt <= '0;
     end else begin
@@ -53,7 +53,7 @@ module ctrl_unit
             state <= FETCH_PROGRAM_PAGE;
             cnt <= cnt + 1;
           end
-          for (i = 0; i < 16; i++) begin
+          for (integer i = 0; i < 16; i++) begin
             instructions[(cnt * 16) + i] <= data[(i * 32) +: 32];
           end
         end
