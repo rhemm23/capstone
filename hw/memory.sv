@@ -23,10 +23,13 @@ module memory
 
   typedef enum logic [1:0] {
     IDLE = 2'b00,
-    WAIT = 2'b01
+    WAIT = 2'b01,
+    SENT = 2'b10
   } mem_state;
 
   mem_state state;
+
+  reg [31:0] stored_address;
 
   wire [63:0] buffer_addr;
 
@@ -40,6 +43,7 @@ module memory
 
   always_ff @(posedge clk or negedge rst_n) begin
     if (!rst_n) begin
+      stored_address <= '0;
       state <= IDLE;
       tx.c0 <= '0;
       tx.c1 <= '0;
@@ -47,32 +51,36 @@ module memory
       case (state)
         IDLE: begin
           if (request_valid) begin
-            tx.c0.hdr <= '{
-              eVC_VA,
-              2'b00,
-              eCL_LEN_1,
-              eREQ_RDLINE_I,
-              6'h00,
-              t_ccip_clAddr'(buffer_addr + address),
-              16'h0000
-            };
-            tx.c0.valid <= 1;
+            stored_address <= address;
             state <= WAIT;
-          end else begin
-            tx.c0.valid <= 0;
           end
         end
-        WAIT: if (rx.c0.rspValid && rx.c0.hdr.resp_type == eRSP_RDLINE && rx.c0.hdr.mdata == 16'h0000) begin
+        WAIT: if (!tx.c0.c0TxAlmFull) begin
+          tx.c0.hdr <= '{
+            eVC_VA,
+            2'b00,
+            eCL_LEN_1,
+            eREQ_RDLINE_I,
+            6'h00,
+            t_ccip_clAddr'(buffer_addr + stored_address),
+            16'h0000
+          };
+          state <= SENT;
+        end
+        SENT: if (rx.c0.rspValid && rx.c0.hdr.resp_type == eRSP_RDLINE && rx.c0.hdr.mdata == 16'h0000) begin
           state <= IDLE;
         end
       endcase
     end
   end
 
+  assign tx.c0.valid = (!tx.c0.c0TxAlmFull) &&
+                       (state == WAIT);
+
   assign data_valid = (rx.c0.rspValid) &&
                       (rx.c0.hdr.resp_type == eRSP_RDLINE) &&
                       (rx.c0.hdr.mdata == 16'h0000) &&
-                      (state == WAIT);
+                      (state == SENT);
 
   assign data = rx.c0.data;
   assign buffer_addr_valid = |buffer_addr;
