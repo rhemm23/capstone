@@ -34,7 +34,7 @@ module ctrl_unit
   always_ff @(posedge clk or negedge rst_n) begin
     if (!rst_n) begin
       for (integer i = 0; i < 4096; i++) begin
-        instructons[i] <= 32'h00000000;
+        instructions[i] <= 32'h00000000;
       end
       state <= WAIT_BUFFER;
       cnt <= '0;
