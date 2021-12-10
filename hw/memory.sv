@@ -102,7 +102,7 @@ module memory
           state <= WAIT_WRITE_RESPONSE;
         end
         WAIT_WRITE_RESPONSE: begin
-          if (rx.c1.rspValid && rx.c1.hdr.resp_type == eRSP_WRLINE && rx.c1.hdr.mdata == 16'h0000) begin begin
+          if (rx.c1.rspValid && rx.c1.hdr.resp_type == eRSP_WRLINE && rx.c1.hdr.mdata == 16'h0000) begin
             state <= IDLE;
           end
           tx.c1.valid <= 0;
