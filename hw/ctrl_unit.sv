@@ -23,18 +23,14 @@ module ctrl_unit
     WAIT_BUFFER = 3'b000,
     FETCH_PROGRAM_PAGE = 3'b001,
     WAIT_PROGRAM_PAGE = 3'b010,
-    WRITE_PROGRAM_PAGE = 3'b011,
-    WAIT_WRITE_PAGE = 3'b100,
-    EXECUTING = 3'b101,
-    DONE = 3'b110
+    EXECUTING = 3'b011,
+    DONE = 3'b100
   } ctrl_unit_state;
 
   ctrl_unit_state state;
 
   reg [31:0] cnt;
   reg [31:0] instructions [4095:0];
-
-  wire [31:0] page_instructions [15:0];
 
   always_ff @(posedge clk or negedge rst_n) begin
     if (!rst_n) begin
@@ -53,8 +49,7 @@ module ctrl_unit
         end
         WAIT_PROGRAM_PAGE: if (data_valid) begin
           if (cnt == 255) begin
-            state <= WRITE_PROGRAM_PAGE;
-            cnt <= 0;
+            state <= EXECUTING;
           end else begin
             state <= FETCH_PROGRAM_PAGE;
             cnt <= cnt + 1;
@@ -63,25 +58,14 @@ module ctrl_unit
             instructions[(cnt * 16) + i] <= read_data[(i * 32) +: 32];
           end
         end
-        WRITE_PROGRAM_PAGE: begin
-          state <= WAIT_WRITE_PAGE;
-        end
-        WAIT_WRITE_PAGE: if (write_done) begin
-          if (cnt == 255) begin
-            state <= DONE;
-          end else begin
-            state <= WRITE_PROGRAM_PAGE;
-            cnt <= cnt + 1;
-          end
-        end
       endcase
     end
   end
 
-  assign write_data = { 512 { 1'b1 } };
+  assign write_data = { 512 { 1'b0 } };
 
   assign address = cnt;
+  assign write_request_valid = 0;
   assign read_request_valid = (state == FETCH_PROGRAM_PAGE);
-  assign write_request_valid = (state == WRITE_PROGRAM_PAGE);
 
 endmodule

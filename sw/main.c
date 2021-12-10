@@ -64,13 +64,6 @@ int main(int argc, char *argv[]) {
   // Allow AFU to execute, replace with events in future
   sleep(10);
 
-  for (int i = 0; i < MAX_INSTRUCTIONS; i++) {
-    if (program_buffer[i] != 0xffffffff) {
-      printf("invalid\n");
-      break;
-    }
-  }
-
   close_afu(&afu);
   free(compiled_program);
 
