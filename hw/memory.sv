@@ -55,7 +55,7 @@ module memory
             state <= WAIT;
           end
         end
-        WAIT: if (!tx.c0.c0TxAlmFull) begin
+        WAIT: if (!rx.c0TxAlmFull) begin
           tx.c0.hdr <= '{
             eVC_VA,
             2'b00,
@@ -74,7 +74,7 @@ module memory
     end
   end
 
-  assign tx.c0.valid = (!tx.c0.c0TxAlmFull) &&
+  assign tx.c0.valid = (!rx.c0TxAlmFull) &&
                        (state == WAIT);
 
   assign data_valid = (rx.c0.rspValid) &&
