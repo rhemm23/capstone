@@ -90,7 +90,7 @@ module memory
             0,
             eVC_VA,
             1'b1,
-            eMOD_CL,
+            1'b0,
             eCL_LEN_1,
             eREQ_WRLINE_I,
             0,
