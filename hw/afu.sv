@@ -32,7 +32,7 @@ module afu
     .read_request_valid(read_request_valid),
     .write_request_valid(write_request_valid),
     .address(address),
-    .data_d(write_data)
+    .data_d(write_data),
     .rx(rx),
     .buffer_addr_valid(buffer_addr_valid),
     .data_valid(data_valid),
