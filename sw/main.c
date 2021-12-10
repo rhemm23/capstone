@@ -67,7 +67,7 @@ int main(int argc, char *argv[]) {
   for (int i = 0; i < MAX_INSTRUCTIONS; i++) {
     if (program_buffer[i] != 0xffffffff) {
       printf("invalid\n");
-      exit(EXIT_FAILURE);
+      break;
     }
   }
 
