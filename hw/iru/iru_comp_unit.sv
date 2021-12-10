@@ -21,9 +21,6 @@ module iru_comp_unit
   wire signed [8:0] cos_q;
   wire signed [8:0] sin_q;
 
-  wire signed [5:0] row_d_trans;
-  wire signed [5:0] col_d_trans;
-
   iru_cos_lut cos_lut (
     .d(rnn_out),
     .q(cos_q)
@@ -34,11 +31,8 @@ module iru_comp_unit
     .q(sin_q)
   );
 
-  assign row_d_trans = $signed({ 1'b0, row_d }) - 10;
-  assign col_d_trans = $signed({ 1'b0, col_d }) - 10;
-
-  assign calc_col = (((col_d_trans * cos_q) - (row_d_trans * sin_q)) >>> 7) + 10;
-  assign calc_row = (((col_d_trans * sin_q) + (row_d_trans * cos_q)) >>> 7) + 10;
+  assign calc_col = (((($signed({ 1'b0, col_d }) - 10) * cos_q) - (($signed({ 1'b0, row_d }) - 10) * sin_q)) >>> 7) + 10;
+  assign calc_row = (((($signed({ 1'b0, col_d }) - 10) * sin_q) + (($signed({ 1'b0, row_d }) - 10) * cos_q)) >>> 7) + 10;
 
   assign col_q = calc_col[4:0];
   assign row_q = calc_row[4:0];

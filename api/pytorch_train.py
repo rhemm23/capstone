@@ -1,8 +1,4 @@
-from qtorch.quant.quant_function import *
 from torch import nn
-
-from qtorch.auto_low import sequential_lower
-from qtorch.optim import OptimLP
 
 from rot_dataloader import RotatedImageDataLoader
 from rot_dataset import RotatedImageDataset
@@ -16,10 +12,11 @@ from bin_model_loader import BinModelLoader
 import torch.optim as optim
 
 import signal
-import qtorch
 import torch
 import sys
 import os
+
+TYPE = torch.double
 
 args = sys.argv[1:]
 device = torch.device('cuda:0' if ('cuda' in args) else 'cpu')
@@ -39,14 +36,7 @@ else:
   model_path += '.tar'
   loader = TorchModelLoader()
 
-forward_num = qtorch.FixedPoint(wl=16, fl=10)
-
-model = sequential_lower(
-  LinNet(),
-  layer_types=['linear'],
-  forward_number=forward_num,
-  forward_rounding='nearest',
-)
+model = LinNet().type(TYPE)
 model.to(device)
 
 if os.path.isfile(model_path):
@@ -54,9 +44,6 @@ if os.path.isfile(model_path):
 
 criterion = nn.CrossEntropyLoss()
 optimizer = optim.SGD(model.parameters(), lr=0.01, momentum=0.9)
-
-weight_quant = lambda x : fixed_point_quantize(x, wl=16, fl=10)
-optimizer = OptimLP(optimizer, weight_quant=weight_quant)
 
 def save_model():
   loader.save(model_path, model)
@@ -68,13 +55,13 @@ def signal_handler(sig, frame):
 
 signal.signal(signal.SIGINT, signal_handler)
 
-dataset = RotatedImageDataset(1080, device=device)
-test_dataset = RotatedImageDataset(1080, device=device)
+dataset = RotatedImageDataset(1080, device=device, dtype=TYPE)
+test_dataset = RotatedImageDataset(1080, device=device, dtype=TYPE)
 
-dataloader = RotatedImageDataLoader(dataset, device)
-test_dataloader = RotatedImageDataLoader(test_dataset, device)
+dataloader = RotatedImageDataLoader(dataset, device, dtype=TYPE)
+test_dataloader = RotatedImageDataLoader(test_dataset, device, dtype=TYPE)
 
-for i in range(100000):
+for i in range(20000):
   batch_cnt = 0
   tot_loss = 0
   model.train()
