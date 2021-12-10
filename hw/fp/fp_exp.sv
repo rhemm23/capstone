@@ -4,7 +4,7 @@
  */
 module fp_exp
   #(
-    ITERATIONS = 2
+    ITERATIONS = 7
   )
   (
     /*
