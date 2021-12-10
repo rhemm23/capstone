@@ -1,4 +1,4 @@
-from bitstring import Bits, BitArray, CreationError
+from bitstring import Bits, CreationError
 
 import torch
 import math
@@ -7,7 +7,7 @@ class BinModelLoader:
   def __init__(self, bit_cnt):
     self.bit_cnt = bit_cnt
     self.byte_size = math.ceil(bit_cnt / 8)
-    self.factor = 2**(bit_cnt - 6)
+    self.factor = 2**(bit_cnt - 3)
 
   def read_float(self):
     value = Bits(bytes=self.bytes[self.byte_cnt:self.byte_cnt + self.byte_size], length=self.bit_cnt).int
