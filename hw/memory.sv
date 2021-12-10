@@ -65,17 +65,18 @@ module memory
             t_ccip_clAddr'(buffer_addr + stored_address),
             16'h0000
           };
+          tx.c0.valid <= 1;
           state <= SENT;
         end
-        SENT: if (rx.c0.rspValid && rx.c0.hdr.resp_type == eRSP_RDLINE && rx.c0.hdr.mdata == 16'h0000) begin
-          state <= IDLE;
+        SENT: begin
+          if (rx.c0.rspValid && rx.c0.hdr.resp_type == eRSP_RDLINE && rx.c0.hdr.mdata == 16'h0000) begin
+            state <= IDLE;
+          end
+          tx.c0.valid <= 0;
         end
       endcase
     end
   end
-
-  assign tx.c0.valid = (!rx.c0TxAlmFull) &&
-                       (state == WAIT);
 
   assign data_valid = (rx.c0.rspValid) &&
                       (rx.c0.hdr.resp_type == eRSP_RDLINE) &&
