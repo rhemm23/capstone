@@ -13,7 +13,7 @@ module ctrl_unit
      * Outputs
      */
     output [31:0] address,
-    output request_valid,
+    output request_valid
   );
 
   typedef enum logic [2:0] {
