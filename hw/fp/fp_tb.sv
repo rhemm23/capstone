@@ -1,4 +1,4 @@
-module fp_mult_tb();
+module fp_tb();
 
   logic clk;
   logic rst_n;
@@ -11,7 +11,7 @@ module fp_mult_tb();
   
   wire done;
 
-  fp_exp exp (
+  fp_tanh tanh (
     .clk(clk),
     .rst_n(rst_n),
     .fp_in(fp_in),
@@ -31,13 +31,13 @@ module fp_mult_tb();
     rst_n = 1;
     #5;
 
-    fp_in = 64'h3ff0000000000000;
+    fp_in = $realtobits(-0.005);
     start = 1;
     
     @(posedge clk);
     @(posedge done);
 
-    $display("%e", $bitstoreal(c));
+    $display("%.10f", $bitstoreal(c));
     $stop();
 
   end
