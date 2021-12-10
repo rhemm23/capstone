@@ -8,7 +8,7 @@
 #include <bson/bson.h>
 
 #define WEIGHT_FRAC_BITS 13
-#define FACTOR 4096
+#define FACTOR 8192
 
 typedef struct neuron {
   int16_t bias;
@@ -63,42 +63,50 @@ static void print_net(net_t *net) {
 
 static int net_forward(net_t *net, const uint8_t *sub_image) {
   int16_t *layers_out[net->layer_cnt];
+  bool test = true;
+  // Create tanh rom array
+  uint16_t tanh_rom [32768];
+  for (int k = 0; k < 32768; k++) {
+    double tanh_x = 0.00003051757 * k;
+    uint16_t temp = (uint16_t)(tanh(tanh_x) * 8192);
+    tanh_rom[k] = temp;
+  }
   for (int i = 0; i < net->layer_cnt; i++) {
     layers_out[i] = (int16_t*)malloc(sizeof(int16_t) * net->layers[i]->neuron_cnt);
     for (int j = 0; j < net->layers[i]->neuron_cnt; j++) {
       int32_t accumulation = (int32_t)net->layers[i]->neurons[j]->bias;
-
+      double accumulation_f = to_double(net->layers[i]->neurons[j]->bias);
       // Loop through # of weights for neuron, equals # of inputs
       for (int k = 0; k < net->layers[i]->neurons[j]->weight_cnt; k++) {
         int16_t weight = net->layers[i]->neurons[j]->weights[k]; // Make sure weights are converted to +/-2.13
         int16_t input = (i == 0) ? (((int16_t)sub_image[k]) << 5) : layers_out[i - 1][k];
-        int32_t result = (((int16_t)input) * ((int16_t)weight)) >> WEIGHT_FRAC_BITS;
+        int32_t result = (((int32_t)input) * ((int32_t)weight)) >> 13;
         accumulation += result;
+        if (test) {
+          double weight_f = to_double(net->layers[i]->neurons[j]->weights[k]); 
+          float input_f = (i == 0) ? (((float)sub_image[k])/256.0f) : layers_out[i - 1][k];
+          double result_f = ((double)input_f) * ((double)weight_f);
+          accumulation_f += result_f;
+          //printf("num:%d\nFloating point:%f\nFixed Point: %f\nWeight: %d\nInput: %d\nResult: %d\n\n", k, accumulation_f, (accumulation*0.00012207031), weight, input, result);
+        }
       }
+      //printf("Floating point 32bit:%f\nFixed Point 16 bit implementation: %f\n", accumulation_f, (accumulation*0.00012207031));
+      //exit(0);
 
       // Round Accumulation for Activation funtion.
-      uint8_t rounded_accum;
+      uint16_t rounded_accum;
       bool accum_positive = false;
       if (accumulation >= 0) {
         accum_positive = true;
       }
-      (accumulation >>= 7);
-      if (accumulation > 255) {
-        rounded_accum = 255;
-      } else if (accumulation < -255) {
-        rounded_accum = 255;
+      uint32_t abs_accumulation = abs(accumulation);
+      // abs_accumulation = abs_accumulation >> 7;
+      if (abs_accumulation > 32767) {
+        rounded_accum = 32767;
       } else {
-        rounded_accum = ((uint8_t)accumulation);
+        rounded_accum = ((uint16_t)abs_accumulation);
       }
       
-      // Create tanh rom array
-      uint8_t tanh_rom [256];
-      for (int k = 0; k < 256; k++) {
-        double tanh_x = 0.015625 * k;
-        uint8_t temp = (uint8_t)(tanh(tanh_x) * 128);
-        tanh_rom[k] = temp;
-      }
-
 
       if (i != net->layer_cnt - 1) {
         int16_t activation_output;
@@ -168,6 +176,8 @@ int main(int argc, char *argv[]) {
       }
     }
   }
+  //print_net(net);
+  //exit(0);
 
   mongoc_collection_t *rot_data;
   mongoc_database_t *database;
@@ -200,9 +210,11 @@ int main(int argc, char *argv[]) {
     bson_iter_binary(&iter, NULL, &image_data_len, &image_data);
     bson_iter_find(&iter, "rotation");
     int32_t rotation = bson_iter_int32(&iter) / 10;
-    if (rotation == net_forward(net, image_data)) {
+    int result = net_forward(net, image_data);
+    if (rotation == result) {
       pass_cnt++;
     }
+    //printf("%d\n", result);
   }
 
   int accuracy = (int)(((float)pass_cnt / (float)test_cnt) * 100);
