@@ -121,7 +121,7 @@ module memory
                       (rx.c0.hdr.mdata == 16'h0000) &&
                       (state == WAIT_READ_RESPONSE);
 
-  assign data = rx.c0.data;
+  assign data_q = rx.c0.data;
   assign buffer_addr_valid = |buffer_addr;
 
 endmodule
