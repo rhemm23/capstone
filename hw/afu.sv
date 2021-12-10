@@ -46,9 +46,12 @@ module afu
     .rst_n(rst_n),
     .buffer_addr_valid(buffer_addr_valid),
     .data_valid(data_valid),
-    .data(data),
+    .write_done(write_done),
+    .read_data(read_data),
     .address(address),
-    .request_valid(request_valid)
+    .write_data(write_data),
+    .read_request_valid(read_request_valid),
+    .write_request_valid(write_request_valid)
   );
 
 endmodule

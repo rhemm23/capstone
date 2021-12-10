@@ -7,13 +7,16 @@ module ctrl_unit
     input rst_n,
     input buffer_addr_valid,
     input data_valid,
-    input [511:0] data,
+    input write_done,
+    input [511:0] read_data,
 
     /*
      * Outputs
      */
     output [31:0] address,
-    output request_valid
+    output [511:0] write_data,
+    output read_request_valid,
+    output write_request_valid
   );
 
   typedef enum logic [2:0] {
@@ -54,7 +57,7 @@ module ctrl_unit
             cnt <= cnt + 1;
           end
           for (integer i = 0; i < 16; i++) begin
-            instructions[(cnt * 16) + i] <= data[(i * 32) +: 32];
+            instructions[(cnt * 16) + i] <= read_data[(i * 32) +: 32];
           end
         end
         EXECUTING: begin
@@ -65,6 +68,7 @@ module ctrl_unit
   end
 
   assign address = cnt;
-  assign request_valid = (state == FETCH_PROGRAM_PAGE);
+  assign write_request_valid = 0;
+  assign read_request_valid = (state == FETCH_PROGRAM_PAGE);
 
 endmodule
