@@ -5,8 +5,8 @@ module heu
      */
     input clk,
     input rst_n,
-    input ipgu_out_ready,
-    input rdn_in_ready,
+    input prev_out_ready,
+    input next_in_ready,
     input [7:0] d [4:0][79:0],
 
     /*
@@ -35,8 +35,8 @@ module heu
     .clk(clk),
     .rst_n(rst_n),
     .sum_ready(sum_ready),
-    .rdn_in_ready(rdn_in_ready),
-    .ipgu_out_ready(ipgu_out_ready),
+    .next_in_ready(next_in_ready),
+    .prev_out_ready(prev_out_ready),
     .sum_go(sum_go),
     .in_ready(in_ready),
     .write_in(write_in),
