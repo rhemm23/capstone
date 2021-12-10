@@ -16,11 +16,3 @@ heu/heu_sum_unit.sv
 heu/heu_calc_unit.sv
 heu/heu_ctrl_unit.sv
 heu/heu.sv
-
-neurons/a_neuron.sv
-neurons/b_neuron.sv
-neurons/c_neuron.sv
-
-rdn/rdn_ctrl_unit.sv
-rdn/rdn_weight_ld.sv
-rdn/rdn.sv
