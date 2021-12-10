@@ -4,7 +4,7 @@
  */
 module fp_exp
   #(
-    ITERATIONS = 7
+    ITERATIONS = 8
   )
   (
     /*
@@ -22,6 +22,8 @@ module fp_exp
     output done
   );
 
+  localparam ONE = 64'h3ff0000000000000;
+
   typedef enum logic [3:0] {
     IDLE = 4'b0000,
     ADD_X = 4'b0001,
@@ -32,10 +34,14 @@ module fp_exp
     WAIT_CONV_FACT = 4'b0110,
     DIV_FACT = 4'b0111,
     WAIT_DIV_FACT = 4'b1000,
-    DONE = 4'b1001
+    ONE_OVER = 4'b1001,
+    WAIT_ONE_OVER = 4'b1010,
+    DONE = 4'b1011
   } exp_state;
 
   exp_state state;
+
+  reg sign;
 
   reg [5:0] cnt;
 
@@ -123,10 +129,11 @@ module fp_exp
       case (state)
         IDLE: if (start) begin
           sum <= 64'h3ff0000000000000;
-          x <= fp_in;
+          x <= { 1'b0, fp_in[62:0] };
           cnt <= 1;
-          prod <= fp_in;
-          prod_div <= fp_in;
+          sign <= fp_in[63];
+          prod <= { 1'b0, fp_in[62:0] };
+          prod_div <= { 1'b0, fp_in[62:0] };
           factorial <= 1;
           state <= ADD_X;
         end
@@ -140,7 +147,11 @@ module fp_exp
           if (add_done) begin
             sum <= add_c;
             if (cnt == ITERATIONS) begin
-              state <= DONE;
+              if (sign) begin
+                state <= ONE_OVER;
+              end else begin
+                state <= DONE;
+              end
             end else begin
               state <= MULT_X;
               cnt <= cnt + 1;
@@ -183,6 +194,19 @@ module fp_exp
           if (div_done) begin
             prod_div <= div_c;
             state <= ADD_X;
+          end
+          start_div <= 1'b0;
+        end
+        ONE_OVER: begin
+          start_div <= 1'b1;
+          div_a <= ONE;
+          div_b <= sum;
+          state <= WAIT_ONE_OVER;
+        end
+        WAIT_ONE_OVER: begin
+          if (div_done) begin
+            sum <= div_c;
+            state <= DONE;
           end
           start_div <= 1'b0;
         end

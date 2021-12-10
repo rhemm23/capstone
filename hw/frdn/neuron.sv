@@ -97,6 +97,7 @@ module neuron
       for (integer i = 0; i < INPUTS; i++) begin
         weights[i] <= '0;
       end
+      state <= IDLE;
       start_mult <= 1'b0;
       start_tanh <= 1'b0;
       start_add <= 1'b0;
