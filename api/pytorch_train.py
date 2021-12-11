@@ -3,7 +3,7 @@ from torch import nn
 from rot_dataloader import RotatedImageDataLoader
 from rot_dataset import RotatedImageDataset
 
-from lin_net import LinNet
+from lin_net import RotNet
 
 from torch_model_loader import TorchModelLoader
 from json_model_loader import JsonModelLoader
@@ -36,7 +36,7 @@ else:
   model_path += '.tar'
   loader = TorchModelLoader()
 
-model = LinNet().type(TYPE)
+model = RotNet().type(TYPE)
 model.to(device)
 
 if os.path.isfile(model_path):
