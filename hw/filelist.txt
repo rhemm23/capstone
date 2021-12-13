@@ -16,3 +16,13 @@ heu/heu_sum_unit.sv
 heu/heu_calc_unit.sv
 heu/heu_ctrl_unit.sv
 heu/heu.sv
+
+frdn/rot_nn.sv
+frdn/layer.sv
+frdn/neuron.sv
+fp/fp_adder.sv
+fp/fp_divider.sv
+fp/fp_exp.sv
+fp/fp_mult.sv
+fp/fp_tanh.sv
+fp/long_to_fp.sv
