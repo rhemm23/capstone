@@ -54,4 +54,18 @@ module afu
     .write_request_valid(write_request_valid)
   );
 
+  rot_nn rnn (
+    .clk(clk),
+    .rst_n(rst_n),
+    .start(),
+    .data_in(),
+    .write_weight(),
+    .layer_sel(),
+    .neuron_sel(),
+    .weight_sel(),
+    .weight_bus(),
+    .angle(),
+    .done()
+  );
+
 endmodule
