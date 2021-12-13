@@ -1,7 +1,7 @@
 from torch import nn
 
-from rot_dataloader import RotatedImageDataLoader
-from rot_dataset import RotatedImageDataset
+from rot_dataloader import RotatedImageDataLoader, TestImageDataLoader
+from rot_dataset import RotatedImageDataset, TestImageDataset
 
 from lin_net import RotNet
 
@@ -55,13 +55,13 @@ def signal_handler(sig, frame):
 
 signal.signal(signal.SIGINT, signal_handler)
 
-dataset = RotatedImageDataset(1080, device=device, dtype=TYPE)
-test_dataset = RotatedImageDataset(1080, device=device, dtype=TYPE)
+dataset = RotatedImageDataset(device=device)
+dataloader = RotatedImageDataLoader(dataset, device)
 
-dataloader = RotatedImageDataLoader(dataset, device, dtype=TYPE)
-test_dataloader = RotatedImageDataLoader(test_dataset, device, dtype=TYPE)
+test_dataset = TestImageDataset(device=device)
+test_dataloader = TestImageDataLoader(test_dataset, device=device)
 
-for i in range(20000):
+for i in range(10000):
   batch_cnt = 0
   tot_loss = 0
   model.train()
@@ -75,9 +75,10 @@ for i in range(20000):
     tot_loss += loss.item()
 
   if i % 100 == 0:
+
     print('Epoch {} Loss: {}'.format(i, tot_loss))
 
-    cnt = 1
+    cnt = 0
     pass_cnt = 0
 
     model.eval()
