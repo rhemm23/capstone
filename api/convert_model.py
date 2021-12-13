@@ -21,6 +21,9 @@ elif sys.argv[1] == 'bin8':
 elif sys.argv[1] == 'bin16':
   out_path = './model16.bin'
   out_loader = BinModelLoader(16)
+elif sys.argv[1] == 'bin64':
+  out_path = './model64.bin'
+  out_loader = BinModelLoader(64)
 elif sys.argv[1] == 'torch':
   out_path = './model.tar'
   out_loader = TorchModelLoader()
