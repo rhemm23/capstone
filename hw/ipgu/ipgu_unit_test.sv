@@ -85,14 +85,10 @@ module ipgu_unit_test;
 
         if(ipguOutBufferQ!=windowVals) begin
             $display("%p\n\n%p \n\n %d,%d\n\n", ipguOutBufferQ[0][19:0], windowVals[0][19:0], (windowNum/(dims[conversionI]/20))*10,colsBegin);
+            $display("Tests failed for windowNum %d conversionI %d converting from %d to %d",windowNum, conversionI, dims[conversionI], dims[conversionI+1]);
             $stop(); 
         end
-        else begin
-//            $display("%p\n\n%p \n\n %d \n %d,%d\n", ipguOutBufferQ[0][19:0], windowVals[0][19:0], ipguOutBufferQ[0][0], (windowNum/(dims[conversionI]/20))*10,colsBegin);
-//$stop();
-            $display("Tests passed for windowNum %d conversionI %d converting from %d to %d",windowNum, conversionI, dims[conversionI], dims[conversionI+1]);
-            //$display("%p and %p", ipguOutBufferQ, windowVals);
-        end
+
         windowNum++;
         if(windowNum==(dims[conversionI]/10-1)*(dims[conversionI]/10-1)) begin
             logic [7:0] tempMem [299:0][299:0];
