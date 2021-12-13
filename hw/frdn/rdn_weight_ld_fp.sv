@@ -17,116 +17,77 @@ module rdn_weight_ld_fp
     /*
      * Outputs
      */
-    output [63:0] a_weight_bus,
-    output [63:0] b_weight_bus,
-    output [63:0] c_weight_bus,
-    output [$clog2(NUM_A_NEURONS)-1:0] a_sel,
-    output [$clog2(NUM_B_NEURONS)-1:0] b_sel,
-    output [$clog2(NUM_C_NEURONS)-1:0] c_sel,
-    output logic write_a,
-    output logic write_b,
-    output logic write_c,
-    output [8:0] a_weight_sel,
-    output [$clog2(NUM_A_NEURONS)-1:0] b_weight_sel,
-    output [$clog2(NUM_B_NEURONS)-1:0] c_weight_sel,
+    output [63:0] weight_bus,
+    output [1:0] layer_sel,
+    output [5:0] neuron_sel,
+    output logic write_weight,
+    output [8:0] weight_sel,
     output logic weight_valid,
     output logic req_mem
   );
 
   // Control signals of state machine
-  logic ld_weight;
-  logic new_neuron, new_a_neuron, new_b_neuron, new_c_neuron;
-  logic store_a_weights, store_b_weights, store_c_weights;
+  logic new_neuron;
+  logic store_weights, write_a, write_b, write_c;
+  logic clr_layer_reg, inc_layer;
+  logic clr_neuron_cnt;
 
   // Sequential logic
+  reg [1:0] layer_reg;
   reg [2:0] word_cnt;
   reg [8:0] weight_cnt;
-  reg [$clog2(NUM_A_NEURONS)-1:0] a_cnt; 
-  reg [$clog2(NUM_B_NEURONS)-1:0] b_cnt;
-  reg [$clog2(NUM_C_NEURONS)-1:0] c_cnt;
-  reg [63:0] a_weight_block [7:0];
-  reg [63:0] b_weight_block  [7:0];
-  reg [63:0] c_weight_block  [7:0];
+  reg [5:0] neuron_cnt; 
+  reg [63:0] weight_block [7:0];
 
   // combinational logic
-  assign a_sel = a_cnt;
-  assign b_sel = b_cnt;
-  assign c_sel = c_cnt;
-  assign new_neuron = (new_a_neuron || new_b_neuron || new_c_neuron);
-  assign ld_weight = (write_a || write_b || write_c);
+  assign neuron_sel = neuron_cnt;
+  assign write_weight = (write_a || write_b || write_c);
+  assign layer_sel = layer_reg;
 
   // setting output data busses
-  assign a_weight_bus = a_weight_block[word_cnt];
-  assign b_weight_bus = b_weight_block[word_cnt];
-  assign c_weight_bus = c_weight_block[word_cnt];
-  assign a_weight_sel = weight_cnt;
-  assign b_weight_sel = weight_cnt[$clog2(NUM_A_NEURONS)-1:0];
-  assign c_weight_sel = weight_cnt[$clog2(NUM_B_NEURONS)-1:0];
+  assign weight_bus = weight_block[word_cnt];
+  assign weight_sel = weight_cnt;
 
 
   // Counts what word is being load from the mem block
   always_ff @(posedge clk, negedge rst_n) begin
-      if (!rst_n || req_mem)
-      word_cnt <= 3'h0;
-      else if (ld_weight)
-      word_cnt <= word_cnt + 1;
+    if (!rst_n || req_mem)
+    word_cnt <= 3'h0;
+    else if (write_weight)
+    word_cnt <= word_cnt + 1;
   end
 
   // Counts the number of weights loaded for a single neuron
   always_ff @(posedge clk, negedge rst_n) begin
-      if (!rst_n || new_neuron)
-      weight_cnt <= 9'h000;
-      else if (ld_weight)
-      weight_cnt <= weight_cnt + 1;
+    if (!rst_n || new_neuron)
+    weight_cnt <= 9'h000;
+    else if (write_weight)
+    weight_cnt <= weight_cnt + 1;
   end
 
-  // Counts the number of A neurons that are done
+  // Holds which layer is being loaded: A,B, or C 
   always_ff @(posedge clk, negedge rst_n) begin
-      if (!rst_n)
-      a_cnt <= 0;
-      else if (new_a_neuron)
-      a_cnt <= a_cnt + 1;
+    if (!rst_n || clr_layer_reg)
+    layer_reg <= 2'b00;
+    else if (inc_layer)
+    layer_reg <= layer_reg + 1;
   end
 
-  // Counts the number of B neurons that are done
+  // Counts the number of neurons that are done in a layer
   always_ff @(posedge clk, negedge rst_n) begin
-      if (!rst_n)
-      b_cnt <= 0;
-      else if (new_b_neuron)
-      b_cnt <= b_cnt + 1;
-  end
-
-  // Counts the number of C neurons that are done
-  always_ff @(posedge clk, negedge rst_n) begin
-      if (!rst_n)
-      c_cnt <= 0;
-      else if (new_c_neuron)
-      c_cnt <= c_cnt + 1;
+    if (!rst_n || clr_neuron_cnt)
+    neuron_cnt <= 5'h00;
+    else if (new_neuron)
+    neuron_cnt <= neuron_cnt + 1;
   end
 
   integer i;
-  // Holds the A neuron weight memory before loading the Neuron
+  // Holds the neuron's weight memory before loading the Neuron
   always_ff @(posedge clk, negedge rst_n) begin
-      if (!rst_n)
-        for (i = 0; i < 8; i = i + 1) a_weight_block[i] <= 0;
-      else if (store_a_weights)
-        a_weight_block <= mem_data;
-  end
-
-  // Holds the B neuron weight memory before loading the Neuron
-  always_ff @(posedge clk, negedge rst_n) begin
-      if (!rst_n)
-        for (i = 0; i < 8; i = i + 1) b_weight_block[i] <= 0;
-      else if (store_b_weights)
-        b_weight_block <= mem_data;
-  end
-
-  // Holds the C neuron weight memory before loading the Neuron
-  always_ff @(posedge clk, negedge rst_n) begin
-      if (!rst_n)
-        for (i = 0; i < 8; i = i + 1) c_weight_block[i] <= 0;
-      else if (store_c_weights)
-        c_weight_block <= mem_data;
+    if (!rst_n)
+      for (i = 0; i < 8; i = i + 1) weight_block[i] <= 0;
+    else if (store_weights)
+      weight_block <= mem_data;
   end
 
   // Different States
@@ -147,21 +108,20 @@ module rdn_weight_ld_fp
 
   // resets the state maching to IDLE and changes the state to nxt_state every clk cycle
   always_ff @(posedge clk, negedge rst_n) begin
-      if(!rst_n)
-      state <= IDLE;
-      else
-      state <= nxt_state;
+    if(!rst_n)
+    state <= IDLE;
+    else
+    state <= nxt_state;
   end
 
   always_comb begin
     // defaults
     nxt_state = state;
-    new_a_neuron = 1'b0;
-    new_b_neuron = 1'b0;
-    new_c_neuron = 1'b0;
-    store_a_weights = 1'b0;
-    store_b_weights = 1'b0;
-    store_c_weights = 1'b0;
+    new_neuron = 1'b0;
+    store_weights = 1'b0;
+    inc_layer = 1'b0;
+    clr_layer_reg = 1'b0;
+    clr_neuron_cnt = 1'b0;
 
     //outputs
     write_a = 1'b0;
@@ -176,12 +136,12 @@ module rdn_weight_ld_fp
         end
       GET_A_MEM:
         if(mem_ready) begin
-          store_a_weights = 1'b1;
+          store_weights = 1'b1;
           nxt_state = LD_A_WEIGHTS;
         end
       LD_A_WEIGHTS:
         if (weight_cnt == 9'h191) begin
-          new_a_neuron = 1'b1;
+          new_neuron = 1'b1;
           nxt_state = NEW_A_NEURON;
         end else if(word_cnt == 3'b111) begin
           req_mem = 1'b1;
@@ -191,8 +151,10 @@ module rdn_weight_ld_fp
           write_a = 1'b1;
         end
       NEW_A_NEURON:
-        if (a_cnt == NUM_A_NEURONS) begin
+        if (neuron_cnt == NUM_A_NEURONS) begin
           req_mem = 1'b1;
+          inc_layer = 1'b1;
+          clr_neuron_cnt = 1'b1;
           nxt_state = GET_B_MEM;
         end else begin
           req_mem = 1'b1;
@@ -200,12 +162,12 @@ module rdn_weight_ld_fp
         end
       GET_B_MEM:
         if (mem_ready) begin
-          store_b_weights = 1'b1;
+          store_weights = 1'b1;
           nxt_state = LD_B_WEIGHTS;
         end
       LD_B_WEIGHTS:
         if (weight_cnt == (NUM_A_NEURONS + 1)) begin
-          new_b_neuron = 1'b1;
+          new_neuron = 1'b1;
           nxt_state = NEW_B_NEURON;
         end else if(word_cnt == 3'b111) begin
           req_mem = 1'b1;
@@ -215,8 +177,10 @@ module rdn_weight_ld_fp
           write_b = 1'b1;
         end
       NEW_B_NEURON:
-        if (b_cnt == NUM_B_NEURONS) begin
+        if (neuron_cnt == NUM_B_NEURONS) begin
           req_mem = 1'b1;
+          inc_layer = 1'b1;
+          clr_neuron_cnt = 1'b1;
           nxt_state = GET_C_MEM;
         end else begin
           req_mem = 1'b1;
@@ -224,12 +188,12 @@ module rdn_weight_ld_fp
         end
       GET_C_MEM:
         if (mem_ready) begin
-          store_c_weights = 1'b1;
+          store_weights = 1'b1;
           nxt_state = LD_C_WEIGHTS;
         end
       LD_C_WEIGHTS:
         if (weight_cnt == (NUM_B_NEURONS + 1)) begin
-          new_c_neuron = 1'b1;
+          new_neuron = 1'b1;
           nxt_state = NEW_C_NEURON;
         end else if(word_cnt == 3'b111) begin
           req_mem = 1'b1;
@@ -239,8 +203,10 @@ module rdn_weight_ld_fp
           write_c = 1'b1;
         end
       NEW_C_NEURON:
-        if (c_cnt == NUM_C_NEURONS) begin
+        if (neuron_cnt == NUM_C_NEURONS) begin
           weight_valid = 1'b1;
+          clr_layer_reg = 1'b1;
+          clr_neuron_cnt = 1'b1;
           nxt_state = IDLE;
         end else begin
           req_mem = 1'b1;

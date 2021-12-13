@@ -3,18 +3,11 @@ module rdn_weight_ld_fp_tb();
   logic clk, rst_n, go, mem_ready;
   logic [63:0] mem_data [7:0];
 
-  logic [63:0] a_weight_bus;
-  logic [63:0] b_weight_bus;
-  logic [63:0] c_weight_bus;
-  logic [$clog2(15)-1:0] a_sel;
-  logic [$clog2(30)-1:0] b_sel;
-  logic [$clog2(36)-1:0] c_sel;
-  logic write_a;
-  logic write_b;
-  logic write_c;
-  logic [8:0] a_weight_sel;
-  logic [$clog2(15)-1:0] b_weight_sel;
-  logic [$clog2(30)-1:0] c_weight_sel;
+  logic [63:0] weight_bus;
+  logic [1:0] layer_sel;
+  logic [5:0] neuron_sel;
+  logic write_weight;
+  logic [8:0] weight_sel;
   logic weight_valid;
   logic req_mem;
 
@@ -31,18 +24,11 @@ rdn_weight_ld_fp dut (
   /*
     * logics
     */
-  .a_weight_bus(a_weight_bus),
-  .b_weight_bus(b_weight_bus),
-  .c_weight_bus(c_weight_bus),
-  .a_sel(a_sel),
-  .b_sel(b_sel),
-  .c_sel(c_sel),
-  .write_a(write_a),
-  .write_b(write_b),
-  .write_c(write_c),
-  .a_weight_sel(a_weight_sel),
-  .b_weight_sel(b_weight_sel),
-  .c_weight_sel(c_weight_sel),
+  .weight_bus(weight_bus),
+  .layer_sel(layer_sel),
+  .neuron_sel(neuron_sel),
+  .write_weight(write_weight),
+  .weight_sel(weight_sel),
   .weight_valid(weight_valid),
   .req_mem(req_mem)
   );
@@ -93,20 +79,24 @@ rdn_weight_ld_fp dut (
         for (neuron = 0; neuron < 15; neuron = neuron + 1) begin
           weight = 0;
           while (weight !== 401) begin
-            @(posedge write_a);
+            @(posedge write_weight);
             for (word = 0; word < 8; word = word + 1) begin
               if (weight === 401) break;
               @(posedge clk);
-              if (a_sel !== neuron) begin
-                $display("Error: Invalid output value for a_sel %h, expected %h", a_sel, neuron);
+              if (layer_sel !== 2'b00) begin
+                $display("Error: Invalid output value for layer_sel %h, expected 2'b00", layer_sel);
                 $stop();
               end
-              if (a_weight_sel !== weight) begin
-                $display("Error: Invalid output value for a_weight_sel %h, expected %h", a_weight_sel, weight);
+              if (neuron_sel !== neuron) begin
+                $display("Error: Invalid output value for neuron_sel %h, expected %h", neuron_sel, neuron);
                 $stop();
               end
-              if (a_weight_bus !== mem_data[weight % 8]) begin
-                $display("Error: Invalid output value for a_weight_bus %h, expected %h", a_weight_bus, mem_data[weight % 8]);
+              if (weight_sel !== weight) begin
+                $display("Error: Invalid output value for weight_sel %h, expected %h", weight_sel, weight);
+                $stop();
+              end
+              if (weight_bus !== mem_data[weight % 8]) begin
+                $display("Error: Invalid output value for A weight_bus %h, expected %h", weight_bus, mem_data[weight % 8]);
                 $stop();
               end
               weight = weight + 1;
@@ -118,20 +108,24 @@ rdn_weight_ld_fp dut (
         for (neuron = 0; neuron < 30; neuron = neuron + 1) begin
           weight = 0;
           while (weight !== 15) begin
-            @(posedge write_b);
+            @(posedge write_weight);
             for (word = 0; word < 8; word = word + 1) begin
               if (weight === 15) break;
               @(posedge clk);
-              if (b_sel !== neuron) begin
-                $display("Error: Invalid output value for b_sel %h, expected %h", b_sel, neuron);
+              if (layer_sel !== 2'b01) begin
+                $display("Error: Invalid output value for layer_sel %h, expected 2'b01", layer_sel);
                 $stop();
               end
-              if (b_weight_sel !== weight) begin
-                $display("Error: Invalid output value for b_weight_sel %h, expected %h", b_weight_sel, weight);
+              if (neuron_sel !== neuron) begin
+                $display("Error: Invalid output value for neuron_sel %h, expected %h", neuron_sel, neuron);
                 $stop();
               end
-              if (b_weight_bus !== mem_data[weight % 8]) begin
-                $display("Error: Invalid output value for b_weight_bus %h, expected %h", b_weight_bus, mem_data[weight % 8]);
+              if (weight_sel !== weight) begin
+                $display("Error: Invalid output value for weight_sel %h, expected %h", weight_sel, weight);
+                $stop();
+              end
+              if (weight_bus !== mem_data[weight % 8]) begin
+                $display("Error: Invalid output value for B weight_bus %h, expected %h", weight_bus, mem_data[weight % 8]);
                 $stop();
               end
               weight = weight + 1;
@@ -143,20 +137,24 @@ rdn_weight_ld_fp dut (
         for (neuron = 0; neuron < 36; neuron = neuron + 1) begin
           weight = 0;
           while (weight !== 30) begin
-            @(posedge write_c);
+            @(posedge write_weight);
             for (word = 0; word < 8; word = word + 1) begin
               if (weight === 30) break;
               @(posedge clk);
-              if (c_sel !== neuron) begin
-                $display("Error: Invalid output value for c_sel %h, expected %h", c_sel, neuron);
+              if (layer_sel !== 2'b10) begin
+                $display("Error: Invalid output value for layer_sel %h, expected 2'b10", layer_sel);
                 $stop();
               end
-              if (c_weight_sel !== weight) begin
-                $display("Error: Invalid output value for c_weight_sel %h, expected %h", c_weight_sel, weight);
+              if (neuron_sel !== neuron) begin
+                $display("Error: Invalid output value for neuron_sel %h, expected %h", neuron_sel, neuron);
                 $stop();
               end
-              if (c_weight_bus !== mem_data[weight % 8]) begin
-                $display("Error: Invalid output value for c_weight_bus %h, expected %h", c_weight_bus, mem_data[weight % 8]);
+              if (weight_sel !== weight) begin
+                $display("Error: Invalid output value for weight_sel %h, expected %h", weight_sel, weight);
+                $stop();
+              end
+              if (weight_bus !== mem_data[weight % 8]) begin
+                $display("Error: Invalid output value for C weight_bus %h, expected %h", weight_bus, mem_data[weight % 8]);
                 $stop();
               end
               weight = weight + 1;
