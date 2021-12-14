@@ -19,9 +19,17 @@ logic dnn_weights_vld;
 logic rdn_mem_req;
 logic dnn_mem_req;
 logic [511:0] dnn_results;
-logic ipgu_in_rdy;
 
+    wire ipgu_in_rdy;
+    reg initIpgu;
+    reg rdyHeu;
 
+    logic [7:0] initMemVals [299:0][299:0];
+    logic [7:0] wrAllData [299:0][299:0];
+
+    int conversionI = 0;
+    int windowNum = 0;
+ 
 pipeline_wrapper data_pipeline
   (
     .clk(clk),
@@ -56,12 +64,7 @@ pipeline_wrapper data_pipeline
     weight_mem_ready = 0;
     for (int i = 0; i < 8; i++) rdn_weight_data[i] = 0;
     for (int i = 0; i < 8; i++) dnn_weight_data[i] = 0;
-    for (int i = 0; i < 300; i++) begin
-      for (int k = 0; k < 300; k++) begin
-        wrAllData[i][k] = $random;
-      end
-    end
-    results_acceptable = 0;
+    results_acceptable = '1;
     csRam1_ext = 0;
     weRam1_ext = 0;
     wrAll = 0;
@@ -72,9 +75,25 @@ pipeline_wrapper data_pipeline
     rst_n = 1;
     @(posedge clk);
 
-    for (int i = 0; i < 64; i++);
-
-
+        rst_n = '0;
+        rdyHeu = '0;
+        void'(std::randomize(initMemVals));
+        @(posedge clk) rst_n = '1;
+        data_pipeline.IPGU.ram1.ipgu.mem = initMemVals;
+        data_pipeline.IPGU.ram2.mem = '{default:0};
+        wrAllData = '{default:0};
+        @(posedge clk) initIpgu = '1;
+        @(posedge clk) initIpgu = '0;
+        fork: hello
+            wait(dnn_out_vld) begin $display("Valid dnn"); $stop(); end
+            @(posedge ipgu_in_rdy) begin
+                $display("Done ipgu sending");
+                $stop();
+            end
+        join
+        disable hello; 
+            
+        $stop();
   end
 
   always
