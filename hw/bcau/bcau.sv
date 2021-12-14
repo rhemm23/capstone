@@ -21,6 +21,7 @@ module bcau
    */
 
 wire wr_in_all, cir_shft, shft_out, clr_accum;
+wire [2:0] block_sel;
 wire [7:0] new_intensity [4:0];
 wire [7:0] in_buffer_q [4:0];
 
@@ -36,22 +37,23 @@ bcau_ctrl_unit ctrl_unit (
   .wr_accum(wr_accum),
   .set_avg(set_avg),
   .shft_out(shft_out),
-  .clr_accum(clr_accum)
+  .clr_accum(clr_accum),
+  .block_sel(block_sel)
 );
-generate
-  genvar i;
-  for (i = 0; i < 5; i++) begin : comp_units
-    bcau_comp_unit comp_unit (
-      .clk(clk),
-      .rst_n(rst_n),
-      .wr_accum(wr_accum),
-      .set_avg(set_avg),
-      .intensity(in_buffer_q[i]),
-      .clr_accum(clr_accum),
-      .new_intensity(new_intensity[i])
-    );
-  end
-endgenerate
+
+
+bcau_comp_unit comp_unit [4:0] (
+  .clk(clk),
+  .rst_n(rst_n),
+  .wr_accum(wr_accum),
+  .set_avg(set_avg),
+  .clr_accum(clr_accum),
+  .block_sel(block_sel),
+  .intensity(in_buffer_q),
+  .new_intensity(new_intensity)
+);
+
+
 in_buffer in_buf (
   .clk(clk),
   .rst_n(rst_n),

@@ -52,6 +52,11 @@ void write_afu_csr(afu_t *afu, afu_csr_t csr, uint64_t value);
 void * create_afu_buffer(afu_t *afu, uint64_t size);
 
 /*
+ * Setup an already allocated buffer of byte size
+ */
+void setup_afu_buffer(afu_t *afu, void **buffer, uint64_t size);
+
+/*
  * Release all AFU resources
  */
 void close_afu(afu_t *afu);
