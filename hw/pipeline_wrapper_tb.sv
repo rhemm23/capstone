@@ -26,6 +26,7 @@ pipeline_wrapper data_pipeline
   (
     .clk(clk),
     .rst_n(rst_n),
+
     .rdn_load_weights(rdn_load_weights),
     .dnn_load_weights(dnn_load_weights),
     .weight_mem_ready(weight_mem_ready),
@@ -43,7 +44,8 @@ pipeline_wrapper data_pipeline
     .rdn_mem_req(rdn_mem_req),
     .dnn_mem_req(dnn_mem_req),
     .dnn_results(dnn_results),
-    .ipgu_in_rdy(ipgu_in_rdy)
+    .ipgu_in_rdy(ipgu_in_rdy),
+    .dnn_out_vld(dnn_out_vld)
   );
 
   initial begin
@@ -56,7 +58,7 @@ pipeline_wrapper data_pipeline
     for (int i = 0; i < 8; i++) dnn_weight_data[i] = 0;
     for (int i = 0; i < 300; i++) begin
       for (int k = 0; k < 300; k++) begin
-        wrAllData[i][k] = 0;
+        wrAllData[i][k] = $random;
       end
     end
     results_acceptable = 0;
@@ -68,6 +70,7 @@ pipeline_wrapper data_pipeline
     // reset
     @(posedge clk);
     rst_n = 1;
+    @(posedge clk);
 
     for (int i = 0; i < 64; i++);
 
