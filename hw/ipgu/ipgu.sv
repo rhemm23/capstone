@@ -7,7 +7,7 @@ module ipgu #(RAM_DATA_WIDTH = 8, RAM_ADDR_WIDTH = 18)
     input   weRam1_ext,
     input   wrAll,
     input   [RAM_ADDR_WIDTH-1:0]    addrRam1_ext,
-    input   [DATA_WIDTH-1:0]        wrAllData [DEPTH_Y-1:0][DEPTH_X-1:0];
+    input   [7:0]     wrAllData [300-1:0][300-1:0],
     input   initIpgu,
     output  rdyIpgu,
     

@@ -194,7 +194,7 @@ module ctrl_unit #(IMG_SIZE=90000)
             WAIT_DNN_LOAD: begin
                 address = {4'b0, dnn_addr}
                 if(data_valid) begin
-                    incDnnAddr = '1;
+                    incRdnAddr = '1;
                 end
                 if(rdnReqWeightMem)
                     read_request_valid = '1;

@@ -11,7 +11,7 @@ module ipgu_ctrl_unit #(RAM_ADDR_WIDTH = 18)
  
 
     output  reg                     vldIpgu,
-    output                          rdyIpgu,
+    output  reg                     rdyIpgu,
 
     output  reg                     csRam1_int, csRam2_int,
     output  reg                     weRam1_int, weRam2,
@@ -29,15 +29,6 @@ module ipgu_ctrl_unit #(RAM_ADDR_WIDTH = 18)
     reg csRam1_d1, csRam2_d1;
 
     assign windowDone = addrYEnd==addrY && addrXEnd==addrX+1; //last pixel of a windows will be read next 
-
-    always_ff @(posedge clk, negedge rst_n) begin
-        if(!rst_n)
-            rdyIpgu <= '0;
-        else if(nxt_state==IDLE||convertDone&&convertI==4)
-            rdyIpgu <= '1;
-        else if(initIpgu)
-            rdyIpgu <= '0;
-    end
    
      //assign rdyIpgu = convertDone&&convertI==4;//transfer from 60x60 to 20x20 done
     
@@ -190,6 +181,15 @@ module ipgu_ctrl_unit #(RAM_ADDR_WIDTH = 18)
                 //don't need a default case since all four states are used 
             endcase
         end
+
+    always_ff @(posedge clk, negedge rst_n) begin
+        if(!rst_n)
+            rdyIpgu <= '0;
+        else if(nxt_state==IDLE||convertDone&&convertI==4)
+            rdyIpgu <= '1;
+        else if(initIpgu)
+            rdyIpgu <= '0;
+    end
 
 
 endmodule 
