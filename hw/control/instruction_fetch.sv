@@ -1,4 +1,4 @@
-module instructionFetch
+module instruction_fetch
 (
     input clk,
     input rst_n,
@@ -6,7 +6,7 @@ module instructionFetch
 
     input instrVld,
     input [31:0] instructionsIn [4095:0];
-    output [31:0] instruction;
+    output [31:0] instr;
 );
 
 wire halt;
@@ -28,7 +28,7 @@ always_ff @(posedge clk, negedge rst_n) begin
         instructions <= instructionsIn;
 end
 
-assign instruction = instructionsIn[pc_addr];
+assign instr = instructionsIn[pc_addr];
 
 
 endmodule

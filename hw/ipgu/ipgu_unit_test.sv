@@ -20,7 +20,6 @@ module ipgu_unit_test;
         //IPGU <-> ctrlUnit                                  
         .csRam1_ext(1'b0),                                  
         .weRam1_ext(1'b0),                                  
-        .addrRam1_ext('0),          
         .wrDataRam1_ext('0),        
         .initIpgu,                                    
         .rdyIpgu,                                     

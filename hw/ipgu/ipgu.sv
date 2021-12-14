@@ -6,7 +6,6 @@ module ipgu #(RAM_DATA_WIDTH = 8, RAM_ADDR_WIDTH = 18)
     input   csRam1_ext,
     input   weRam1_ext,
     input   wrAll,
-    input   [RAM_ADDR_WIDTH-1:0]    addrRam1_ext,
     input   [7:0]     wrAllData [300-1:0][300-1:0],
     input   initIpgu,
     output  rdyIpgu,
@@ -30,7 +29,7 @@ module ipgu #(RAM_DATA_WIDTH = 8, RAM_ADDR_WIDTH = 18)
 
 
     //Ram1 Signals: Choose who is in control of RAM1 based on csRam1_ext
-    assign addrRam1     = csRam1_ext ? addrRam1_ext     : addrRam1_int;
+    assign addrRam1     = addrRam1_int;
     assign wrDataRam1   = rdDataRam2;
     assign weRam1       = csRam1_ext ? weRam1_ext       : weRam1_int;
 

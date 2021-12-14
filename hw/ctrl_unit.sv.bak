@@ -10,10 +10,6 @@ module ctrl_unit #(IMG_SIZE=90000)
       input write_done,
       input [511:0] read_data,
 
-      //rdn
-      output  reg     [63:0]  rdn_weights [7:0],
-      output  reg     [63:0]  dnn_weights [7:0],
-
       //decode -> ctrl_unit (cmds)
       input           begin_rdn_load,
       input           begin_dnn_load,
@@ -38,26 +34,28 @@ module ctrl_unit #(IMG_SIZE=90000)
       //rdn <-> ctrl_unit
       input           rdnResVld,
       input   [1085:0]   rdnResults,
-      output          rdnResRdy,
+      output  reg     rdnResRdy,
         //weights
       input           rdnReqWeightMem,
       input           doneWeightRdn,
+      output  [63:0]  rdn_weights [7:0],
 
       //dnn <-> ctrl_unit
       input           dnnResVld,
-      input   [1085:0]   dnnResults,
-      output          dnnResRdy,
+      input   [1085:0]dnnResults,
+      output  reg     dnnResRdy,
         //weights
       input           dnnReqWeightMem,
       input           doneWeightDnn,
+      output  [63:0]  dnn_weights [7:0],
 
       /*
        * Outputs
        */
-      output [31:0] address,
+      output reg [31:0] address,
       output [511:0] write_data,
-      output read_request_valid,
-      output write_request_valid
+      output reg read_request_valid,
+      output reg write_request_valid
     );
 
     typedef enum logic [2:0] {
@@ -173,6 +171,8 @@ module ctrl_unit #(IMG_SIZE=90000)
         address = cnt;
         read_request_valid = '0;
         write_request_valid = '0;
+        incRdnAddr = '1;
+        incDnnAddr = '1;
         case(state)
             FETCH_PROGRAM_PAGE:
                 read_request_valid = '1;
@@ -192,9 +192,9 @@ module ctrl_unit #(IMG_SIZE=90000)
                     read_request_valid = '1;
             end    
             WAIT_DNN_LOAD: begin
-                address = {4'b0, dnn_addr}
+                address = {4'b0, dnn_addr};
                 if(data_valid) begin
-                    incRdnAddr = '1;
+                    incDnnAddr = '1;
                 end
                 if(rdnReqWeightMem)
                     read_request_valid = '1;
@@ -227,19 +227,21 @@ module ctrl_unit #(IMG_SIZE=90000)
         endcase
     end
 
+    wire [511:0] img_data [1406:0];
+
     generate 
         for(genvar i=0;i<8;i++) begin
-            rdn_weights [i] = read_data[(i+1)*64-1-:64];
-            ddn_weights [i] = read_data[(i+1)*64-1-:64];
+            assign rdn_weights[i] = read_data[(i+1)*64-1-:64];
+            assign dnn_weights[i] = read_data[(i+1)*64-1-:64];
         end
         for(genvar i=0;i<1407;i++) begin
             for(genvar j=0;j<64;j++) begin
-                wrAllData[((j*1407)+j)/300][((j*1407)+j)%300] = img_data[i][(j+1)*8-1-:8];
+                assign wrAllData[((j*1407)+j)/300][((j*1407)+j)%300] = img_data[i][(j+1)*8-1-:8];
             end
         end
     endgenerate
 
-    out_fifo  #(.DATA_WIDTH(512), .Q_DEPTH(1407)) (.*, .en(data_valid), .d(read_data), .q(img_data))); 
+    out_fifo  #(.DATA_WIDTH(512), .Q_DEPTH(1407)) ctrlImgBuffer (.*, .en(data_valid), .d(read_data), .q(img_data)); 
     
     //Number of RNN results written
     always_ff @(posedge clk, negedge rst_n) begin
@@ -258,7 +260,7 @@ module ctrl_unit #(IMG_SIZE=90000)
         else if(rst_imgPageCnt)
             imgPageCnt <= '0;
         else if(data_valid)
-            imgPageCnt <= numImgPages+1;
+            imgPageCnt <= imgPageCnt+1;
     end
 
     //Registers  

@@ -5,10 +5,16 @@ module ctrl_unit #(IMG_SIZE=90000)
        */
       input clk,
       input rst_n,
+
+      //ctrl_unit <-> memory
       input buffer_addr_valid,
       input data_valid,
       input write_done,
       input [511:0] read_data,
+      output reg [31:0] address,
+      output [511:0] write_data,
+      output reg read_request_valid,
+      output reg write_request_valid,
 
       //ctrl_unit <-> instructionFetch
       output  reg       incPc, 
@@ -25,17 +31,11 @@ module ctrl_unit #(IMG_SIZE=90000)
       input   [27:0]  reg_databus,         
        
       //IPGU <-> ctrlUnit
-      output            csRam1_ext,
-      output            weRam1_ext,
       output    reg     wrAll,
-      output   [8-1:0]    addrRam1_ext,
-      output   [8-1:0]        wrAllData [300-1:0][300-1:0],
+      output   [8-1:0]  wrAllData [300-1:0][300-1:0],
       output   reg      initIpgu,
       input             rdyIpgu,
  
-    
-
-
       //rdn <-> ctrl_unit
       input           rdnResVld,
       input   [1085:0]   rdnResults,
@@ -52,16 +52,8 @@ module ctrl_unit #(IMG_SIZE=90000)
         //weights
       input           dnnReqWeightMem,
       input           doneWeightDnn,
-      output  [63:0]  dnn_weights [7:0],
-
-      /*
-       * Outputs
-       */
-      output reg [31:0] address,
-      output [511:0] write_data,
-      output reg read_request_valid,
-      output reg write_request_valid
-    );
+      output  [63:0]  dnn_weights [7:0]
+  );
 
     typedef enum logic [2:0] {
       WAIT_BUFFER,
@@ -132,7 +124,9 @@ module ctrl_unit #(IMG_SIZE=90000)
                 incPc <= 1'b1;
             end
           WAIT_IMAGE: begin
-            if(data_valid) begin
+            if(write_done)
+                state <= DONE_IMG;
+            else if(data_valid) begin
                 //imagePageCnt is incremented
                 if(imgPageCnt==1406) begin
                     state <= DONE_IMG;  
@@ -141,6 +135,7 @@ module ctrl_unit #(IMG_SIZE=90000)
           end
           DONE_IMG: begin
             if(dnnResVld) begin
+                state <= WAIT_IMAGE;
                 if(rnnResNumWritten==1) begin
                      state <= EXECUTING;
                      incPc <= 1'b1;
@@ -209,7 +204,9 @@ module ctrl_unit #(IMG_SIZE=90000)
                     read_request_valid = '1;
             end    
             WAIT_IMAGE: begin
-                if(data_valid) begin
+                if(write_done)
+                    dnnResRdy = '1;
+                else if(data_valid) begin
                     img_addr_inc = '1;   
                     if(imgPageCnt==1406) begin
                         dnnResRdy = '1;
@@ -223,6 +220,7 @@ module ctrl_unit #(IMG_SIZE=90000)
             DONE_IMG: begin
                 wrAll = rdyIpgu;
                 rst_imgPageCnt = '1;
+                dnnResRdy = '1; //risky
                 if(dnnResVld) begin
                     address = rslt_addr;
                     write_request_valid = '1;
