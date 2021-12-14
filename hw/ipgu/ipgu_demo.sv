@@ -43,7 +43,7 @@ module ipgu_demo;
         rst_n = '0;
         rdyHeu = '0;
 
-        fd = $fopen("demo_image.bin","rb");
+        fd = $fopen("/filespace/s/sjain75/ece554/capstone/hw/ipgu/demo_image.bin","rb");
         if(fd)
             $display("Reading Image");
         else begin
@@ -53,7 +53,7 @@ module ipgu_demo;
         for(int i=0;i<300;i++)
             for(int j=0;j<300;j++)
                 $fread(initMemVals[i][j],fd);
-    
+        $fclose(fd);
         //void'(std::randomize(initMemVals));
         @(posedge clk) rst_n = '1;
         DUT.ram1.mem = initMemVals;
@@ -93,7 +93,7 @@ module ipgu_demo;
 //        static bit [7:0] windowVals[4:0] = rowVals[19:0][(windowNum%(dims[conversionI]/20))*10+:20];
         automatic logic [7:0] windowVals[4:0][79:0];
 	automatic int colsBegin =(windowNum%(dims[conversionI]/10-1))*10;
-        automatic int rowBegin = (windowNum/(dims[conversionI]/10-1));
+        automatic int rowBegin = (windowNum/(dims[conversionI]/10-1))*10;
         for(int i=0; i<5; i++) begin
             for(int j=0; j<4; j++)
                 windowVals[i][(j+1)*20-1-:20] = (rowVals[i*4+j][colsBegin+:20]);    
@@ -106,7 +106,7 @@ module ipgu_demo;
         end
         else begin
             int fd;
-            fd = $fopen($sformatf("win_%0d_%0d.bin",rowBegin,colsBegin),"wb");
+            fd = $fopen($sformatf("/filespace/s/sjain75/ece554/capstone/hw/ipgu/windows/win_conversion%0d_%0d_%0d.bin",conversionI, rowBegin,colsBegin),"wb");
             if(fd)
                 $display("Writing window %p %p",rowBegin, colsBegin);
             else begin
