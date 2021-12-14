@@ -27,7 +27,7 @@ module decode
     assign reg_sel = opcode[1:0];
     
     //reg_data_bus
-    assign reg_data_bus = instr[27:0];    
+    assign reg_databus = instr[27:0];    
 
     assign begin_proc = opcode==3'b000;    
 

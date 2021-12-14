@@ -240,7 +240,7 @@ module ctrl_unit #(IMG_SIZE=90000)
         end
         for(genvar i=0;i<1407;i++) begin
             for(genvar j=0;j<64;j++) begin
-                assign wrAllData[((j*1407)+j)/300][((j*1407)+j)%300] = img_data[i][(j+1)*8-1-:8];
+                assign wrAllData[((i*1407)+j)/300][((i*1407)+j)%300] = img_data[i][(j+1)*8-1-:8];
             end
         end
         for(genvar i=0;i<4096;i++) begin
