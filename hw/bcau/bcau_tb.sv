@@ -9,7 +9,7 @@ module bcau_tb ();
   logic bcau_ready;
   reg [7:0] bcau_results [4:0][79:0];
   reg [7:0] expected_results [4:0][79:0];
-  reg [7:0] expected_averages [4:0];
+  reg [7:0] expected_averages [4:0][4:0];
 
   bcau dut (
     .clk(clk),
@@ -22,7 +22,7 @@ module bcau_tb ();
     .bcau_results(bcau_results)
   );
 
-  integer i,j,k, accum;
+  integer i,j,k, accum[4:0];
   
 
 
@@ -51,17 +51,22 @@ module bcau_tb ();
 
       begin 
         for (i = 0; i < 10; i = i + 1) begin
+
+          // Find Averages and generate input
           for (j = 0; j < 5; j = j + 1) begin
-            accum = 0;
+            for (k = 0; k < 5; k = k + 1) accum[k] = 0;
             for (k = 0; k < 80; k = k + 1) begin
               iru_results[j][k] = $random;
-              accum += iru_results[j][k];
+              accum[((k % 20) / 4)] += iru_results[j][k];
             end
-            expected_averages[j] = accum / 80;
+            for (k = 0; k < 5; k = k + 1) expected_averages[j][k] = (accum[k] / 16);
           end
+
+          // Calculating expected results
           for (j = 0; j < 5; j = j + 1) begin
             for (k = 0; k < 80; k = k + 1) begin
-              if (iru_results[j][k] > expected_averages[j]) begin
+
+              if (iru_results[j][k] > expected_averages[j][((k % 20) / 4)]) begin
                 if (iru_results[j][k] > (255-32)) begin
                   expected_results[j][k] = 255;
                 end else begin
@@ -74,9 +79,11 @@ module bcau_tb ();
                   expected_results[j][k] = iru_results[j][k] - 32;
                 end
               end
+
             end
           end
 
+          // Checking results
           iru_valid = 1;
           @(posedge clk);
           iru_valid = 0;

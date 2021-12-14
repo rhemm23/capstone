@@ -1,4 +1,4 @@
-module rdn
+module rdn_fp
   #(
     parameter NUM_A_NEURONS = 15,
     parameter NUM_B_NEURONS = 30,
@@ -15,7 +15,7 @@ module rdn
     input heu_out_valid,
     input iru_in_ready,
     input [7:0] d [4:0][79:0],
-    input [15:0] mem_data [31:0],
+    input [63:0] mem_data [7:0],
 
     /*
      * Outputs
@@ -28,29 +28,12 @@ module rdn
     output [7:0] q [4:0][79:0]
   );
 
-  wire [15:0] a_layer_q [NUM_A_NEURONS-1:0];
-  wire [15:0] b_layer_q [NUM_B_NEURONS-1:0];
-
-  wire [7:0] in_buffer_q [4:0];
-
-  wire shift_out;
-  wire rotate_in;
-  wire write_in;
-
-  wire z_a_layer;
-  wire z_b_layer;
-  wire z_c_layer;
-  wire en_a_layer;
-  wire en_b_layer;
-  wire en_c_layer;
-
   wire write_weight;
+  wire start_rnn;
+  wire rot_nn_done;
 
   wire [1:0] layer_sel;
   wire [5:0] neuron_sel;
-
-  wire [15:0] b_layer_in;
-  wire [15:0] c_layer_in;
 
   wire [63:0] weight_bus;
 
@@ -67,19 +50,19 @@ module rdn
   // Acts as the out_buffer for rdn
   integer i, j;
   always_ff @(posedge clk, negedge rst_n) begin
-    if (!rst_n)
+    if (!rst_n) begin
       for (i = 0; i < 5; i = i + 1) begin
         for (j = 0; j < 80; j = j + 1) begin
-          out_buffer <= 8'h00;
+          out_buffer[i][j] <= 8'h00;
         end
       end
-    else if (write_in)
+    end else if (start_rnn)
       out_buffer <= d;
   end
+
   assign q = out_buffer;
 
   rdn_weight_ld weight_loader (
-  (
   .clk(clk),
   .rst_n(rst_n),
   .go(load_weights),
@@ -100,18 +83,11 @@ module rdn
     .rst_n(rst_n),
     .heu_out_valid(heu_out_valid),
     .iru_in_ready(iru_in_ready),
+    .load_weights(load_weights),
+    .weight_valid(weight_valid),
+    .rot_nn_done(rot_nn_done),
 
-    .rotate_in(rotate_in),
-    .write_in(write_in),
-    .shift_out(shift_out),
-    .z_a_layer(z_a_layer),
-    .z_b_layer(z_b_layer),
-    .z_c_layer(z_c_layer),
-    .en_a_layer(en_a_layer),
-    .en_b_layer(en_b_layer),
-    .en_c_layer(en_c_layer),
-    .b_layer_in(b_layer_in),
-    .c_layer_in(c_layer_in),
+    .start_rnn(start_rnn),
     .in_ready(in_ready),
     .out_ready(out_ready)
   );
@@ -120,7 +96,7 @@ module rdn
   rot_nn network (
     .clk(clk),
     .rst_n(rst_n),
-    .start(),
+    .start(start_rnn),
     .data_in(data_in),
     .write_weight(write_weight),
     .layer_sel(layer_sel),
@@ -129,7 +105,7 @@ module rdn
     .weight_bus(weight_bus),
 
     .angle(angle_out),
-    .done(),
+    .done(rot_nn_done)
   );
 
 endmodule

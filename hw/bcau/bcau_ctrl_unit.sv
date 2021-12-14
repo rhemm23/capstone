@@ -18,11 +18,18 @@ module bcau_ctrl_unit
   output logic wr_accum,
   output logic set_avg,
   output logic shft_out,
-  output logic clr_accum
+  output logic clr_accum,
+  output logic [2:0] block_sel
 );
 
 reg [6:0] cnt;
+reg [2:0] block_cnt;
+reg [1:0] block_row_cnt;
+wire inc_block_cnt;
 logic clr_cnt, inc_cnt;
+
+assign inc_block_cnt = (inc_cnt && (block_row_cnt == 2'b11));
+assign block_sel = block_cnt;
 
 // Counts the pixels either accumulated or processed
 always_ff @(posedge clk, negedge rst_n) begin
@@ -30,6 +37,24 @@ always_ff @(posedge clk, negedge rst_n) begin
     cnt <= 7'h00;
     else if (inc_cnt)
     cnt <= cnt + 1;
+end
+
+// Counts the pixels either accumulated or processed
+always_ff @(posedge clk, negedge rst_n) begin
+    if (!rst_n || clr_cnt)
+      block_cnt <= 3'h0;
+    else if (inc_block_cnt && (block_cnt == 3'h4))
+      block_cnt <= 3'h0;
+    else if (inc_block_cnt)
+      block_cnt <= block_cnt + 1;
+end
+
+// Counts the pixels either accumulated or processed
+always_ff @(posedge clk, negedge rst_n) begin
+    if (!rst_n || clr_cnt)
+    block_row_cnt <= 2'h0;
+    else if (inc_cnt)
+    block_row_cnt <= block_row_cnt + 1;
 end
 
 typedef enum reg [1:0] {
