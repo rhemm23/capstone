@@ -60,7 +60,7 @@ module afu
     .tx(tx)
   );
 
-  ctrl_wrapper top_level_ctrl (
+  control_wrapper top_level_ctrl (
     .clk(clk),
     .rst_n(rst_n),
     .buffer_addr_valid(buffer_addr_valid),
