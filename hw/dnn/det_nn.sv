@@ -93,9 +93,9 @@ module det_nn
   wire add_done;
   wire [63:0] add_c;
 
-  wire [7:0] a1_inputs [3:0][99:0];
-  wire [7:0] a2_inputs [15:0][24:0];
-  wire [7:0] a3_inputs [4:0][79:0];
+  wire [63:0] a1_inputs [3:0][99:0];
+  wire [63:0] a2_inputs [15:0][24:0];
+  wire [63:0] a3_inputs [4:0][79:0];
 
   wire a1_neurons_done [3:0];
   wire a2_neurons_done [15:0];
