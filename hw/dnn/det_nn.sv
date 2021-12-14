@@ -293,6 +293,7 @@ module det_nn
             state <= SUB_THRESHOLD;
             c_activation <= c_activation_out;
           end
+          start_c <= 1'b0;
         end
         SUB_THRESHOLD: begin
           state <= WAIT_SUB_THRESHOLD;
@@ -585,7 +586,8 @@ module det_nn
   );
 
   neuron #(
-    .INPUTS(3)
+    .INPUTS(3),
+    .USE_TANH(0)
   ) c (
     .clk(clk),
     .rst_n(rst_n),
