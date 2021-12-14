@@ -54,4 +54,29 @@ module afu
     .write_request_valid(write_request_valid)
   );
 
+  pipeline_wrapper data_pipeline
+  (
+    .clk(clk),
+    .rst_n(rst_n),
+    .rdn_load_weights(),
+    .dnn_load_weights(),
+    .weight_mem_ready(),
+    .rdn_weight_data(),
+    .dnn_weight_data(),
+    .results_acceptable(),
+    .csRam1_ext(),
+    .weRam1_ext(),
+    .wrAll(),
+    .addrRam1_ext(),
+    .wrAllData(),
+    .initIpgu(),
+
+    .rdn_weights_vld(),
+    .dnn_weights_vld(),
+    .rdn_mem_req(),
+    .dnn_mem_req(),
+    .dnn_results(),
+    .ipgu_in_rdy()
+  );
+
 endmodule
