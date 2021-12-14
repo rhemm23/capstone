@@ -9,9 +9,9 @@
 #include "compiler.h"
 #include "afu_json_info.h"
 
-ROT_WEIGHT_BYTES = 62016
-DET_WEIGHT_BYTES = 11328
-IMAGES_BYTES = 2701440
+#define ROT_WEIGHT_BYTES 62016
+#define DET_WEIGHT_BYTES 11328
+#define IMAGES_BYTES 2701440
 
 static void exit_with_error(char *error) {
   fprintf(stderr, "Error: %s\n", error);
