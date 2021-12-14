@@ -37,9 +37,6 @@ module ctrl_unit #(IMG_SIZE=90000)
       input             rdyIpgu,
  
       //rdn <-> ctrl_unit
-      input           rdnResVld,
-      input   [1085:0]   rdnResults,
-      output  reg     rdnResRdy,
         //weights
       input           rdnReqWeightMem,
       input           doneWeightRdn,

@@ -20,9 +20,6 @@ module control_wrapper
     input             rdyIpgu,
 
     //rdn <-> ctrl_unit
-    input           rdnResVld,
-    input   [1085:0]rdnResults,
-    output          rdnResRdy,
     //weights
     input           rdnReqWeightMem,
     input           doneWeightRdn,
@@ -115,9 +112,6 @@ module control_wrapper
         input             rdyIpgu,
 
         //rdn <-> ctrl_unit
-        input           rdnResVld,
-        input   [1085:0]   rdnResults,
-        output  reg     rdnResRdy,
         //weights
         input           rdnReqWeightMem,
         input           doneWeightRdn,

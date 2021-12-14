@@ -20,9 +20,6 @@ wire            initIpgu;
 bit             rdyIpgu;                                   
                                                              
 //rdn <-> ctrl_unit                                          
-bit           rdnResVld;                                   
-bit   [1085:0]rdnResults;                                  
-wire          rdnResRdy;                                   
 //weights                                                    
 bit           rdnReqWeightMem;                             
 bit           doneWeightRdn;                               
