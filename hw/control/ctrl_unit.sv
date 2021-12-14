@@ -212,18 +212,18 @@ module ctrl_unit #(IMG_SIZE=90000)
                     else
                         read_request_valid = '1;
                 end
-                address = img_addr+1;
+                address = {4'h0, img_addr + 1};
             end
             DONE_IMG: begin
                 wrAll = rdyIpgu;
                 rst_imgPageCnt = '1;
                 dnnResRdy = '1; //risky
                 if(dnnResVld) begin
-                    address = rslt_addr;
+                    address = {4'h0, rslt_addr};
                     write_request_valid = '1;
                 end
                 else begin
-                    address = img_addr;
+                    address = {4'h0, img_addr};
                     if(img_cnt!=0)
                         read_request_valid = rdyIpgu; 
                 end
