@@ -30,7 +30,16 @@ module ipgu_ctrl_unit #(RAM_ADDR_WIDTH = 18)
 
     assign windowDone = addrYEnd==addrY && addrXEnd==addrX+1; //last pixel of a windows will be read next 
 
-    assign rdyIpgu = convertDone&&convertI==4;//transfer from 60x60 to 20x20 done
+    always_ff @(posedge clk, negedge rst_n) begin
+        if(!rst_n)
+            rdyIpgu <= '0;
+        else if(nxt_state==IDLE||convertDone&&convertI==4)
+            rdyIpgu <= '1;
+        else if(initIpgu)
+            rdyIpgu <= '0;
+    end
+   
+     //assign rdyIpgu = convertDone&&convertI==4;//transfer from 60x60 to 20x20 done
     
     assign csRam1_int = csRam1|csRam2_d1;   
     assign csRam2_int = csRam2|csRam1_d1;

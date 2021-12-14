@@ -22,7 +22,7 @@ module rdn_fp
      */
     output in_ready,
     output out_ready,
-    output weight_valid,
+    output weight_valid, //all weights have been received
     output req_mem,
     output [NUM_C_NEURONS-1:0] angle_out,
     output [7:0] q [4:0][79:0]

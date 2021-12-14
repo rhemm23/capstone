@@ -49,29 +49,29 @@ void compile_program(char *program_path, uint32_t **compiled_program) {
     uint8_t opcode;
     if (strncmp("HLT", temp, 3) == 0) {
       temp += 3;
-      opcode = 0x00u;
+      opcode = 0x06u;
     } else if (strncmp("SET_RESULT_ADDR", temp, 15) == 0) {
       temp += 15;
-      opcode = 0x01u;
+      opcode = 0x02u;
     } else if (strncmp("LOAD_RNW", temp, 8) == 0) {
       temp += 8;
-      opcode = 0x02u;
+      opcode = 0x04u;
     } else if (strncmp("LOAD_DNW", temp, 8) == 0) {
       temp += 8;
-      opcode = 0x03u;
+      opcode = 0x05u;
     } else if (strncmp("SET_IMG_NUM", temp, 11) == 0) {
       temp += 11;
-      opcode = 0x05u;
+      opcode = 0x01u;
     } else if (strncmp("BEGIN_PROC", temp, 10) == 0) {
       temp += 10;
-      opcode = 0x04u;
+      opcode = 0x00u;
     } else {
       compiler_error("Invalid instruction", line_num);
     }
 
     // Read immediate
     uint32_t immediate;
-    if (opcode != 0x00u) {
+    if (opcode != 0x06u) {
       if (*(temp++) != ' ') {
         compiler_error("Expected an immediate value", line_num);
       }
@@ -81,9 +81,9 @@ void compile_program(char *program_path, uint32_t **compiled_program) {
 
       if (temp == end) {
         compiler_error("Invalid immediate value", line_num);
-      } else if (opcode == 0x05u && immediate > 0xFFFFu) {
+      } else if (opcode == 0x01u && immediate > 0xFFFFu) {
         compiler_error("Immediate value too large for 16 bits", line_num);
-      } else if (opcode != 0x05u && immediate > 0x0FFFFFFFu) {
+      } else if (opcode != 0x01u && immediate > 0x0FFFFFFFu) {
         compiler_error("Immediate value too large for 28 bits", line_num);
       } else {
         temp = end;
@@ -106,10 +106,10 @@ void compile_program(char *program_path, uint32_t **compiled_program) {
       compiler_error("Only 4096 instructions are supported", line_num);
     } else {
       uint32_t instruction;
-      if (opcode == 0x00u) {
-        instruction = 0x00000000u;
-      } else if (opcode == 0x05u) {
-        instruction = 0x50000000u | ((uint16_t)immediate);
+      if (opcode == 0x06u) {
+        instruction = 0x60000000u;
+      } else if (opcode == 0x01u) {
+        instruction = 0x10000000u | ((uint16_t)immediate);
       } else {
         instruction = (((uint32_t)opcode) << 28) | immediate;
       }
@@ -123,6 +123,9 @@ void compile_program(char *program_path, uint32_t **compiled_program) {
   *compiled_program = (uint32_t*)calloc(MAX_INSTRUCTIONS, sizeof(uint32_t));
   for (int i = 0; i < instruction_cnt; i++) {
     (*compiled_program)[i] = instructions[i];
+  }
+  for (int i = instruction_cnt; i < MAX_INSTRUCTIONS; i++) {
+    (*compiled_program)[i] = 0x60000000u;
   }
   fclose(program);
 }

@@ -5,8 +5,9 @@ module ipgu #(RAM_DATA_WIDTH = 8, RAM_ADDR_WIDTH = 18)
     //IPGU <-> ctrlUnit
     input   csRam1_ext,
     input   weRam1_ext,
-    input   [RAM_ADDR_WIDTH-1:0]  addrRam1_ext,
-    input   [RAM_DATA_WIDTH-1:0]  wrDataRam1_ext,
+    input   wrAll,
+    input   [RAM_ADDR_WIDTH-1:0]    addrRam1_ext,
+    input   [DATA_WIDTH-1:0]        wrAllData [DEPTH_Y-1:0][DEPTH_X-1:0];
     input   initIpgu,
     output  rdyIpgu,
     
@@ -30,7 +31,7 @@ module ipgu #(RAM_DATA_WIDTH = 8, RAM_ADDR_WIDTH = 18)
 
     //Ram1 Signals: Choose who is in control of RAM1 based on csRam1_ext
     assign addrRam1     = csRam1_ext ? addrRam1_ext     : addrRam1_int;
-    assign wrDataRam1   = csRam1_ext ? wrDataRam1_ext   : rdDataRam2;
+    assign wrDataRam1   = rdDataRam2;
     assign weRam1       = csRam1_ext ? weRam1_ext       : weRam1_int;
 
 
@@ -43,9 +44,9 @@ module ipgu #(RAM_DATA_WIDTH = 8, RAM_ADDR_WIDTH = 18)
     // RAM instances    
     /////////////////////////////////////////////////////
 
-    ram #(.DATA_WIDTH(RAM_DATA_WIDTH)) ram1 (
+    ram_wrAll #(.DATA_WIDTH(RAM_DATA_WIDTH)) ram1 (
         .clk, .addr(addrRam1), .rdData(rdDataRam1), .wrData(wrDataRam1), 
-        .cs(csRam1_ext|csRam1_int), .we(weRam1)
+        .cs(csRam1_ext|csRam1_int), .we(weRam1), .wrAllData, .wrAll
     );
     
     ram #(.DEPTH_X(240), .DEPTH_Y(240), .DATA_WIDTH(RAM_DATA_WIDTH)) ram2 (
