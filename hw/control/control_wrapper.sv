@@ -15,7 +15,7 @@ module control_wrapper
 
     //fdp(IPGU) <-> controlWrapper(ctrlUnit)
     output            wrAll,
-    output   [8-1:0]  wrAllData [300-1:0][300-1:0],
+    output   [7:0]  wrAllData [299:0][299:0],
     output            initIpgu,
     input             rdyIpgu,
 
@@ -42,8 +42,13 @@ module control_wrapper
 
 
     wire incPc, instrVld;
-    wire [31:0] instructionsIn [NUM_INSTR-1:0];
+    wire [31:0] instructionsIn [15:0];
     wire [31:0] instr;
+
+    wire [1:0] reg_sel;
+    wire wr_en;
+    wire [27:0] reg_databus;
+    wire begin_proc;    
     /*
     Interconnection needed
         input incPc,                                  
@@ -51,13 +56,18 @@ module control_wrapper
         input [31:0] instructionsIn [NUM_INSTR-1:0];         
         output [31:0] instr;                    
     */
-    instruction_fetch #(.NUM_INSTR(NUM_INSTR)) instructionFetch (.*);
+    instruction_fetch  instructionFetch (
+        .clk(clk),
+        .rst_n(rst_n),
+        .incPc(incPc),
+        .instrVld(instrVld),
+        .instructionsIn(instructionsIn),
+
+        .instr(instr)
+    );
 
 
-    wire [1:0] reg_sel;
-    wire wr_en;
-    wire [27:0] reg_databus;
-    wire begin_proc;     
+     
     /*
     Interconncetion needed
         //instruction_fetch -> Decode        
@@ -71,7 +81,18 @@ module control_wrapper
         output          begin_dnn_load,      
         output          begin_proc           
     */
-    decode decode(.*);
+    decode decode(
+        .clk(clk),
+        .rst_n(rst_n),
+        .instr(instr),
+        
+        .reg_sel(reg_sel),
+        .wr_en(wr_en),
+        .reg_databus(reg_databus),
+        .begin_rdn_load(begin_rdn_load),
+        .begin_dnn_load(begin_dnn_load),
+        .begin_proc(begin_proc)
+    );
 
 
     //ctrl_unit
@@ -132,6 +153,41 @@ module control_wrapper
         output  [63:0]  dnn_weights [7:0]
     */
     
-    ctrl_unit #(.NUM_INSTR(NUM_INSTR)) ctrlUnit(.*, .instructions(instructionsIn), .reg_wr_en(wr_en)); 
+    ctrl_unit  ctrlUnit(
+        .clk(clk),
+        .rst_n(rst_n),
+        .buffer_addr_valid(buffer_addr_valid),
+        .data_valid(data_valid),
+        .write_done(write_done),
+        .read_data(read_data),
+        .begin_rdn_load(begin_rdn_load),
+        .begin_dnn_load(begin_dnn_load),
+        .begin_proc(begin_proc),
+        .reg_sel(reg_sel),
+        .reg_wr_en(wr_en),
+        .reg_databus(reg_databus),
+        .rdyIpgu(rdyIpgu),
+        .rdnReqWeightMem(rdnReqWeightMem),
+        .doneWeightRdn(doneWeightRdn),
+        .dnnResVld(dnnResVld),
+        .dnnResults(dnnResults),
+        .dnnReqWeightMem(dnnReqWeightMem),
+        .doneWeightDnn(doneWeightDnn),
+
+
+        .address(address),
+        .write_data(write_data),
+        .read_request_valid(read_request_valid),
+        .write_request_valid(write_request_valid),
+        .incPc(incPc),
+        .instructions(instructionsIn),
+        .instrVld(instrVld),
+        .wrAll(wrAll),
+        .wrAllData(wrAllData),
+        .initIpgu(initIpgu),
+        .rdn_weights(rdn_weights),
+        .dnnResRdy(dnnResRdy),
+        .dnn_weights(dnn_weights)
+        ); 
 
 endmodule

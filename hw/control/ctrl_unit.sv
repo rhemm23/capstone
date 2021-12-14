@@ -1,4 +1,4 @@
-module ctrl_unit #(IMG_SIZE=90000, NUM_INSTR=4096)
+module ctrl_unit #(IMG_SIZE=90000)
     (
       /*
        * Inputs
@@ -18,7 +18,7 @@ module ctrl_unit #(IMG_SIZE=90000, NUM_INSTR=4096)
 
       //ctrl_unit <-> instructionFetch
       output  reg       incPc, 
-      output  [31:0]    instructions [NUM_INSTR-1:0],
+      output  [31:0]    instructions [15:0],
       output  reg       instrVld,
 
       //decode -> ctrl_unit (cmds)
@@ -32,7 +32,7 @@ module ctrl_unit #(IMG_SIZE=90000, NUM_INSTR=4096)
        
       //IPGU <-> ctrlUnit
       output    reg     wrAll,
-      output   [8-1:0]  wrAllData [300-1:0][300-1:0],
+      output   [7:0]  wrAllData [299:0][299:0],
       output   reg      initIpgu,
       input             rdyIpgu,
  
@@ -44,7 +44,7 @@ module ctrl_unit #(IMG_SIZE=90000, NUM_INSTR=4096)
 
       //dnn <-> ctrl_unit
       input           dnnResVld,
-      input   [511:0]dnnResults,
+      input   [511:0] dnnResults,
       output  reg     dnnResRdy,
         //weights
       input           dnnReqWeightMem,
@@ -70,7 +70,7 @@ module ctrl_unit #(IMG_SIZE=90000, NUM_INSTR=4096)
 
     reg [10:0] imgPageCnt;
 
-    reg [29:0] rnnResNumWritten;
+    reg [29:0] dnnResNumWritten;
 
     always_ff @(posedge clk or negedge rst_n) begin
       if (!rst_n) begin
@@ -89,13 +89,10 @@ module ctrl_unit #(IMG_SIZE=90000, NUM_INSTR=4096)
           FETCH_PROGRAM_PAGE: begin
             state <= WAIT_PROGRAM_PAGE;
           end
-          WAIT_PROGRAM_PAGE: if (data_valid) begin
-            if (cnt == 255) begin
+          WAIT_PROGRAM_PAGE: 
+            if (data_valid) begin
               state <= EXECUTING;
               instrVld <= 1'b1;
-            end else begin
-              state <= FETCH_PROGRAM_PAGE;
-              cnt <= cnt + 1;
             end
           end
           EXECUTING: begin
@@ -133,7 +130,7 @@ module ctrl_unit #(IMG_SIZE=90000, NUM_INSTR=4096)
           DONE_IMG: begin
             if(dnnResVld) begin
                 state <= WAIT_IMAGE;
-                if(rnnResNumWritten==1) begin
+                if(dnnResNumWritten==1) begin
                      state <= EXECUTING;
                      incPc <= 1'b1;
                 end
@@ -152,7 +149,6 @@ module ctrl_unit #(IMG_SIZE=90000, NUM_INSTR=4096)
             initIpgu <= '1;
         else if(!rdyIpgu)
             initIpgu <= '0;
-
     end
 
 
@@ -244,21 +240,21 @@ module ctrl_unit #(IMG_SIZE=90000, NUM_INSTR=4096)
                     assign wrAllData[((i*64)+j)/300][((i*64)+j)%300] = img_data[i][(j+1)*8-1-:8];
             end
         end
-        for(genvar i=0;i<NUM_INSTR;i++) begin
+        for(genvar i=0;i<16;i++) begin
               assign instructions[i] = img_data[i/16][(((i+1)*32-1)%512)-:32];
         end
     endgenerate
 
     out_fifo  #(.DATA_WIDTH(512), .Q_DEPTH(1407)) ctrlImgBuffer (.*, .en(data_valid), .d(read_data), .q(img_data)); 
     
-    //Number of RNN results written
+    //Number of DNN results written
     always_ff @(posedge clk, negedge rst_n) begin
         if(!rst_n)
-            rnnResNumWritten <= '0;
+            dnnResNumWritten <= '0;
         else if(reg_wr_en && reg_sel=='b01)
-            rnnResNumWritten <= (img_cnt<<1)+img_cnt; //every image has three pages of results
+            dnnResNumWritten <= (img_cnt<<1)+img_cnt; //every image has three pages of results
         else if(write_request_valid)
-            rnnResNumWritten <= rnnResNumWritten-1;
+            dnnResNumWritten <= dnnResNumWritten-1;
     end    
     
     //imgPageCnt
