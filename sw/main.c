@@ -88,7 +88,7 @@ int main(int argc, char *argv[]) {
   compile_program(program_path, &compiled_program);
 
   // Size of entire shared memory buffer
-  uint64_t buffer_size = (MAX_INSTRUCTIONS * 4) + ROT_WEIGHT_BYTES + DET_WEIGHT_BYTES;
+  uint64_t buffer_size = (MAX_INSTRUCTIONS * 4) + ROT_WEIGHT_BYTES + DET_WEIGHT_BYTES + IMAGES_BYTES;
 
   void *buffer = (void*)malloc(buffer_size);
   volatile uint32_t *program_buffer = (volatile uint32_t*)buffer;
