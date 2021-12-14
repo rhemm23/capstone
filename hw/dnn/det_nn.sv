@@ -315,173 +315,27 @@ module det_nn
     end
   end
 
-  assign a1_inputs[0] = {
-    data[0 +: 10],
-    data[20 +: 10],
-    data[40 +: 10],
-    data[60 +: 10],
-    data[80 +: 10],
-    data[100 +: 10],
-    data[120 +: 10],
-    data[140 +: 10],
-    data[160 +: 10],
-    data[180 +: 10]
-  };
-  assign a1_inputs[1] = {
-    data[10 +: 10],
-    data[30 +: 10],
-    data[50 +: 10],
-    data[70 +: 10],
-    data[90 +: 10],
-    data[110 +: 10],
-    data[130 +: 10],
-    data[150 +: 10],
-    data[170 +: 10],
-    data[190 +: 10]
-  };
-  assign a1_inputs[2] = {
-    data[200 +: 10],
-    data[220 +: 10],
-    data[240 +: 10],
-    data[260 +: 10],
-    data[280 +: 10],
-    data[300 +: 10],
-    data[320 +: 10],
-    data[340 +: 10],
-    data[360 +: 10],
-    data[380 +: 10]
-  };
-  assign a1_inputs[3] = {
-    data[210 +: 10],
-    data[230 +: 10],
-    data[250 +: 10],
-    data[270 +: 10],
-    data[290 +: 10],
-    data[310 +: 10],
-    data[330 +: 10],
-    data[350 +: 10],
-    data[370 +: 10],
-    data[390 +: 10]
-  };
+  generate
+    for (genvar i = 0; i < 4; i++) begin a1_g
+      for (genvar j = 0; j < 10; j++) begin a1i_g
+        assign a1_inputs[i][(j * 10) +: 10] = data[((i / 2) * 200 + (i % 2) * 10) +: 10];
+      end
+    end
+  endgenerate
 
-  assign a2_inputs[0] = {
-    data[0 +: 5],
-    data[20 +: 5],
-    data[40 +: 5],
-    data[60 +: 5],
-    data[80 +: 5]
-  };
-  assign a2_inputs[1] = {
-    data[5 +: 5],
-    data[25 +: 5],
-    data[45 +: 5],
-    data[65 +: 5],
-    data[85 +: 5]
-  };
-  assign a2_inputs[2] = {
-    data[10 +: 5],
-    data[30 +: 5],
-    data[50 +: 5],
-    data[70 +: 5],
-    data[90 +: 5]
-  };
-  assign a2_inputs[3] = {
-    data[15 +: 5],
-    data[35 +: 5],
-    data[55 +: 5],
-    data[75 +: 5],
-    data[95 +: 5]
-  };
-  assign a2_inputs[4] = {
-    data[100 +: 5],
-    data[120 +: 5],
-    data[140 +: 5],
-    data[160 +: 5],
-    data[180 +: 5]
-  };
-  assign a2_inputs[5] = {
-    data[105 +: 5],
-    data[125 +: 5],
-    data[145 +: 5],
-    data[165 +: 5],
-    data[185 +: 5]
-  };
-  assign a2_inputs[6] = {
-    data[110 +: 5],
-    data[130 +: 5],
-    data[150 +: 5],
-    data[170 +: 5],
-    data[190 +: 5]
-  };
-  assign a2_inputs[7] = {
-    data[115 +: 5],
-    data[135 +: 5],
-    data[155 +: 5],
-    data[175 +: 5],
-    data[195 +: 5]
-  };
-  assign a2_inputs[8] = {
-    data[200 +: 5],
-    data[220 +: 5],
-    data[240 +: 5],
-    data[260 +: 5],
-    data[280 +: 5]
-  };
-  assign a2_inputs[9] = {
-    data[205 +: 5],
-    data[225 +: 5],
-    data[245 +: 5],
-    data[265 +: 5],
-    data[285 +: 5]
-  };
-  assign a2_inputs[10] = {
-    data[210 +: 5],
-    data[230 +: 5],
-    data[250 +: 5],
-    data[270 +: 5],
-    data[290 +: 5]
-  };
-  assign a2_inputs[11] = {
-    data[215 +: 5],
-    data[235 +: 5],
-    data[255 +: 5],
-    data[275 +: 5],
-    data[295 +: 5]
-  };
-  assign a2_inputs[12] = {
-    data[300 +: 5],
-    data[320 +: 5],
-    data[340 +: 5],
-    data[360 +: 5],
-    data[380 +: 5]
-  };
-  assign a2_inputs[13] = {
-    data[305 +: 5],
-    data[325 +: 5],
-    data[345 +: 5],
-    data[365 +: 5],
-    data[385 +: 5]
-  };
-  assign a2_inputs[14] = {
-    data[310 +: 5],
-    data[330 +: 5],
-    data[350 +: 5],
-    data[370 +: 5],
-    data[390 +: 5]
-  };
-  assign a2_inputs[15] = {
-    data[315 +: 5],
-    data[335 +: 5],
-    data[355 +: 5],
-    data[375 +: 5],
-    data[395 +: 5]
-  };
+  generate
+    for (genvar i = 0; i < 16; i++) begin : a2_g
+      for (genvar j = 0; j < 5; j++) begin : a2i_g
+        assign a2_inputs[i][(j * 5) +: 5] = data[((i / 4) * 100 + (i % 4) * 5) +: 5];
+      end
+    end
+  endgenerate
 
-  assign a3_inputs[0] = data[0 +: 80];
-  assign a3_inputs[1] = data[80 +: 80];
-  assign a3_inputs[2] = data[160 +: 80];
-  assign a3_inputs[3] = data[240 +: 80];
-  assign a3_inputs[4] = data[320 +: 80];
+  generate
+    for (genvar i = 0; i < 5; i++) begin a3_g
+      assign a3_inputs[i] = data[(i * 80) +: 80];
+    end
+  endgenerate
 
   assign b_activations[0] = b1_activation;
   assign b_activations[1] = b2_activation;
