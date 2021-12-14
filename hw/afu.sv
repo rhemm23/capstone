@@ -108,7 +108,6 @@ module afu
     .csRam1_ext(wrAll),
     .weRam1_ext(wrAll),
     .wrAll(wrAll),
-    .addrRam1_ext(),
     .wrAllData(wrAllData),
     .initIpgu(initIpgu),
 

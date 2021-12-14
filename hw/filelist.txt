@@ -3,7 +3,6 @@ afu.json
 afu.sv
 ccip_std_afu.sv
 circ_fifo.sv
-ctrl_unit.sv
 csrs.sv
 in_buffer.sv
 memory.sv
