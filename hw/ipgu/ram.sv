@@ -1,8 +1,8 @@
 //https://www.chipverify.com/verilog/verilog-single-port-ram
 
 module ram
-# (     parameter ADDR_WIDTH_X  = $clog2(DEPTH_X),
-        parameter ADDR_WIDTH_Y  = $clog2(DEPTH_Y), //X and Y
+# (     parameter ADDR_WIDTH_X  = 9,
+        parameter ADDR_WIDTH_Y  = 9, //X and Y
         parameter DATA_WIDTH    = 8,
         parameter DEPTH_X       = 300,
         parameter DEPTH_Y       = 300

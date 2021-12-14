@@ -44,7 +44,7 @@ module ctrl_unit #(IMG_SIZE=90000)
 
       //dnn <-> ctrl_unit
       input           dnnResVld,
-      input   [1085:0]dnnResults,
+      input   [511:0]dnnResults,
       output  reg     dnnResRdy,
         //weights
       input           dnnReqWeightMem,
@@ -161,7 +161,7 @@ module ctrl_unit #(IMG_SIZE=90000)
     reg rst_imgPageCnt;            
     reg incRdnAddr, incDnnAddr;
  
-    assign write_data = {'0,dnnResults};
+    assign write_data = dnnResults;
 
     always_comb begin
         dnnResRdy = '0;

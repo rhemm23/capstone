@@ -1,6 +1,7 @@
 module pipeline_wrapper_tb();
 
-
+logic clk;
+logic rst_n;
 logic rdn_load_weights;
 logic dnn_load_weights;
 logic weight_mem_ready;
@@ -10,7 +11,6 @@ logic results_acceptable;
 logic csRam1_ext;
 logic weRam1_ext;
 logic wrAll;
-logic [17:0] addrRam1_ext;
 logic [7:0]  wrAllData [299:0][299:0];
 logic initIpgu;
 
@@ -35,7 +35,6 @@ pipeline_wrapper data_pipeline
     .csRam1_ext(csRam1_ext),
     .weRam1_ext(weRam1_ext),
     .wrAll(wrAll),
-    .addrRam1_ext(addrRam1_ext),
     .wrAllData(wrAllData),
     .initIpgu(initIpgu),
 
@@ -47,4 +46,34 @@ pipeline_wrapper data_pipeline
     .ipgu_in_rdy(ipgu_in_rdy)
   );
 
+  initial begin
+    clk = 0;
+    rst_n = 0;
+    rdn_load_weights = 0;
+    dnn_load_weights = 0;
+    weight_mem_ready = 0;
+    for (int i = 0; i < 8; i++) rdn_weight_data[i] = 0;
+    for (int i = 0; i < 8; i++) dnn_weight_data[i] = 0;
+    for (int i = 0; i < 300; i++) begin
+      for (int k = 0; k < 300; k++) begin
+        wrAllData[i][k] = 0;
+      end
+    end
+    results_acceptable = 0;
+    csRam1_ext = 0;
+    weRam1_ext = 0;
+    wrAll = 0;
+    initIpgu = 0;
+
+    // reset
+    @(posedge clk);
+    rst_n = 1;
+
+    for (int i = 0; i < 64; i++);
+
+
+  end
+
+  always
+    #5 clk = ~clk;
 endmodule

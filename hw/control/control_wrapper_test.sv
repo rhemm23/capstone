@@ -45,5 +45,6 @@ initial begin
     rst_n = '0;
     @(posedge clk) rst_n='1;
     @(posedge clk); 
+    $stop();
 end
 endmodule

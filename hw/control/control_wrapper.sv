@@ -24,11 +24,14 @@ module control_wrapper
     input           rdnReqWeightMem,
     input           doneWeightRdn,
     output  [63:0]  rdn_weights [7:0],
+    output          begin_rdn_load,
 
     //dnn <-> ctrl_unit
     input           dnnResVld,
-    input   [1085:0]dnnResults,
+    input   [511:0]dnnResults,
     output          dnnResRdy,
+    output          begin_dnn_load,
+
     //weights
     input           dnnReqWeightMem,
     input           doneWeightDnn,
@@ -52,7 +55,7 @@ module control_wrapper
     wire [1:0] reg_sel;
     wire wr_en;
     wire [27:0] reg_databus;
-    wire begin_rdn_load, begin_dnn_load, begin_proc;     
+    wire begin_proc;     
     /*
     Interconncetion needed
         //instruction_fetch -> Decode        

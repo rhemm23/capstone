@@ -11,7 +11,6 @@ module pipeline_wrapper
     input csRam1_ext,
     input weRam1_ext,
     input wrAll,
-    input [17:0] addrRam1_ext,
     input [7:0]  wrAllData [299:0][299:0],
     input initIpgu,
 
@@ -20,11 +19,12 @@ module pipeline_wrapper
     output rdn_mem_req,
     output dnn_mem_req,
     output [511:0] dnn_results,
-    output ipgu_in_rdy
+    output ipgu_in_rdy,
+    output dnn_out_vld
   );
 
   wire ipgu_out_vld, heu_in_rdy, heu_out_vld, rdn_in_rdy, rdn_out_vld;
-  wire iru_in_rdy, iru_out_vld, bcau_in_rdy, bcau_out_vld, dnn_in_rdy, dnn_out_vld;
+  wire iru_in_rdy, iru_out_vld, bcau_in_rdy, bcau_out_vld, dnn_in_rdy;
   wire [7:0] ipgu_q_buffer [4:0][79:0];
   wire [7:0] heu_q_buffer [4:0][79:0];
   wire [7:0] rdn_q_buffer [4:0][79:0];
@@ -38,7 +38,6 @@ module pipeline_wrapper
     .csRam1_ext(csRam1_ext),
     .weRam1_ext(weRam1_ext),
     .wrAll(wrAll),
-    .addrRam1_ext(addrRam1_ext),
     .wrAllData(wrAllData),
     .initIpgu(initIpgu),
     .rdyHeu(heu_in_rdy),

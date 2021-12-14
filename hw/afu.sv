@@ -26,6 +26,25 @@ module afu
   wire write_request_valid;
   wire buffer_addr_valid;
 
+  wire wrAll;
+  wire [7:0]  wrAllData [299:0][299:0];
+  wire initIpgu;
+  wire rdyIpgu;
+
+  wire rdnReqWeightMem;
+  wire doneWeightRdn;
+  wire [63:0]  rdn_weights [7:0];
+  wire begin_rdn_load;
+
+  wire dnnResVld;
+  wire [511:0] dnnResults;
+  wire dnnResRdy;
+  wire begin_dnn_load;
+
+  wire dnnReqWeightMem;
+  wire doneWeightDnn;
+  wire [63:0]  dnn_weights [7:0];
+
   memory mem (
     .clk(clk),
     .rst_n(rst_n),
@@ -41,42 +60,65 @@ module afu
     .tx(tx)
   );
 
-  ctrl_unit ctrl (
+  ctrl_wrapper top_level_ctrl (
     .clk(clk),
     .rst_n(rst_n),
     .buffer_addr_valid(buffer_addr_valid),
     .data_valid(data_valid),
     .write_done(write_done),
     .read_data(read_data),
+    .rdyIpgu(rdyIpgu),
+
     .address(address),
     .write_data(write_data),
     .read_request_valid(read_request_valid),
-    .write_request_valid(write_request_valid)
+    .write_request_valid(write_request_valid),
+
+    .wrAll(wrAll),
+    .wrAllData(wrAllData),
+    .initIpgu(initIpgu),
+
+    .rdnReqWeightMem(rdnReqWeightMem),
+    .doneWeightRdn(doneWeightRdn),
+    .rdn_weights(rdn_weights),
+    .begin_rdn_load(begin_rdn_load),
+
+    .dnnResVld(dnnResVld),
+    .dnnResults(dnnResults),
+    .dnnResRdy(dnnResRdy),
+    .begin_dnn_load(begin_dnn_load),
+
+    .dnnReqWeightMem(dnnReqWeightMem),
+    .doneWeightDnn(doneWeightDnn),
+    .dnn_weights(dnn_weights)
   );
+
+
 
   pipeline_wrapper data_pipeline
   (
     .clk(clk),
     .rst_n(rst_n),
-    .rdn_load_weights(),
-    .dnn_load_weights(),
-    .weight_mem_ready(),
-    .rdn_weight_data(),
-    .dnn_weight_data(),
-    .results_acceptable(),
-    .csRam1_ext(),
-    .weRam1_ext(),
-    .wrAll(),
+    .rdn_load_weights(begin_rdn_load),
+    .dnn_load_weights(begin_dnn_load),
+    .weight_mem_ready(read_request_valid),
+    .rdn_weight_data(rdn_weights),
+    .dnn_weight_data(dnn_weights),
+    .results_acceptable(dnnResRdy),
+    .csRam1_ext(wrAll),
+    .weRam1_ext(wrAll),
+    .wrAll(wrAll),
     .addrRam1_ext(),
-    .wrAllData(),
-    .initIpgu(),
+    .wrAllData(wrAllData),
+    .initIpgu(initIpgu),
 
-    .rdn_weights_vld(),
-    .dnn_weights_vld(),
-    .rdn_mem_req(),
-    .dnn_mem_req(),
-    .dnn_results(),
-    .ipgu_in_rdy()
+    .rdn_weights_vld(doneWeightRdn),
+    .dnn_weights_vld(doneWeightDnn),
+    .rdn_mem_req(rdnReqWeightMem),
+    .dnn_mem_req(dnnReqWeightMem),
+    .dnn_results(dnnResults),
+    .ipgu_in_rdy(rdyIpgu),
+    .dnn_out_vld(dnnResVld)
   );
 
 endmodule

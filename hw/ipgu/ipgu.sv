@@ -48,7 +48,7 @@ module ipgu #(RAM_DATA_WIDTH = 8, RAM_ADDR_WIDTH = 18)
         .cs(csRam1_ext|csRam1_int), .we(weRam1), .wrAllData, .wrAll
     );
     
-    ram #(.DEPTH_X(240), .DEPTH_Y(240), .DATA_WIDTH(RAM_DATA_WIDTH)) ram2 (
+    ram #(.ADDR_WIDTH_X(8), .ADDR_WIDTH_Y(8), .DEPTH_X(240), .DEPTH_Y(240), .DATA_WIDTH(RAM_DATA_WIDTH)) ram2 (
         .clk, .addr(addrRam2), .rdData(rdDataRam2), .wrData(rdDataRam1), 
         .cs(csRam2_int), .we(weRam2)
     );
