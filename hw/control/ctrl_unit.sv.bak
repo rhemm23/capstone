@@ -13,7 +13,7 @@ module ctrl_unit #(IMG_SIZE=90000)
       //ctrl_unit <-> instructionFetch
       output  reg       incPc, 
       output  [31:0]    instructions [4095:0],
-      output  reg       instrVld,
+      output            instrVld,
 
       //decode -> ctrl_unit (cmds)
       input           begin_rdn_load,
