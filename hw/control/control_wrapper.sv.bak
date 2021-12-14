@@ -133,6 +133,6 @@ module control_wrapper
         output  [63:0]  dnn_weights [7:0]
     */
     
-    ctrl_unit ctrlUnit(.*, .instructions(instructionsIn), .reg_wr_en(wr_en)); 
+    ctrl_unit ctrlUnit(.*, .instructions(instructionsIn)); 
 
 endmodule
