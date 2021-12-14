@@ -1,3 +1,4 @@
+#include <inttypes.h>
 #include <stdbool.h>
 #include <unistd.h>
 #include <stdint.h>
@@ -99,6 +100,9 @@ int main(int argc, char *argv[]) {
   // Copy program instructions
   for (int i = 0; i < MAX_INSTRUCTIONS; i++) {
     program_buffer[i] = compiled_program[i];
+    if (i < 10) {
+      printf("%08" PRIx32 "\n", compiled_program[i]);
+    }
   }
 
   FILE *rot_weight_file = fopen(rot_weights_path, "rb");
