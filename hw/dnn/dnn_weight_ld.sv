@@ -100,6 +100,7 @@ module dnn_weight_ld
     NEW_B2_NEURON = 5'h12,
     GET_C_MEM = 5'h13,
     LD_C_WEIGHTS = 5'h14,
+    NEW_C_NEURON = 5'h15
   } ld_state;
 
   ld_state state, nxt_state;
@@ -136,7 +137,7 @@ module dnn_weight_ld
           nxt_state = LD_A0_WEIGHTS;
         end
       LD_A0_WEIGHTS:
-        if (weight_cnt == 7'h65)  
+        if (weight_cnt == 7'h65) begin
           new_neuron = 1'b1;
           nxt_state = NEW_A0_NEURON; 
         end else if(word_cnt == 3'b111) begin
@@ -163,7 +164,7 @@ module dnn_weight_ld
           nxt_state = LD_A1_WEIGHTS; 
         end
       LD_A1_WEIGHTS: 
-        if (weight_cnt == 7'h1A)  
+        if (weight_cnt == 7'h1A) begin
           new_neuron = 1'b1;
           nxt_state = NEW_A1_NEURON; 
         end else if(word_cnt == 3'b111) begin
@@ -190,7 +191,7 @@ module dnn_weight_ld
           nxt_state = LD_A2_WEIGHTS; 
         end
       LD_A2_WEIGHTS: 
-        if (weight_cnt == 7'h51)  
+        if (weight_cnt == 7'h51) begin 
           new_neuron = 1'b1;
           nxt_state = NEW_A2_NEURON; 
         end else if(word_cnt == 3'b111) begin
@@ -217,7 +218,7 @@ module dnn_weight_ld
           nxt_state = LD_B0_WEIGHTS; 
         end
       LD_B0_WEIGHTS: 
-        if (weight_cnt == 7'h5)
+        if (weight_cnt == 7'h5) begin
           new_neuron = 1'b1;
           nxt_state = NEW_B0_NEURON;
         end else if(word_cnt == 3'b111) begin
@@ -244,7 +245,7 @@ module dnn_weight_ld
           nxt_state = LD_B1_WEIGHTS;
         end
       LD_B1_WEIGHTS:
-        if (weight_cnt == 7'h11) 
+        if (weight_cnt == 7'h11) begin
           new_neuron = 1'b1;
           nxt_state = NEW_B1_NEURON; 
         end else if(word_cnt == 3'b111) begin
@@ -271,7 +272,7 @@ module dnn_weight_ld
           nxt_state = LD_B2_WEIGHTS;
         end
       LD_B2_WEIGHTS: 
-        if (weight_cnt == 7'h06)  
+        if (weight_cnt == 7'h06) begin 
           new_neuron = 1'b1;
           nxt_state = NEW_B2_NEURON; 
         end else if(word_cnt == 3'b111) begin
@@ -298,7 +299,7 @@ module dnn_weight_ld
           nxt_state = LD_C_WEIGHTS; 
         end
       LD_C_WEIGHTS: 
-        if (weight_cnt == 7'h04)
+        if (weight_cnt == 7'h04) begin
           new_neuron = 1'b1;
           nxt_state = NEW_C_NEURON;
         end else if(word_cnt == 3'b111) begin
