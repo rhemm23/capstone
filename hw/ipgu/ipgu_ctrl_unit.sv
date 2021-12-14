@@ -36,7 +36,7 @@ module ipgu_ctrl_unit #(RAM_ADDR_WIDTH = 18)
     assign csRam2_int = csRam2|csRam1_d1;
 
 
-    always_comb begin
+    always_comb begin // TODO possible optimize numWindows*20
         case(convertI) 
             'd0: begin numWindows <= 15; end
             'd1: begin numWindows <= 12; end

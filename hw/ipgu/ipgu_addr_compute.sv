@@ -50,7 +50,7 @@ module ipgu_addr_compute #(RAM_ADDR_WIDTH = 18)
                 if(addrYBegin+20==numWindows*20)
                     addrYBegin <= '0;
                 else
-                    addrYBegin <= addrYBegin+10;
+                    addrYBegin <= addrYBegin + 10;
             end
         end
 
@@ -74,8 +74,8 @@ module ipgu_addr_compute #(RAM_ADDR_WIDTH = 18)
             addrYEnd <= 19;
         end
         else begin
-            addrXEnd <= addrXBegin+20-1;
-            addrYEnd <= addrYBegin+20-1;
+            addrXEnd <= addrXBegin+19;
+            addrYEnd <= addrYBegin+19;
         end
     end
  

@@ -23,12 +23,14 @@ bit             rdyIpgu;
 //weights                                                    
 bit           rdnReqWeightMem;                             
 bit           doneWeightRdn;                               
-wire  [63:0]  rdn_weights [7:0];                           
+wire  [63:0]  rdn_weights [7:0];  
+wire          begin_rdn_load;                         
                                                              
 //dnn <-> ctrl_unit                                          
 bit           dnnResVld;                                   
-bit   [1085:0]dnnResults;                                  
-wire          dnnResRdy;                                   
+bit   [511:0]dnnResults;                                  
+wire          dnnResRdy;      
+wire          begin_dnn_load;                                  
 //weights                                                    
 bit           dnnReqWeightMem;                             
 bit           doneWeightDnn;                               

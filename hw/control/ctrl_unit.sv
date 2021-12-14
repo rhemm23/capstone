@@ -1,4 +1,4 @@
-module ctrl_unit #(IMG_SIZE=90000, NUM_INSTR=NUM_INSTR)
+module ctrl_unit #(IMG_SIZE=90000, NUM_INSTR=4096)
     (
       /*
        * Inputs
