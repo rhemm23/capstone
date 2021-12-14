@@ -93,9 +93,9 @@ module det_nn
   wire add_done;
   wire [63:0] add_c;
 
-  wire [99:0] a1_inputs [3:0];
-  wire [24:0] a2_inputs [15:0];
-  wire [79:0] a3_inputs [4:0];
+  wire [7:0] a1_inputs [3:0][99:0];
+  wire [7:0] a2_inputs [15:0][24:0];
+  wire [7:0] a3_inputs [4:0][79:0];
 
   wire a1_neurons_done [3:0];
   wire a2_neurons_done [15:0];
@@ -489,8 +489,7 @@ module det_nn
   assign done = (state == DONE);
 
   generate
-    genvar i;
-    for (i = 0; i < 4; i++) begin : g_a1
+    for (genvar i = 0; i < 4; i++) begin : g_a1
       neuron #(
         .INPUTS(100)
       ) a1 (
@@ -508,8 +507,7 @@ module det_nn
   endgenerate
 
   generate
-    genvar i;
-    for (i = 0; i < 16; i++) begin : g_a2
+    for (genvar i = 0; i < 16; i++) begin : g_a2
       neuron #(
         .INPUTS(25)
       ) a2 (
@@ -527,8 +525,7 @@ module det_nn
   endgenerate
 
   generate
-    genvar i;
-    for (i = 0; i < 5; i++) begin : g_a3
+    for (genvar i = 0; i < 5; i++) begin : g_a3
       neuron #(
         .INPUTS(80)
       ) a3 (
