@@ -111,6 +111,7 @@ int main(int argc, char *argv[]) {
     }
     rot_weights[i] = byte;
   }
+  fclose(rot_weight_file);
 
   FILE *det_weight_file = fopen(det_weights_path, "rb");
   if (det_weight_file == NULL) {
@@ -125,6 +126,7 @@ int main(int argc, char *argv[]) {
     }
     det_weights[i] = byte;
   }
+  fclose(det_weight_file);
 
   FILE *images_file = fopen(images_path, "rb");
   if (images_file == NULL) {
@@ -139,6 +141,7 @@ int main(int argc, char *argv[]) {
     }
     images[i] = byte;
   }
+  fclose(images_file);
 
   afu_t afu;
   setup_afu(&afu, AFU_ACCEL_UUID);
@@ -146,6 +149,27 @@ int main(int argc, char *argv[]) {
 
   // Allow AFU to execute, replace with mmio poll in future
   sleep(10);
+
+  uint8_t final_results[30][192];
+  volatile uint8_t *results = (volatile uint8_t*)&images[IMAGES_BYTES];
+  for (int i = 0; i < 30; i++) {
+    for (int j = 0; j < 192; j++) {
+      final_results[i][j] = results[(i * 192) + j];
+    }
+  }
+
+  FILE *results_file = fopen("./result.bin", "wb+");
+  if (results_file == NULL) {
+    exit_with_error("Unable to open results file");
+  }
+  for (int i = 0; i < 30; i++) {
+    for (int j = 0; j < 192; j++) {
+      if (fwrite(&final_results[i][j], sizeof(uint8_t), 1, results_file) != 1) {
+        exit_with_error("Failed to write to results file");
+      }
+    }
+  }
+  fclose(results_file);
 
   close_afu(&afu);
   free(compiled_program);
