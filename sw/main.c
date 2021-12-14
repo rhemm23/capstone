@@ -87,6 +87,9 @@ int main(int argc, char *argv[]) {
 
   uint32_t *compiled_program;
   compile_program(program_path, &compiled_program);
+  for (int i = 0; i < 10; i++) {
+    printf("%08" PRIx32 "\n", compiled_program[i]);
+  }
 
   afu_t afu;
   setup_afu(&afu, AFU_ACCEL_UUID);
@@ -100,9 +103,6 @@ int main(int argc, char *argv[]) {
   // Copy program instructions
   for (int i = 0; i < MAX_INSTRUCTIONS; i++) {
     program_buffer[i] = compiled_program[i];
-    if (i < 10) {
-      printf("%08" PRIx32 "\n", compiled_program[i]);
-    }
   }
 
   FILE *rot_weight_file = fopen(rot_weights_path, "rb");
