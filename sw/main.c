@@ -87,10 +87,13 @@ int main(int argc, char *argv[]) {
   uint32_t *compiled_program;
   compile_program(program_path, &compiled_program);
 
+  afu_t afu;
+  setup_afu(&afu, AFU_ACCEL_UUID);
+
   // Size of entire shared memory buffer
   uint64_t buffer_size = (MAX_INSTRUCTIONS * 4) + ROT_WEIGHT_BYTES + DET_WEIGHT_BYTES + IMAGES_BYTES;
 
-  void *buffer = (void*)malloc(buffer_size);
+  void *buffer = create_afu_buffer(&afu, buffer_size);
   volatile uint32_t *program_buffer = (volatile uint32_t*)buffer;
 
   // Copy program instructions
@@ -142,10 +145,6 @@ int main(int argc, char *argv[]) {
     images[i] = byte;
   }
   fclose(images_file);
-
-  afu_t afu;
-  setup_afu(&afu, AFU_ACCEL_UUID);
-  setup_afu_buffer(&afu, &buffer, buffer_size);
 
   // Allow AFU to execute, replace with mmio poll in future
   sleep(10);
