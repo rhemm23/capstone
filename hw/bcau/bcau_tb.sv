@@ -3,7 +3,7 @@ module bcau_tb ();
   logic clk;
   logic rst_n;
   logic iru_valid;
-  logic heu_ready;
+  logic dnn_ready;
   logic [7:0] iru_results [4:0][79:0];
   logic bcau_valid;
   logic bcau_ready;
@@ -15,7 +15,7 @@ module bcau_tb ();
     .clk(clk),
     .rst_n(rst_n),
     .iru_valid(iru_valid),
-    .heu_ready(heu_ready),
+    .dnn_ready(dnn_ready),
     .iru_results(iru_results),
     .bcau_valid(bcau_valid),
     .bcau_ready(bcau_ready),
