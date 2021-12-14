@@ -62,7 +62,7 @@ module rdn_fp
 
   assign q = out_buffer;
 
-  rdn_weight_ld weight_loader (
+  rdn_weight_ld_fp weight_loader (
   .clk(clk),
   .rst_n(rst_n),
   .go(load_weights),
