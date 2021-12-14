@@ -98,12 +98,19 @@ void write_afu_csr(afu_t *afu, afu_csr_t csr, uint64_t value) {
   }
 }
 
-void setup_afu_buffer(afu_t *afu, void **buffer, uint64_t size) {
+void * create_afu_buffer(afu_t *afu, uint64_t size) {
+
+  // Page align size
+  int page_size = getpagesize();
+  if (size % page_size != 0) {
+    size += page_size - (size % page_size);
+  }
 
   uint64_t iova;
+  void *buffer;
 
   // Prepare new buffer
-  if (fpgaPrepareBuffer(afu->handle, size, buffer, &afu->shared_buffer.wsid, FPGA_BUF_PREALLOCATED) != FPGA_OK) {
+  if (fpgaPrepareBuffer(afu->handle, size, &buffer, &afu->shared_buffer.wsid, 0) != FPGA_OK) {
     close_with_error(afu, "Failed to create shared memory buffer");
   }
 
@@ -120,10 +127,6 @@ void setup_afu_buffer(afu_t *afu, void **buffer, uint64_t size) {
 
   // Store buffer info
   afu->shared_buffer.iova = iova;
-}
 
-void * create_afu_buffer(afu_t *afu, uint64_t size) {
-  void *buffer = (void*)malloc(size);
-  setup_afu_buffer(afu, &buffer, size);
   return buffer;
 }
