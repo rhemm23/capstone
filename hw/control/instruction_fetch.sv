@@ -13,13 +13,14 @@ wire halt;
 reg [11:0] pc_addr;
 reg [31:0] instructions [15:0];
 
-always_ff @(posedge clk, negedge rst_n)
+always_ff @(posedge clk, negedge rst_n)begin
     if(!rst_n)
         pc_addr <= '0;
-    else if (halt&!incPc)
+    else if (incPc)
+        pc_addr <= pc_addr + 1;
+    else if (halt)
         pc_addr <= pc_addr;
-    else
-        pc_addr <= pc_addr+1;
+end
 
 assign halt = instr[30]&instr[29];
 
