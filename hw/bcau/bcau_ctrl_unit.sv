@@ -6,7 +6,7 @@ module bcau_ctrl_unit
   input clk,
   input rst_n,
   input iru_valid,
-  input heu_ready,
+  input dnn_ready,
 
   /*
    * Outputs
@@ -117,7 +117,7 @@ always_comb begin
         cir_fifo = 1'b1;
       end
     DONE: 
-      if (heu_ready) begin
+      if (dnn_ready) begin
         bcau_ready = 1'b1;
         clr_accum = 1'b1;
         nxt_state = IDLE;

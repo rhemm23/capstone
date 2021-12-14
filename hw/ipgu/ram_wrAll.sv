@@ -13,10 +13,8 @@ module ram
   output reg [DATA_WIDTH-1:0]               rdData,
   input                                     cs,
   input                                     we,
-  input                                     wrAll
-  input [DATA_WIDTH-1:0]                    wrAllData [DEPTH_Y-1:0][DEPTH_X-1:0];
-
-
+  input                                     wrAll,
+  input [DATA_WIDTH-1:0]                    wrAllData [DEPTH_Y-1:0][DEPTH_X-1:0]
   );
 
 wire [ADDR_WIDTH_X-1:0] addr_x;

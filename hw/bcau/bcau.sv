@@ -6,7 +6,7 @@ module bcau
   input clk,
   input rst_n,
   input iru_valid,
-  input heu_ready,
+  input dnn_ready,
   input [7:0] iru_results [4:0][79:0],
 
   /*
@@ -29,7 +29,7 @@ bcau_ctrl_unit ctrl_unit (
   .clk(clk),
   .rst_n(rst_n),
   .iru_valid(iru_valid),
-  .heu_ready(heu_ready),
+  .dnn_ready(dnn_ready),
   .bcau_valid(bcau_valid),
   .bcau_ready(bcau_ready),
   .wr_in_all(wr_in_all),
