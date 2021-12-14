@@ -63,7 +63,7 @@ module heu_visual_tb();
     ipgu_out_ready = 0;
     @(posedge out_ready);
 
-    out_fd = $fopen("result.bin", "wb+");
+    out_fd = $fopen("heu_result.bin", "wb+");
 
     if (out_fd == 0) begin
       $display("Could not open result file");

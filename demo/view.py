@@ -8,5 +8,5 @@ if __name__ == '__main__':
     exit()
   image = None
   with open(sys.argv[1], 'rb') as file:
-    image = Image.frombytes('L', (20, 20), file.read())
+    image = Image.frombytes('L', (20, 20), file.read()).resize((200, 200))
   image.show()
