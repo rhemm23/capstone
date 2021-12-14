@@ -9,6 +9,8 @@ in_buffer.sv
 memory.sv
 out_buffer.sv
 out_fifo.sv
+rev_fifo.sv
+pipeline_wrapper.sv
 
 ipgu/ipgu_addr_compute.sv
 ipgu/ipgu_ctrl_unit.sv
@@ -49,3 +51,13 @@ iru/iru.sv
 bcau/bcau.sv
 bcau/bcau_ctrl_unit.sv
 bcau/bcau_comp_unit.sv
+
+dnn/det_nn.sv
+dnn/dnn_ctrl_unit.sv
+dnn/dnn_weight_ld.sv
+dnn/dnn.sv
+
+control/control_wrapper.sv
+control/ctrl_unit.sv
+control/decode.sv
+control/instruction_fetch.sv
