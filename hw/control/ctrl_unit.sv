@@ -1,4 +1,4 @@
-module ctrl_unit #(IMG_SIZE=90000)
+module ctrl_unit #(IMG_SIZE=90000, NUM_INSTR=NUM_INSTR)
     (
       /*
        * Inputs
@@ -18,7 +18,7 @@ module ctrl_unit #(IMG_SIZE=90000)
 
       //ctrl_unit <-> instructionFetch
       output  reg       incPc, 
-      output  [31:0]    instructions [4095:0],
+      output  [31:0]    instructions [NUM_INSTR-1:0],
       output  reg       instrVld,
 
       //decode -> ctrl_unit (cmds)
@@ -244,7 +244,7 @@ module ctrl_unit #(IMG_SIZE=90000)
                     assign wrAllData[((i*64)+j)/300][((i*64)+j)%300] = img_data[i][(j+1)*8-1-:8];
             end
         end
-        for(genvar i=0;i<4096;i++) begin
+        for(genvar i=0;i<NUM_INSTR;i++) begin
               assign instructions[i] = img_data[i/16][(((i+1)*32-1)%512)-:32];
         end
     endgenerate

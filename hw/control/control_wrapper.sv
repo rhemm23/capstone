@@ -1,4 +1,4 @@
-module control_wrapper 
+module control_wrapper
 (
     input clk,
     input rst_n,
@@ -38,18 +38,20 @@ module control_wrapper
     output  [63:0]  dnn_weights [7:0]
 
 );
+    parameter NUM_INSTR = 16;
+
 
     wire incPc, instrVld;
-    wire [31:0] instructionsIn [4095:0];
+    wire [31:0] instructionsIn [NUM_INSTR-1:0];
     wire [31:0] instr;
     /*
     Interconnection needed
         input incPc,                                  
         input instrVld,                               
-        input [31:0] instructionsIn [4095:0];         
+        input [31:0] instructionsIn [NUM_INSTR-1:0];         
         output [31:0] instr;                    
     */
-    instruction_fetch instructionFetch (.*);
+    instruction_fetch #(.NUM_INSTR(NUM_INSTR)) instructionFetch (.*);
 
 
     wire [1:0] reg_sel;
@@ -79,7 +81,7 @@ module control_wrapper
     Interconncetion needed
         //ctrl_unit <-> instructionFetch
         output  reg       incPc,                //DONE
-        output  [31:0]    instructions [4095:0],
+        output  [31:0]    instructions [NUM_INSTR-1:0],
         output  reg       instrVld,             //DONE
     */
 
@@ -130,6 +132,6 @@ module control_wrapper
         output  [63:0]  dnn_weights [7:0]
     */
     
-    ctrl_unit ctrlUnit(.*, .instructions(instructionsIn), .reg_wr_en(wr_en)); 
+    ctrl_unit #(.NUM_INSTR(NUM_INSTR)) ctrlUnit(.*, .instructions(instructionsIn), .reg_wr_en(wr_en)); 
 
 endmodule
