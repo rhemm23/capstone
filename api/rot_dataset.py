@@ -37,8 +37,9 @@ class TestImageDataset(data.IterableDataset):
     return iter(results)
 
 class RotatedImageDataset(data.IterableDataset):
-  def __init__(self, device=None):
+  def __init__(self, count=None, device=None):
     self.device = device
+    self.count = count
 
   def __next__(self):
     rot = next(self.query, None)
@@ -53,5 +54,5 @@ class RotatedImageDataset(data.IterableDataset):
       raise StopIteration
 
   def __iter__(self):
-    self.query = db.rot_data.find()
+    self.query = db.rot_data.find().limit(self.count) if self.count else db.rot_data.find()
     return self
