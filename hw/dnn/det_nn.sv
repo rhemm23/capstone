@@ -316,8 +316,8 @@ module det_nn
   end
 
   generate
-    for (genvar i = 0; i < 4; i++) begin a1_g
-      for (genvar j = 0; j < 10; j++) begin a1i_g
+    for (genvar i = 0; i < 4; i++) begin : a1_g
+      for (genvar j = 0; j < 10; j++) begin : a1i_g
         assign a1_inputs[i][(j * 10) +: 10] = data[((i / 2) * 200 + (i % 2) * 10) +: 10];
       end
     end
@@ -332,7 +332,7 @@ module det_nn
   endgenerate
 
   generate
-    for (genvar i = 0; i < 5; i++) begin a3_g
+    for (genvar i = 0; i < 5; i++) begin : a3_g
       assign a3_inputs[i] = data[(i * 80) +: 80];
     end
   endgenerate
