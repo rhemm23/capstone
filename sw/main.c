@@ -10,6 +10,8 @@
 #include "afu_json_info.h"
 
 ROT_WEIGHT_BYTES = 62016
+DET_WEIGHT_BYTES = 11328
+IMAGES_BYTES = 2701440
 
 static void exit_with_error(char *error) {
   fprintf(stderr, "Error: %s\n", error);
@@ -21,6 +23,7 @@ int main(int argc, char *argv[]) {
   /*
    * Progress command line args
    */
+  char *images_path = NULL;
   char *program_path = NULL;
   char *rot_weights_path = NULL;
   char *det_weights_path = NULL;
@@ -29,6 +32,7 @@ int main(int argc, char *argv[]) {
     if (strcmp("--help", argv[i]) == 0 || strcmp("-h", argv[i]) == 0) {
       printf("\nCommand line arguments:\n\n");
       printf("\t<--help, -h>                          -> Print command line args\n");
+      printf("\t<--images, -i>  <path to images>      -> Specify the images to process\n");
       printf("\t<--program, -p> <path to program>     -> Specify the CPU program to execute\n");
       printf("\t<--rot-weights -rw> <path to weights> -> Specify the rotation weights to use\n");
       printf("\t<--det-weights -dw> <path to weights> -> Specify the detection weights to use\n\n");
@@ -55,6 +59,13 @@ int main(int argc, char *argv[]) {
         det_weights_path = argv[++i];
       }
     }
+    if (strcmp("--images", argv[i]) == 0 || strcmp("-i", argv[i]) == 0) {
+      if (i == argc - 1) {
+        exit_with_error("Expected images path after option");
+      } else {
+        images_path = argv[++i];
+      }
+    }
   }
 
   /*
@@ -69,12 +80,15 @@ int main(int argc, char *argv[]) {
   if (det_weights_path == NULL) {
     exit_with_error("Missing detection weights parameter, use --help or -h");
   }
+  if (images_path == NULL) {
+    exit_with_error("Missing images path parameter, use --help or -h");
+  }
 
   uint32_t *compiled_program;
   compile_program(program_path, &compiled_program);
 
   // Size of entire shared memory buffer
-  uint64_t buffer_size = (MAX_INSTRUCTIONS * 4) + ROT_WEIGHT_BYTES;
+  uint64_t buffer_size = (MAX_INSTRUCTIONS * 4) + ROT_WEIGHT_BYTES + DET_WEIGHT_BYTES;
 
   void *buffer = (void*)malloc(buffer_size);
   volatile uint32_t *program_buffer = (volatile uint32_t*)buffer;
@@ -96,6 +110,34 @@ int main(int argc, char *argv[]) {
       exit_with_error("Failed to read from rotation weight file");
     }
     rot_weights[i] = byte;
+  }
+
+  FILE *det_weight_file = fopen(det_weights_path, "rb");
+  if (det_weight_file == NULL) {
+    exit_with_error("Could not open detection weight file");
+  }
+
+  volatile uint8_t *det_weights = (volatile uint8_t*)&rot_weights[ROT_WEIGHT_BYTES];
+  for (int i = 0; i < DET_WEIGHT_BYTES; i++) {
+    uint8_t byte;
+    if (fread(&byte, sizeof(uint8_t), 1, det_weight_file) != 1) {
+      exit_with_error("Failed to read from detection weight file");
+    }
+    det_weights[i] = byte;
+  }
+
+  FILE *images_file = fopen(images_path, "rb");
+  if (images_file == NULL) {
+    exit_with_error("Could not open images file");
+  }
+
+  volatile uint8_t *images = (volatile uint8_t*)&det_weights[DET_WEIGHT_BYTES];
+  for (int i = 0; i < IMAGES_BYTES; i++) {
+    uint8_t byte;
+    if (fread(&byte, sizeof(uint8_t), 1, images_file) != 1) {
+      exit_with_error("Failed to read from detection weight file");
+    }
+    images[i] = byte;
   }
 
   afu_t afu;
