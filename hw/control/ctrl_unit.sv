@@ -89,7 +89,7 @@ module ctrl_unit #(IMG_SIZE=90000)
           FETCH_PROGRAM_PAGE: begin
             state <= WAIT_PROGRAM_PAGE;
           end
-          WAIT_PROGRAM_PAGE: 
+          WAIT_PROGRAM_PAGE: begin
             if (data_valid) begin
               state <= EXECUTING;
               instrVld <= 1'b1;
