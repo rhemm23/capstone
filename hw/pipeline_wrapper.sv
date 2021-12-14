@@ -1,5 +1,7 @@
 module pipeline_wrapper
   (
+    input clk,
+    input rst_n,
     input rdn_load_weights,
     input dnn_load_weights,
     input weight_mem_ready,
