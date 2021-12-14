@@ -58,7 +58,7 @@ rdn_weight_ld dut (
     for (i = 0; i < 32; i = i + 1) mem_data[i] = 0;
 
     // reset
-    @(posedge clk)
+    @(posedge clk);
     rst_n = 1;
 
     go = 1;
