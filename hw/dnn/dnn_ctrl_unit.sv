@@ -37,28 +37,30 @@ module dnn_ctrl_unit
       state <= IDLE;
       cnt <= '0;
     end else begin
-      IDLE: if (prev_out_ready) begin
-        state <= WAIT_NN;
-      end
-      WAIT_NN: if (det_nn_done) begin
-        results[cnt] <= det_nn_result;
-        if ((page_cnt < 2) && (cnt + 1 == 512)) begin
-          page_cnt <= page_cnt + 1;
-          state <= DONE;
-          cnt <= '0;
-        end else if ((page_cnt == 2) && (cnt + 1 == 62)) begin
-          page_cnt <= '0;
-          state <= DONE;
-          cnt <= '0;
-        end else begin
-          cnt <= cnt + 1;
+      case (state)
+        IDLE: if (prev_out_ready) begin
+          state <= WAIT_NN;
+        end
+        WAIT_NN: if (det_nn_done) begin
+          results[cnt] <= det_nn_result;
+          if ((page_cnt < 2) && (cnt + 1 == 512)) begin
+            page_cnt <= page_cnt + 1;
+            state <= DONE;
+            cnt <= '0;
+          end else if ((page_cnt == 2) && (cnt + 1 == 62)) begin
+            page_cnt <= '0;
+            state <= DONE;
+            cnt <= '0;
+          end else begin
+            cnt <= cnt + 1;
+            state <= IDLE;
+          end
+        end
+        DONE: if (next_in_ready) begin
+          results <= '0;
           state <= IDLE;
         end
-      end
-      DONE: if (next_in_ready) begin
-        results <= '0;
-        state <= IDLE;
-      end
+      endcase
     end
   end
 

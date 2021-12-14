@@ -57,7 +57,7 @@ module ipgu #(RAM_DATA_WIDTH = 8, RAM_ADDR_WIDTH = 18)
     // IPGU Out Buffer    
     /////////////////////////////////////////////////////
 
-    wire [7:0] ipguOutQ [399:0];
+    logic [7:0] ipguOutQ [399:0];
     
     out_fifo #(.Q_DEPTH(400)) ipgu_out(.clk,.rst_n,    
                         .en( (csRam1_int&weRam1_int) | (csRam2_int&weRam2)), //if either RAM is being internally written to, write to buffer as well
