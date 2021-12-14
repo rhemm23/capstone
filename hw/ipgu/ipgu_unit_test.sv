@@ -8,6 +8,7 @@ module ipgu_unit_test;
     wire [7:0] ipguOutBufferQ [4:0][79:0];    
 
     logic [7:0] initMemVals [299:0][299:0];
+    logic [7:0] wrAllData [299:0][299:0];
 
     int conversionI = 0;
     int windowNum = 0;
@@ -21,9 +22,10 @@ module ipgu_unit_test;
         .csRam1_ext(1'b0),                                  
         .weRam1_ext(1'b0),                                  
         .addrRam1_ext('0),          
-        .wrDataRam1_ext('0),        
         .initIpgu,                                    
-        .rdyIpgu,                                     
+        .rdyIpgu,
+	.wrAll('0),
+	.wrAllData(wrAllData),                                    
 
         //IPGU <-> HEU                                       
         .rdyHeu,                                      
@@ -44,19 +46,20 @@ module ipgu_unit_test;
         @(posedge clk) rst_n = '1;
         DUT.ram1.mem = initMemVals;
         DUT.ram2.mem = '{default:0};
+	wrAllData = '{default:0};
         @(posedge clk) initIpgu = '1;
         @(posedge clk) initIpgu = '0;
         fork: hello
             begin 
             forever begin: vldIpguWait
                 wait(vldIpgu) begin 
-                    if(DUT.state==2)$stop();
+                    if(DUT.ctrlUnit.state==2)$stop();
                     rdyHeu = '1;  void'(checkOutBuffer()); 
                     @(posedge clk) rdyHeu = '0;
 		    @(posedge clk);
                 end
             end end
-            wait(rdyIpgu) begin
+            @(posedge rdyIpgu) begin
             $stop();
             end
 //            wait(DUT.ram2.addr_x==204&&DUT.ram2.addr_y==0) $stop;
@@ -88,7 +91,8 @@ module ipgu_unit_test;
             $display("Tests failed for windowNum %d conversionI %d converting from %d to %d",windowNum, conversionI, dims[conversionI], dims[conversionI+1]);
             $stop(); 
         end
-
+	else
+		$display("Pass %p %p",ipguOutBufferQ,windowVals);
         windowNum++;
         if(windowNum==(dims[conversionI]/10-1)*(dims[conversionI]/10-1)) begin
             logic [7:0] tempMem [299:0][299:0];
