@@ -77,6 +77,7 @@ module ipgu #(RAM_DATA_WIDTH = 8, RAM_ADDR_WIDTH = 18)
     wire windowDone;
     wire incX;
     wire [3:0] numWindows;
+    wire [2:0] convertI;
 
     wire [RAM_ADDR_WIDTH/2-1:0] addrXBegin, addrXEnd, addrYBegin, addrYEnd;
     
