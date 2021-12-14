@@ -318,7 +318,7 @@ module det_nn
   generate
     for (genvar i = 0; i < 4; i++) begin : a1_g
       for (genvar j = 0; j < 10; j++) begin : a1i_g
-        assign a1_inputs[i][(j * 10) +: 10] = data[((i / 2) * 200 + (i % 2) * 10) +: 10];
+        assign a1_inputs[i][(j * 10) +: 10] = normalized_data[((i / 2) * 200 + (i % 2) * 10) +: 10];
       end
     end
   endgenerate
@@ -326,14 +326,14 @@ module det_nn
   generate
     for (genvar i = 0; i < 16; i++) begin : a2_g
       for (genvar j = 0; j < 5; j++) begin : a2i_g
-        assign a2_inputs[i][(j * 5) +: 5] = data[((i / 4) * 100 + (i % 4) * 5) +: 5];
+        assign a2_inputs[i][(j * 5) +: 5] = normalized_data[((i / 4) * 100 + (i % 4) * 5) +: 5];
       end
     end
   endgenerate
 
   generate
     for (genvar i = 0; i < 5; i++) begin : a3_g
-      assign a3_inputs[i] = data[(i * 80) +: 80];
+      assign a3_inputs[i] = normalized_data[(i * 80) +: 80];
     end
   endgenerate
 
