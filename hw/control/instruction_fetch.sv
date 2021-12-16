@@ -31,7 +31,7 @@ always_ff @(posedge clk, negedge rst_n) begin
         instructions <= instructionsIn;
 end
 
-assign instr = instructionsIn[pc_addr];
+assign instr = instructions[pc_addr];
 
 
 endmodule
