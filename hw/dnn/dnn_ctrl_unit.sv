@@ -43,11 +43,11 @@ module dnn_ctrl_unit
         end
         WAIT_NN: if (det_nn_done) begin
           results[cnt] <= det_nn_result;
-          if ((page_cnt < 2) && (cnt + 1 == 512)) begin
+          if ((page_cnt < 3) && (cnt + 1 == 512)) begin
             page_cnt <= page_cnt + 1;
             state <= DONE;
             cnt <= '0;
-          end else if ((page_cnt == 2) && (cnt + 1 == 62)) begin
+          end else if ((page_cnt == 3) && (cnt + 1 == 270)) begin
             page_cnt <= '0;
             state <= DONE;
             cnt <= '0;
