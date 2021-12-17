@@ -25,6 +25,7 @@ module control_wrapper
     input           doneWeightRdn,
     output  [63:0]  rdn_weights [7:0],
     output          begin_rdn_load,
+    output          weights_ready,
 
     //dnn <-> ctrl_unit
     input           dnnResVld,
@@ -41,12 +42,12 @@ module control_wrapper
     parameter NUM_INSTR = 16;
 
 
-    wire incPc, instrVld;
+    wire en_pc, instrVld, halt;
     wire [31:0] instructionsIn [15:0];
     wire [31:0] instr;
 
     wire [1:0] reg_sel;
-    wire wr_en;
+    wire reg_wr_en;
     wire [27:0] reg_databus;
     wire begin_proc;    
     /*
@@ -59,7 +60,8 @@ module control_wrapper
     instruction_fetch  instructionFetch (
         .clk(clk),
         .rst_n(rst_n),
-        .incPc(incPc),
+        .en_pc(en_pc),
+        .halt(halt),
         .instrVld(instrVld),
         .instructionsIn(instructionsIn),
 
@@ -84,11 +86,11 @@ module control_wrapper
     decode decode(
         .clk(clk),
         .rst_n(rst_n),
-        .instr(instr),
+        .opcode(instr[31:28])),
         
         .reg_sel(reg_sel),
-        .wr_en(wr_en),
-        .reg_databus(reg_databus),
+        .reg_wr_en(reg_wr_en),
+        .halt(halt),
         .begin_rdn_load(begin_rdn_load),
         .begin_dnn_load(begin_dnn_load),
         .begin_proc(begin_proc)
@@ -164,7 +166,7 @@ module control_wrapper
         .begin_dnn_load(begin_dnn_load),
         .begin_proc(begin_proc),
         .reg_sel(reg_sel),
-        .reg_wr_en(wr_en),
+        .reg_wr_en(reg_wr_en),
         .reg_databus(reg_databus),
         .rdyIpgu(rdyIpgu),
         .rdnReqWeightMem(rdnReqWeightMem),
@@ -179,13 +181,14 @@ module control_wrapper
         .write_data(write_data),
         .read_request_valid(read_request_valid),
         .write_request_valid(write_request_valid),
-        .incPc(incPc),
+        .en_pc(en_pc),
         .instructions(instructionsIn),
         .instrVld(instrVld),
         .wrAll(wrAll),
         .wrAllData(wrAllData),
         .initIpgu(initIpgu),
         .rdn_weights(rdn_weights),
+        .weights_ready(weights_ready),
         .dnnResRdy(dnnResRdy),
         .dnn_weights(dnn_weights)
         ); 

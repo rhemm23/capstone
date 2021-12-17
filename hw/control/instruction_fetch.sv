@@ -1,37 +1,35 @@
-module instruction_fetch #(NUM_INSTR = 4096)
+module instruction_fetch 
 (
     input clk,
     input rst_n,
-    input incPc, 
-
+    input en_pc, 
+    input halt,
     input instrVld,
     input [31:0] instructionsIn [15:0],
+    
     output [31:0] instr
 );
 
-wire halt;
-reg [11:0] pc_addr;
+reg [7:0] pc_addr;
 reg [31:0] instructions [15:0];
 
 always_ff @(posedge clk, negedge rst_n)begin
-    if(!rst_n)
-        pc_addr <= '0;
-    else if (halt&!incPc)
-        pc_addr <= pc_addr;
-    else
-        pc_addr <= pc_addr + 1;
+  if(!rst_n)
+    pc_addr <= 8'h00;
+  else if (halt)
+    pc_addr <= pc_addr;
+  else if (en_pc)
+    pc_addr <= pc_addr + 1;
 end
-
-assign halt = instr[30]&instr[29];
 
 always_ff @(posedge clk, negedge rst_n) begin
-    if(!rst_n)
-        instructions <= '{16{{4'b0110,28'b0}}};
-    else if(instrVld)
-        instructions <= instructionsIn;
+  if(!rst_n)
+    instructions <= '{16{32'h00000000}};
+  else if(instrVld)
+    instructions <= instructionsIn;
 end
 
-assign instr = instructions[pc_addr];
+assign instr = (en_pc) ? instructions[pc_addr[3:0]]: 0;
 
 
 endmodule
