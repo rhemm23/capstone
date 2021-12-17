@@ -31,10 +31,11 @@ module ctrl_unit
     input   [27:0]  reg_databus,         
       
     //IPGU <-> ctrlUnit
-    output    reg     wrAll,
-    output   [7:0]  wrAllData [299:0][299:0],
-    output   reg      initIpgu,
+    output            image_data_ready,
+    output   [7:0]  ipgu_data [63:0],
+    output            initIpgu,
     input             rdyIpgu,
+    input             ipgu_req_mem,
 
     //rdn <-> ctrl_unit
       //weights
@@ -46,7 +47,7 @@ module ctrl_unit
     //dnn <-> ctrl_unit
     input           dnnResVld,
     input   [511:0] dnnResults,
-    output  reg     dnnResRdy,
+    output          dnnResRdy,
       //weights
     input           dnnReqWeightMem,
     input           doneWeightDnn,
@@ -81,7 +82,7 @@ module ctrl_unit
   // Connects Memory data to instructions
   generate
     for (genvar i = 0; i < 16; i++)
-      assign instructions[i] = read_data[(i*32)-1:0];
+      assign instructions[i] = read_data[(i*32)+:32];
   endgenerate
 
   // Connects Memory data to instructions
@@ -91,6 +92,12 @@ module ctrl_unit
       assign dnn_weights[i] = read_data[(i*64)+:64];
     end
   endgenerate
+
+  generate
+    for (genvar i = 0; i < 64; i++)
+      assign ipgu_data[i] = read_data[(i*8)+:8];
+  endgenerate
+  
 
 
   //mem_data_reg
@@ -110,15 +117,14 @@ module ctrl_unit
   end
 
   typedef enum logic [2:0] {
-      WAIT_BUFFER,
-      FETCH_PROGRAM_PAGE,
-
-      EXECUTING,
-      WAIT_RDN_LOAD,
-      WAIT_DNN_LOAD,
-      WAIT_IMAGE,
-      DONE_IMG
-    } ctrl_unit_state;
+    WAIT_BUFFER,
+    FETCH_PROGRAM_PAGE,
+    EXECUTING,
+    FETCH_WEIGHTS_PAGE,
+    STORE_WEIGHTS,
+    FETCH_IMAGE_PAGE,
+    STORE_IMAGES
+  } ctrl_unit_state;
 
   ctrl_unit_state state, nxt_state;
 
@@ -133,12 +139,9 @@ module ctrl_unit
     // defaults
     nxt_state = state;
     dnnResRdy = 1'b0;
-    wrAll = 1'b0;
-    img_cnt_neg = 1'b0;
+    image_data_ready = 1'b0;
     read_request_valid = 1'b0;
     write_request_valid = 1'b0;
-    incRdnAddr = 1'b0;
-    incDnnAddr = 1'b0;
     instrVld = 1'b0;
     en_pc = 1'b0;
 
@@ -166,44 +169,64 @@ module ctrl_unit
         end
       EXECUTING:  begin
         if(begin_proc) begin
-          rst_pg_cnt = 1'b1;
           rd_reg_sel = 2'b00;
-          en_pc = 1'b1;
+          initIpgu = 1'b1;
           read_request_valid = 1'b1;
-          inc_pg_cnt = 1'b1;
           nxt_state = FETCH_IMAGE_PAGE;
         end
         else if(begin_dnn_load) begin
-          rst_pg_cnt = 1'b1;
           rd_reg_sel = 2'b11;
-          en_pc = 1'b1;
           read_request_valid = 1'b1;
-          inc_pg_cnt = 1'b1;
-          nxt_state = FETCH_DNN_PAGE;
+          nxt_state = FETCH_WEIGHTS_PAGE;
         end
         else if(begin_rdn_load) begin
-          rst_pg_cnt = 1'b1;
           rd_reg_sel = 2'b11;
-          en_pc = 1'b1;
           read_request_valid = 1'b1;
-          inc_pg_cnt = 1'b1;
-          nxt_state = FETCH_RNN_PAGE;
+          nxt_state = FETCH_WEIGHTS_PAGE;
         end else 
           en_pc = 1'b1;
       end
-      FETCH_RNN_PAGE: begin
+      FETCH_WEIGHTS_PAGE: begin
         if (data_valid) begin
           weights_ready = 1'b1;
           inc_weight_addr = 1'b1;
-          nxt_state = STORE_RNN_WEIGHTS;
+          nxt_state = STORE_WEIGHTS;
         end
       end
-      STORE_RNN_WEIGHTS: begin
+      STORE_WEIGHTS: begin 
+        if (rdnReqWeightMem || dnnReqWeightMem) begin
+          // weights for weights to be processed by rdn weight loader
+          rd_reg_sel = 2'b11;
+          read_request_valid = 1'b1;
+          nxt_state = FETCH_WEIGHTS_PAGE;
+        end else if (doneWeightRdn || doneWeightDnn) begin 
+          // If all the weights have been loaded get next instruction
+          nxt_state = EXECUTING;
+        end
+      end
+      FETCH_IMAGE_PAGE: begin
         if (data_valid) begin
-          weights_ready
-          nxt_state = _RNN_WEIGHTS;
+          image_data_ready = 1'b1;
+          inc_img_addr = 1'b1;
+          inc_img_cnt = 1'b1;
+          nxt_state = STORE_IMAGE;
         end
       end
+      STORE_IMAGE: begin
+        if (ipgu_req_mem) begin
+          rd_reg_sel = 2'b00;
+          read_request_valid = 1'b1;
+          nxt_state = FETCH_IMAGE_PAGE;
+        end else if (rdyIpgu) begin
+          
+          nxt_state = CHECK_FOR_RESULTS;
+        end
+      end
+      CHECK_FOR_RESULTS: begin // TODO ask ryan about interface
+        
+      end
+
+
 
 
     endcase

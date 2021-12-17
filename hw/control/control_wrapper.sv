@@ -14,10 +14,11 @@ module control_wrapper
     output write_request_valid,
 
     //fdp(IPGU) <-> controlWrapper(ctrlUnit)
-    output            wrAll,
-    output   [7:0]  wrAllData [299:0][299:0],
+    output            image_data_ready,
+    output   [7:0]  ipgu_data [63:0],
     output            initIpgu,
     input             rdyIpgu,
+    input             ipgu_req_mem,
 
     //rdn <-> ctrl_unit
     //weights
@@ -155,7 +156,7 @@ module control_wrapper
         output  [63:0]  dnn_weights [7:0]
     */
     
-    ctrl_unit  ctrlUnit(
+    ctrl_unit2  ctrlUnit(
         .clk(clk),
         .rst_n(rst_n),
         .buffer_addr_valid(buffer_addr_valid),
@@ -175,6 +176,7 @@ module control_wrapper
         .dnnResults(dnnResults),
         .dnnReqWeightMem(dnnReqWeightMem),
         .doneWeightDnn(doneWeightDnn),
+        .ipgu_req_mem(ipgu_req_mem),
 
 
         .address(address),
@@ -184,8 +186,8 @@ module control_wrapper
         .en_pc(en_pc),
         .instructions(instructionsIn),
         .instrVld(instrVld),
-        .wrAll(wrAll),
-        .wrAllData(wrAllData),
+        .image_data_ready(image_data_ready),
+        .ipgu_data(ipgu_data),
         .initIpgu(initIpgu),
         .rdn_weights(rdn_weights),
         .weights_ready(weights_ready),

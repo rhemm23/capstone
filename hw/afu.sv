@@ -26,8 +26,8 @@ module afu
   wire write_request_valid;
   wire buffer_addr_valid;
 
-  wire wrAll;
-  wire [7:0]  wrAllData [299:0][299:0];
+  wire image_data_ready;
+  wire [7:0]  pixel_data [63:0];
   wire initIpgu;
   wire rdyIpgu;
 
@@ -45,6 +45,8 @@ module afu
   wire dnnReqWeightMem;
   wire doneWeightDnn;
   wire [63:0]  dnn_weights [7:0];
+
+  wire ipgu_req_mem;
 
   memory mem (
     .clk(clk),
@@ -69,14 +71,15 @@ module afu
     .write_done(write_done),
     .read_data(read_data),
     .rdyIpgu(rdyIpgu),
+    .ipgu_req_mem(ipgu_req_mem),
 
     .address(address),
     .write_data(write_data),
     .read_request_valid(read_request_valid),
     .write_request_valid(write_request_valid),
 
-    .wrAll(wrAll),
-    .wrAllData(wrAllData),
+    .image_data_ready(image_data_ready),
+    .ipgu_data(pixel_data),
     .initIpgu(initIpgu),
 
     .rdnReqWeightMem(rdnReqWeightMem),
@@ -107,14 +110,13 @@ module afu
     .rdn_weight_data(rdn_weights),
     .dnn_weight_data(dnn_weights),
     .results_acceptable(dnnResRdy),
-    .csRam1_ext(wrAll),
-    .weRam1_ext(wrAll),
-    .wrAll(wrAll),
-    .wrAllData(wrAllData),
+    .image_data_ready(image_data_ready),
+    .pixel_data(pixel_data),
     .initIpgu(initIpgu),
 
     .rdn_weights_vld(doneWeightRdn),
     .dnn_weights_vld(doneWeightDnn),
+    .ipgu_req_mem(ipgu_req_mem),
     .rdn_mem_req(rdnReqWeightMem),
     .dnn_mem_req(dnnReqWeightMem),
     .dnn_results(dnnResults),
