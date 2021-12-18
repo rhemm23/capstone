@@ -38,9 +38,6 @@ wire  [63:0]  dnn_weights [7:0];
                                                              
 control_wrapper controlWrapper(.*);
 
-//Simple visual check ensuring outputs and internal signals are reset
-//correctly
-
 initial begin
     clk = 0;
     forever #5 clk = !clk; 

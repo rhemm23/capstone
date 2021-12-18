@@ -1,3 +1,7 @@
+
+#include <opae/mmio.h>
+#include <opae/properties.h>
+
 #include "afu.h"
 
 static void exit_with_error(char *error) {

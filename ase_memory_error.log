@@ -1,0 +1,12 @@
+@ERROR: ASE has detected a memory READ to an UNPINNED memory region.
+        Simulation cannot continue, please check the code.
+          Failure @ byte-level phys_addr = 0xc0db40e0c0
+                    line-level phys_addr = 0x3036d0383
+        See ERROR log file ase_memory_error.log and timestamped
+        transactions in ccip_transactions.tsv.
+@ERROR: Check that previously requested memories have not been deallocated
+        before an AFU transaction could access them.
+        NOTE: If your application polls for an AFU completion message,
+              and you deallocate after that, consider using a
+              write fence before AFU status message. The simulator may
+              be committing AFU transactions out of order.

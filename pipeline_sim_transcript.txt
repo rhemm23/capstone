@@ -1,0 +1,4247 @@
+# //  Questa Sim
+# //  Version 2021.2_2 linux Jun 19 2021
+# //
+# //  Copyright 1991-2021 Mentor Graphics Corporation
+# //  All Rights Reserved.
+# //
+# //  QuestaSim and its associated documentation contain trade
+# //  secrets and commercial or financial information that are the property of
+# //  Mentor Graphics Corporation and are privileged, confidential,
+# //  and exempt from disclosure under the Freedom of Information Act,
+# //  5 U.S.C. Section 552. Furthermore, this information
+# //  is prohibited from disclosure under the Trade Secrets Act,
+# //  18 U.S.C. Section 1905.
+# //
+# Loading project capstone
+vsim work.pipeline_wrapper_tb -voptargs="+acc=+ipgu+pipeline_wrapper_tb+bcau+rdn_fp+dnn+pipeline_wrapper+heu"
+# vsim work.pipeline_wrapper_tb -voptargs=""+acc=+ipgu+pipeline_wrapper_tb+bcau+rdn_fp+dnn+pipeline_wrapper+heu"" 
+# Start time: 20:02:07 on Dec 17,2021
+# ** Note: (vsim-3812) Design is being optimized...
+# ** Warning: /filespace/s/sjain75/ece554/capstone/hw/det_nn.sv(445): (vopt-2241) Connection width does not match width of port 'weight_sel'. The port definition is at: /filespace/s/sjain75/ece554/capstone/hw/neuron.sv(15).
+# ** Warning: /filespace/s/sjain75/ece554/capstone/hw/det_nn.sv(430): (vopt-2241) Connection width does not match width of port 'weight_sel'. The port definition is at: /filespace/s/sjain75/ece554/capstone/hw/neuron.sv(15).
+# ** Warning: /filespace/s/sjain75/ece554/capstone/hw/det_nn.sv(416): (vopt-2241) Connection width does not match width of port 'weight_sel'. The port definition is at: /filespace/s/sjain75/ece554/capstone/hw/neuron.sv(15).
+# ** Warning: /filespace/s/sjain75/ece554/capstone/hw/det_nn.sv(402): (vopt-2241) Connection width does not match width of port 'weight_sel'. The port definition is at: /filespace/s/sjain75/ece554/capstone/hw/neuron.sv(15).
+# ** Warning: /filespace/s/sjain75/ece554/capstone/hw/det_nn.sv(368): (vopt-2241) Connection width does not match width of port 'weight_sel'. The port definition is at: /filespace/s/sjain75/ece554/capstone/hw/neuron.sv(15).
+# ** Warning: /filespace/s/sjain75/ece554/capstone/hw/det_nn.sv(368): (vopt-2241) Connection width does not match width of port 'weight_sel'. The port definition is at: /filespace/s/sjain75/ece554/capstone/hw/neuron.sv(15).
+# ** Warning: /filespace/s/sjain75/ece554/capstone/hw/det_nn.sv(368): (vopt-2241) Connection width does not match width of port 'weight_sel'. The port definition is at: /filespace/s/sjain75/ece554/capstone/hw/neuron.sv(15).
+# ** Warning: /filespace/s/sjain75/ece554/capstone/hw/det_nn.sv(368): (vopt-2241) Connection width does not match width of port 'weight_sel'. The port definition is at: /filespace/s/sjain75/ece554/capstone/hw/neuron.sv(15).
+# ** Warning: /filespace/s/sjain75/ece554/capstone/hw/det_nn.sv(368): (vopt-2241) Connection width does not match width of port 'weight_sel'. The port definition is at: /filespace/s/sjain75/ece554/capstone/hw/neuron.sv(15).
+# ** Warning: /filespace/s/sjain75/ece554/capstone/hw/det_nn.sv(368): (vopt-2241) Connection width does not match width of port 'weight_sel'. The port definition is at: /filespace/s/sjain75/ece554/capstone/hw/neuron.sv(15).
+# ** Warning: /filespace/s/sjain75/ece554/capstone/hw/det_nn.sv(368): (vopt-2241) Connection width does not match width of port 'weight_sel'. The port definition is at: /filespace/s/sjain75/ece554/capstone/hw/neuron.sv(15).
+# ** Warning: /filespace/s/sjain75/ece554/capstone/hw/det_nn.sv(368): (vopt-2241) Connection width does not match width of port 'weight_sel'. The port definition is at: /filespace/s/sjain75/ece554/capstone/hw/neuron.sv(15).
+# ** Warning: /filespace/s/sjain75/ece554/capstone/hw/det_nn.sv(368): (vopt-2241) Connection width does not match width of port 'weight_sel'. The port definition is at: /filespace/s/sjain75/ece554/capstone/hw/neuron.sv(15).
+# ** Warning: /filespace/s/sjain75/ece554/capstone/hw/det_nn.sv(368): (vopt-2241) Connection width does not match width of port 'weight_sel'. The port definition is at: /filespace/s/sjain75/ece554/capstone/hw/neuron.sv(15).
+# ** Warning: /filespace/s/sjain75/ece554/capstone/hw/det_nn.sv(368): (vopt-2241) Connection width does not match width of port 'weight_sel'. The port definition is at: /filespace/s/sjain75/ece554/capstone/hw/neuron.sv(15).
+# ** Warning: /filespace/s/sjain75/ece554/capstone/hw/det_nn.sv(368): (vopt-2241) Connection width does not match width of port 'weight_sel'. The port definition is at: /filespace/s/sjain75/ece554/capstone/hw/neuron.sv(15).
+# ** Warning: /filespace/s/sjain75/ece554/capstone/hw/det_nn.sv(368): (vopt-2241) Connection width does not match width of port 'weight_sel'. The port definition is at: /filespace/s/sjain75/ece554/capstone/hw/neuron.sv(15).
+# ** Warning: /filespace/s/sjain75/ece554/capstone/hw/det_nn.sv(368): (vopt-2241) Connection width does not match width of port 'weight_sel'. The port definition is at: /filespace/s/sjain75/ece554/capstone/hw/neuron.sv(15).
+# ** Warning: /filespace/s/sjain75/ece554/capstone/hw/det_nn.sv(368): (vopt-2241) Connection width does not match width of port 'weight_sel'. The port definition is at: /filespace/s/sjain75/ece554/capstone/hw/neuron.sv(15).
+# ** Warning: /filespace/s/sjain75/ece554/capstone/hw/det_nn.sv(368): (vopt-2241) Connection width does not match width of port 'weight_sel'. The port definition is at: /filespace/s/sjain75/ece554/capstone/hw/neuron.sv(15).
+# ** Note: (vopt-143) Recognized 1 FSM in module "fp_mult(fast)".
+# ** Note: (vopt-143) Recognized 1 FSM in module "fp_tanh(fast)".
+# ** Note: (vopt-143) Recognized 1 FSM in module "det_nn(fast)".
+# ** Note: (vopt-143) Recognized 1 FSM in module "fp_exp(fast)".
+# ** Note: (vopt-143) Recognized 1 FSM in module "dnn_ctrl_unit(fast)".
+# ** Note: (vopt-143) Recognized 1 FSM in module "fp_adder(fast)".
+# ** Note: (vopt-143) Recognized 1 FSM in module "dnn_weight_ld(fast)".
+# ** Note: (vopt-143) Recognized 1 FSM in module "neuron(fast__9)".
+# ** Note: (vopt-143) Recognized 1 FSM in module "neuron(fast__8)".
+# ** Note: (vopt-143) Recognized 1 FSM in module "neuron(fast__7)".
+# ** Note: (vopt-143) Recognized 1 FSM in module "neuron(fast__6)".
+# ** Note: (vopt-143) Recognized 1 FSM in module "neuron(fast__5)".
+# ** Note: (vopt-143) Recognized 1 FSM in module "neuron(fast__4)".
+# ** Note: (vopt-143) Recognized 1 FSM in module "neuron(fast__3)".
+# ** Note: (vopt-143) Recognized 1 FSM in module "fp_divider(fast)".
+# ** Note: (vopt-143) Recognized 1 FSM in module "long_to_fp(fast)".
+# ** Note: (vopt-143) Recognized 1 FSM in module "rdn_ctrl_unit_fp(fast)".
+# ** Note: (vopt-143) Recognized 1 FSM in module "layer(fast__1)".
+# ** Note: (vopt-143) Recognized 1 FSM in module "layer(fast__2)".
+# ** Note: (vopt-143) Recognized 1 FSM in module "neuron(fast)".
+# ** Note: (vopt-143) Recognized 1 FSM in module "rot_nn(fast)".
+# ** Note: (vopt-143) Recognized 1 FSM in module "layer(fast)".
+# ** Note: (vopt-143) Recognized 1 FSM in module "rdn_weight_ld_fp(fast)".
+# ** Note: (vopt-143) Recognized 1 FSM in module "ipgu_ctrl_unit(fast)".
+# ** Note: (vopt-143) Recognized 1 FSM in module "heu_sum_unit(fast)".
+# ** Note: (vopt-143) Recognized 1 FSM in module "heu_ctrl_unit(fast)".
+# ** Note: (vopt-143) Recognized 1 FSM in module "iru_ctrl_unit(fast)".
+# ** Note: (vopt-143) Recognized 1 FSM in module "bcau_ctrl_unit(fast)".
+# ** Note: (vsim-12126) Error and warning message counts have been restored: Errors=0, Warnings=20.
+# Loading sv_std.std
+# Loading work.pipeline_wrapper_tb(fast)
+# Loading work.pipeline_wrapper(fast)
+# Loading work.ipgu(fast)
+# Loading work.out_fifo(fast)
+# Loading work.heu(fast)
+# Loading work.rdn_fp(fast)
+# Loading work.neuron(fast__1)
+# Loading work.neuron(fast__2)
+# Loading work.bcau(fast)
+# Loading work.dnn(fast)
+# ** Warning: (vsim-PLI-3691) Expected a system task, not a system function '$fread'.
+#    Time: 0 ns  Iteration: 0  Region: /pipeline_wrapper_tb/#anonblk#81554610#77#4#/#anonblk#81554610#78#4# File: /filespace/s/sjain75/ece554/capstone/hw/pipeline_wrapper_tb.sv Line: 79
+do /filespace/s/sjain75/ece554/sv_project/wave.do
+# ** UI-Msg: (vish-4014) No objects found matching '/pipeline_wrapper_tb/data_pipeline/DNN/weight_ld/layer_reg'.
+# Executing ONERROR command at macro /filespace/s/sjain75/ece554/sv_project/wave.do line 32
+# ** UI-Msg: (vish-4014) No objects found matching '/pipeline_wrapper_tb/data_pipeline/DNN/weight_ld/weight_cnt'.
+# Executing ONERROR command at macro /filespace/s/sjain75/ece554/sv_project/wave.do line 33
+# ** UI-Msg: (vish-4014) No objects found matching '/pipeline_wrapper_tb/data_pipeline/DNN/weight_ld/weight_cnt'.
+# Executing ONERROR command at macro /filespace/s/sjain75/ece554/sv_project/wave.do line 34
+# ** UI-Msg: (vish-4014) No objects found matching '/pipeline_wrapper_tb/data_pipeline/DNN/weight_ld/neuron_cnt'.
+# Executing ONERROR command at macro /filespace/s/sjain75/ece554/sv_project/wave.do line 35
+# ** UI-Msg: (vish-4014) No objects found matching '/pipeline_wrapper_tb/data_pipeline/DNN/weight_ld/inc_layer'.
+# Executing ONERROR command at macro /filespace/s/sjain75/ece554/sv_project/wave.do line 36
+# ** UI-Msg: (vish-4014) No objects found matching '/pipeline_wrapper_tb/data_pipeline/DNN/weight_ld/clr_layer_reg'.
+# Executing ONERROR command at macro /filespace/s/sjain75/ece554/sv_project/wave.do line 37
+# ** UI-Msg: (vish-4014) No objects found matching '/pipeline_wrapper_tb/data_pipeline/DNN/weight_ld/neuron_cnt'.
+# Executing ONERROR command at macro /filespace/s/sjain75/ece554/sv_project/wave.do line 39
+# Compile of pipeline_wrapper_tb.sv was successful.
+vsim work.pipeline_wrapper_tb -voptargs="+acc=+ipgu+pipeline_wrapper_tb+bcau+rdn_fp+dnn+pipeline_wrapper+heu+dnn_weight_ld"
+# End time: 20:03:10 on Dec 17,2021, Elapsed time: 0:01:03
+# Errors: 0, Warnings: 23
+# vsim work.pipeline_wrapper_tb -voptargs=""+acc=+ipgu+pipeline_wrapper_tb+bcau+rdn_fp+dnn+pipeline_wrapper+heu+dnn_weight_ld"" 
+# Start time: 20:03:10 on Dec 17,2021
+# ** Note: (vsim-3812) Design is being optimized...
+# ** Warning: /filespace/s/sjain75/ece554/capstone/hw/det_nn.sv(445): (vopt-2241) Connection width does not match width of port 'weight_sel'. The port definition is at: /filespace/s/sjain75/ece554/capstone/hw/neuron.sv(15).
+# ** Warning: /filespace/s/sjain75/ece554/capstone/hw/det_nn.sv(430): (vopt-2241) Connection width does not match width of port 'weight_sel'. The port definition is at: /filespace/s/sjain75/ece554/capstone/hw/neuron.sv(15).
+# ** Warning: /filespace/s/sjain75/ece554/capstone/hw/det_nn.sv(416): (vopt-2241) Connection width does not match width of port 'weight_sel'. The port definition is at: /filespace/s/sjain75/ece554/capstone/hw/neuron.sv(15).
+# ** Warning: /filespace/s/sjain75/ece554/capstone/hw/det_nn.sv(402): (vopt-2241) Connection width does not match width of port 'weight_sel'. The port definition is at: /filespace/s/sjain75/ece554/capstone/hw/neuron.sv(15).
+# ** Warning: /filespace/s/sjain75/ece554/capstone/hw/det_nn.sv(368): (vopt-2241) Connection width does not match width of port 'weight_sel'. The port definition is at: /filespace/s/sjain75/ece554/capstone/hw/neuron.sv(15).
+# ** Warning: /filespace/s/sjain75/ece554/capstone/hw/det_nn.sv(368): (vopt-2241) Connection width does not match width of port 'weight_sel'. The port definition is at: /filespace/s/sjain75/ece554/capstone/hw/neuron.sv(15).
+# ** Warning: /filespace/s/sjain75/ece554/capstone/hw/det_nn.sv(368): (vopt-2241) Connection width does not match width of port 'weight_sel'. The port definition is at: /filespace/s/sjain75/ece554/capstone/hw/neuron.sv(15).
+# ** Warning: /filespace/s/sjain75/ece554/capstone/hw/det_nn.sv(368): (vopt-2241) Connection width does not match width of port 'weight_sel'. The port definition is at: /filespace/s/sjain75/ece554/capstone/hw/neuron.sv(15).
+# ** Warning: /filespace/s/sjain75/ece554/capstone/hw/det_nn.sv(368): (vopt-2241) Connection width does not match width of port 'weight_sel'. The port definition is at: /filespace/s/sjain75/ece554/capstone/hw/neuron.sv(15).
+# ** Warning: /filespace/s/sjain75/ece554/capstone/hw/det_nn.sv(368): (vopt-2241) Connection width does not match width of port 'weight_sel'. The port definition is at: /filespace/s/sjain75/ece554/capstone/hw/neuron.sv(15).
+# ** Warning: /filespace/s/sjain75/ece554/capstone/hw/det_nn.sv(368): (vopt-2241) Connection width does not match width of port 'weight_sel'. The port definition is at: /filespace/s/sjain75/ece554/capstone/hw/neuron.sv(15).
+# ** Warning: /filespace/s/sjain75/ece554/capstone/hw/det_nn.sv(368): (vopt-2241) Connection width does not match width of port 'weight_sel'. The port definition is at: /filespace/s/sjain75/ece554/capstone/hw/neuron.sv(15).
+# ** Warning: /filespace/s/sjain75/ece554/capstone/hw/det_nn.sv(368): (vopt-2241) Connection width does not match width of port 'weight_sel'. The port definition is at: /filespace/s/sjain75/ece554/capstone/hw/neuron.sv(15).
+# ** Warning: /filespace/s/sjain75/ece554/capstone/hw/det_nn.sv(368): (vopt-2241) Connection width does not match width of port 'weight_sel'. The port definition is at: /filespace/s/sjain75/ece554/capstone/hw/neuron.sv(15).
+# ** Warning: /filespace/s/sjain75/ece554/capstone/hw/det_nn.sv(368): (vopt-2241) Connection width does not match width of port 'weight_sel'. The port definition is at: /filespace/s/sjain75/ece554/capstone/hw/neuron.sv(15).
+# ** Warning: /filespace/s/sjain75/ece554/capstone/hw/det_nn.sv(368): (vopt-2241) Connection width does not match width of port 'weight_sel'. The port definition is at: /filespace/s/sjain75/ece554/capstone/hw/neuron.sv(15).
+# ** Warning: /filespace/s/sjain75/ece554/capstone/hw/det_nn.sv(368): (vopt-2241) Connection width does not match width of port 'weight_sel'. The port definition is at: /filespace/s/sjain75/ece554/capstone/hw/neuron.sv(15).
+# ** Warning: /filespace/s/sjain75/ece554/capstone/hw/det_nn.sv(368): (vopt-2241) Connection width does not match width of port 'weight_sel'. The port definition is at: /filespace/s/sjain75/ece554/capstone/hw/neuron.sv(15).
+# ** Warning: /filespace/s/sjain75/ece554/capstone/hw/det_nn.sv(368): (vopt-2241) Connection width does not match width of port 'weight_sel'. The port definition is at: /filespace/s/sjain75/ece554/capstone/hw/neuron.sv(15).
+# ** Warning: /filespace/s/sjain75/ece554/capstone/hw/det_nn.sv(368): (vopt-2241) Connection width does not match width of port 'weight_sel'. The port definition is at: /filespace/s/sjain75/ece554/capstone/hw/neuron.sv(15).
+# ** Note: (vopt-143) Recognized 1 FSM in module "fp_mult(fast)".
+# ** Note: (vopt-143) Recognized 1 FSM in module "fp_tanh(fast)".
+# ** Note: (vopt-143) Recognized 1 FSM in module "det_nn(fast)".
+# ** Note: (vopt-143) Recognized 1 FSM in module "fp_exp(fast)".
+# ** Note: (vopt-143) Recognized 1 FSM in module "dnn_ctrl_unit(fast)".
+# ** Note: (vopt-143) Recognized 1 FSM in module "fp_adder(fast)".
+# ** Note: (vopt-143) Recognized 1 FSM in module "neuron(fast__9)".
+# ** Note: (vopt-143) Recognized 1 FSM in module "neuron(fast__8)".
+# ** Note: (vopt-143) Recognized 1 FSM in module "neuron(fast__7)".
+# ** Note: (vopt-143) Recognized 1 FSM in module "neuron(fast__6)".
+# ** Note: (vopt-143) Recognized 1 FSM in module "neuron(fast__5)".
+# ** Note: (vopt-143) Recognized 1 FSM in module "neuron(fast__4)".
+# ** Note: (vopt-143) Recognized 1 FSM in module "neuron(fast__3)".
+# ** Note: (vopt-143) Recognized 1 FSM in module "fp_divider(fast)".
+# ** Note: (vopt-143) Recognized 1 FSM in module "long_to_fp(fast)".
+# ** Note: (vopt-143) Recognized 1 FSM in module "rdn_ctrl_unit_fp(fast)".
+# ** Note: (vopt-143) Recognized 1 FSM in module "layer(fast__1)".
+# ** Note: (vopt-143) Recognized 1 FSM in module "layer(fast__2)".
+# ** Note: (vopt-143) Recognized 1 FSM in module "neuron(fast)".
+# ** Note: (vopt-143) Recognized 1 FSM in module "rot_nn(fast)".
+# ** Note: (vopt-143) Recognized 1 FSM in module "layer(fast)".
+# ** Note: (vopt-143) Recognized 1 FSM in module "rdn_weight_ld_fp(fast)".
+# ** Note: (vopt-143) Recognized 1 FSM in module "ipgu_ctrl_unit(fast)".
+# ** Note: (vopt-143) Recognized 1 FSM in module "heu_sum_unit(fast)".
+# ** Note: (vopt-143) Recognized 1 FSM in module "heu_ctrl_unit(fast)".
+# ** Note: (vopt-143) Recognized 1 FSM in module "iru_ctrl_unit(fast)".
+# ** Note: (vopt-143) Recognized 1 FSM in module "bcau_ctrl_unit(fast)".
+# ** Note: (vopt-143) Recognized 1 FSM in module "dnn_weight_ld(fast)".
+# ** Note: (vsim-12126) Error and warning message counts have been restored: Errors=0, Warnings=20.
+# Loading sv_std.std
+# Loading work.pipeline_wrapper_tb(fast)
+# Loading work.pipeline_wrapper(fast)
+# Loading work.ipgu(fast)
+# Loading work.out_fifo(fast)
+# Loading work.heu(fast)
+# Loading work.rdn_fp(fast)
+# Loading work.neuron(fast__1)
+# Loading work.neuron(fast__2)
+# Loading work.bcau(fast)
+# Loading work.dnn(fast)
+# Loading work.dnn_weight_ld(fast)
+# ** Warning: (vsim-PLI-3691) Expected a system task, not a system function '$fread'.
+#    Time: 0 ns  Iteration: 0  Region: /pipeline_wrapper_tb/#anonblk#81554610#77#4#/#anonblk#81554610#78#4# File: /filespace/s/sjain75/ece554/capstone/hw/pipeline_wrapper_tb.sv Line: 79
+do /filespace/s/sjain75/ece554/sv_project/wave.do
+run -all
+# Reading Image
+# ** Note: $stop    : /filespace/s/sjain75/ece554/capstone/hw/pipeline_wrapper_tb.sv(102)
+#    Time: 14935 ns  Iteration: 3  Instance: /pipeline_wrapper_tb
+# Break in Module pipeline_wrapper_tb at /filespace/s/sjain75/ece554/capstone/hw/pipeline_wrapper_tb.sv line 102
+run -all
+# ** Note: $stop    : /filespace/s/sjain75/ece554/capstone/hw/pipeline_wrapper_tb.sv(101)
+#    Time: 87735 ns  Iteration: 3  Instance: /pipeline_wrapper_tb
+# Break in Module pipeline_wrapper_tb at /filespace/s/sjain75/ece554/capstone/hw/pipeline_wrapper_tb.sv line 101
+run -all
+# done weights
+# Window           0 sent by IPGU
+# Window           1 sent by IPGU
+# Window           2 sent by IPGU
+# Window           3 sent by IPGU
+# Window           4 sent by IPGU
+# Window           5 sent by IPGU
+# Window           6 sent by IPGU
+# Window           7 sent by IPGU
+# Window           8 sent by IPGU
+# Window           9 sent by IPGU
+# Window          10 sent by IPGU
+# Window          11 sent by IPGU
+# Window          12 sent by IPGU
+# Window          13 sent by IPGU
+# Window          14 sent by IPGU
+# Window          15 sent by IPGU
+# Window          16 sent by IPGU
+# Window          17 sent by IPGU
+# Window          18 sent by IPGU
+# Window          19 sent by IPGU
+# Window          20 sent by IPGU
+# Window          21 sent by IPGU
+add wave -position insertpoint  \
+sim:/pipeline_wrapper_tb/data_pipeline/IPGU/ctrlUnit/state
+restart
+# ** Note: (vsim-12125) Error and warning message counts have been reset to '0' because of 'restart'.
+# ** Note: (vsim-8009) Loading existing optimized design _opt
+# ** Note: (vsim-12126) Error and warning message counts have been restored: Errors=0, Warnings=20.
+# Loading work.pipeline_wrapper_tb(fast)
+# Loading work.pipeline_wrapper(fast)
+# Loading work.ipgu(fast)
+# Loading work.out_fifo(fast)
+# Loading work.heu(fast)
+# Loading work.rdn_fp(fast)
+# Loading work.neuron(fast__1)
+# Loading work.neuron(fast__2)
+# Loading work.bcau(fast)
+# Loading work.dnn(fast)
+# Loading work.dnn_weight_ld(fast)
+# ** Warning: (vsim-PLI-3691) Expected a system task, not a system function '$fread'.
+#    Time: 0 ns  Iteration: 0  Region: /pipeline_wrapper_tb/#anonblk#81554610#77#4#/#anonblk#81554610#78#4# File: /filespace/s/sjain75/ece554/capstone/hw/pipeline_wrapper_tb.sv Line: 79
+run -all
+# Reading Image
+# ** Note: $stop    : /filespace/s/sjain75/ece554/capstone/hw/pipeline_wrapper_tb.sv(102)
+#    Time: 14935 ns  Iteration: 3  Instance: /pipeline_wrapper_tb
+# Break in Module pipeline_wrapper_tb at /filespace/s/sjain75/ece554/capstone/hw/pipeline_wrapper_tb.sv line 102
+run -all
+# ** Note: $stop    : /filespace/s/sjain75/ece554/capstone/hw/pipeline_wrapper_tb.sv(101)
+#    Time: 87735 ns  Iteration: 3  Instance: /pipeline_wrapper_tb
+# Break in Module pipeline_wrapper_tb at /filespace/s/sjain75/ece554/capstone/hw/pipeline_wrapper_tb.sv line 101
+run
+# done weights
+run
+run
+run
+run
+run
+run
+run
+run
+run
+run
+run
+run
+run
+run
+run
+run
+run
+# Window           0 sent by IPGU
+# Window           1 sent by IPGU
+run
+run
+run
+run -all
+# Window           2 sent by IPGU
+# Window           3 sent by IPGU
+# Window           4 sent by IPGU
+# Window           5 sent by IPGU
+# Window           6 sent by IPGU
+# Window           7 sent by IPGU
+# Window           8 sent by IPGU
+# Window           9 sent by IPGU
+# Window          10 sent by IPGU
+# Window          11 sent by IPGU
+# Window          12 sent by IPGU
+# Window          13 sent by IPGU
+# Window          14 sent by IPGU
+# Window          15 sent by IPGU
+run -all
+# Window          16 sent by IPGU
+# Window          17 sent by IPGU
+# Window          18 sent by IPGU
+# Window          19 sent by IPGU
+# Window          20 sent by IPGU
+# Window          21 sent by IPGU
+# Window          22 sent by IPGU
+# Window          23 sent by IPGU
+# Window          24 sent by IPGU
+# Window          25 sent by IPGU
+# Window          26 sent by IPGU
+# Window          27 sent by IPGU
+# Window          28 sent by IPGU
+# Window          29 sent by IPGU
+# Window          30 sent by IPGU
+# Window          31 sent by IPGU
+# Window          32 sent by IPGU
+# Window          33 sent by IPGU
+# Window          34 sent by IPGU
+# Window          35 sent by IPGU
+# Window          36 sent by IPGU
+# Window          37 sent by IPGU
+# Window          38 sent by IPGU
+# Window          39 sent by IPGU
+# Window          40 sent by IPGU
+# Window          41 sent by IPGU
+# Window          42 sent by IPGU
+# Window          43 sent by IPGU
+# Window          44 sent by IPGU
+# Window          45 sent by IPGU
+# Window          46 sent by IPGU
+# Window          47 sent by IPGU
+# Window          48 sent by IPGU
+# Window          49 sent by IPGU
+# Window          50 sent by IPGU
+# Window          51 sent by IPGU
+# Window          52 sent by IPGU
+# Window          53 sent by IPGU
+# Window          54 sent by IPGU
+# Window          55 sent by IPGU
+# Window          56 sent by IPGU
+# Window          57 sent by IPGU
+# Window          58 sent by IPGU
+# Window          59 sent by IPGU
+# Window          60 sent by IPGU
+# Window          61 sent by IPGU
+# Window          62 sent by IPGU
+# Window          63 sent by IPGU
+# Window          64 sent by IPGU
+# Window          65 sent by IPGU
+# Window          66 sent by IPGU
+# Window          67 sent by IPGU
+# Window          68 sent by IPGU
+# Window          69 sent by IPGU
+# Window          70 sent by IPGU
+# Window          71 sent by IPGU
+# Window          72 sent by IPGU
+# Window          73 sent by IPGU
+# Window          74 sent by IPGU
+# Window          75 sent by IPGU
+# Window          76 sent by IPGU
+# Window          77 sent by IPGU
+# Window          78 sent by IPGU
+# Window          79 sent by IPGU
+# Window          80 sent by IPGU
+# Window          81 sent by IPGU
+# Window          82 sent by IPGU
+# Window          83 sent by IPGU
+# Window          84 sent by IPGU
+# Window          85 sent by IPGU
+# Window          86 sent by IPGU
+# Window          87 sent by IPGU
+# Window          88 sent by IPGU
+# Window          89 sent by IPGU
+# Window          90 sent by IPGU
+# Window          91 sent by IPGU
+# Window          92 sent by IPGU
+# Window          93 sent by IPGU
+# Window          94 sent by IPGU
+# Window          95 sent by IPGU
+# Window          96 sent by IPGU
+# Window          97 sent by IPGU
+# Window          98 sent by IPGU
+# Window          99 sent by IPGU
+# Window         100 sent by IPGU
+# Window         101 sent by IPGU
+# Window         102 sent by IPGU
+# Window         103 sent by IPGU
+# Window         104 sent by IPGU
+# Window         105 sent by IPGU
+# Window         106 sent by IPGU
+# Window         107 sent by IPGU
+# Window         108 sent by IPGU
+# Window         109 sent by IPGU
+# Window         110 sent by IPGU
+# Window         111 sent by IPGU
+# Window         112 sent by IPGU
+# Window         113 sent by IPGU
+# Window         114 sent by IPGU
+# Window         115 sent by IPGU
+# Window         116 sent by IPGU
+# Window         117 sent by IPGU
+# Window         118 sent by IPGU
+# Window         119 sent by IPGU
+# Window         120 sent by IPGU
+# Window         121 sent by IPGU
+# Window         122 sent by IPGU
+# Window         123 sent by IPGU
+# Window         124 sent by IPGU
+# Window         125 sent by IPGU
+# Window         126 sent by IPGU
+# Window         127 sent by IPGU
+# Window         128 sent by IPGU
+# Window         129 sent by IPGU
+# Window         130 sent by IPGU
+# Window         131 sent by IPGU
+# Window         132 sent by IPGU
+# Window         133 sent by IPGU
+# Window         134 sent by IPGU
+# Window         135 sent by IPGU
+# Window         136 sent by IPGU
+# Window         137 sent by IPGU
+# Window         138 sent by IPGU
+# Window         139 sent by IPGU
+# Window         140 sent by IPGU
+# Window         141 sent by IPGU
+# Window         142 sent by IPGU
+# Window         143 sent by IPGU
+# Window         144 sent by IPGU
+# Window         145 sent by IPGU
+# Window         146 sent by IPGU
+# Window         147 sent by IPGU
+# Window         148 sent by IPGU
+# Window         149 sent by IPGU
+# Window         150 sent by IPGU
+# Window         151 sent by IPGU
+# Window         152 sent by IPGU
+# Window         153 sent by IPGU
+# Window         154 sent by IPGU
+# Window         155 sent by IPGU
+# Window         156 sent by IPGU
+# Window         157 sent by IPGU
+# Window         158 sent by IPGU
+# Window         159 sent by IPGU
+# Window         160 sent by IPGU
+# Window         161 sent by IPGU
+# Window         162 sent by IPGU
+# Window         163 sent by IPGU
+# Window         164 sent by IPGU
+# Window         165 sent by IPGU
+# Window         166 sent by IPGU
+# Window         167 sent by IPGU
+# Window         168 sent by IPGU
+# Window         169 sent by IPGU
+# Window         170 sent by IPGU
+# Window         171 sent by IPGU
+# Window         172 sent by IPGU
+# Window         173 sent by IPGU
+# Window         174 sent by IPGU
+# Window         175 sent by IPGU
+# Window         176 sent by IPGU
+# Window         177 sent by IPGU
+# Window         178 sent by IPGU
+# Window         179 sent by IPGU
+# Window         180 sent by IPGU
+# Window         181 sent by IPGU
+# Window         182 sent by IPGU
+# Window         183 sent by IPGU
+# Window         184 sent by IPGU
+# Window         185 sent by IPGU
+# Window         186 sent by IPGU
+# Window         187 sent by IPGU
+# Window         188 sent by IPGU
+# Window         189 sent by IPGU
+# Window         190 sent by IPGU
+# Window         191 sent by IPGU
+# Window         192 sent by IPGU
+# Window         193 sent by IPGU
+# Window         194 sent by IPGU
+# Window         195 sent by IPGU
+# Window         196 sent by IPGU
+# Window         197 sent by IPGU
+# Window         198 sent by IPGU
+# Window         199 sent by IPGU
+# Window         200 sent by IPGU
+# Window         201 sent by IPGU
+# Window         202 sent by IPGU
+# Window         203 sent by IPGU
+# Window         204 sent by IPGU
+# Window         205 sent by IPGU
+# Window         206 sent by IPGU
+# Window         207 sent by IPGU
+# Window         208 sent by IPGU
+# Window         209 sent by IPGU
+# Window         210 sent by IPGU
+# Window         211 sent by IPGU
+# Window         212 sent by IPGU
+# Window         213 sent by IPGU
+# Window         214 sent by IPGU
+# Window         215 sent by IPGU
+# Window         216 sent by IPGU
+# Window         217 sent by IPGU
+# Window         218 sent by IPGU
+# Window         219 sent by IPGU
+# Window         220 sent by IPGU
+# Window         221 sent by IPGU
+# Window         222 sent by IPGU
+# Window         223 sent by IPGU
+# Window         224 sent by IPGU
+# Window         225 sent by IPGU
+# Window         226 sent by IPGU
+# Window         227 sent by IPGU
+# Window         228 sent by IPGU
+# Window         229 sent by IPGU
+# Window         230 sent by IPGU
+# Window         231 sent by IPGU
+# Window         232 sent by IPGU
+# Window         233 sent by IPGU
+# Window         234 sent by IPGU
+# Window         235 sent by IPGU
+# Window         236 sent by IPGU
+# Window         237 sent by IPGU
+# Window         238 sent by IPGU
+# Window         239 sent by IPGU
+# Window         240 sent by IPGU
+# Window         241 sent by IPGU
+# Window         242 sent by IPGU
+# Window         243 sent by IPGU
+# Window         244 sent by IPGU
+# Window         245 sent by IPGU
+# Window         246 sent by IPGU
+# Window         247 sent by IPGU
+# Window         248 sent by IPGU
+# Window         249 sent by IPGU
+# Window         250 sent by IPGU
+# Window         251 sent by IPGU
+# Window         252 sent by IPGU
+# Window         253 sent by IPGU
+# Window         254 sent by IPGU
+# Window         255 sent by IPGU
+# Window         256 sent by IPGU
+# Window         257 sent by IPGU
+# Window         258 sent by IPGU
+# Window         259 sent by IPGU
+# Window         260 sent by IPGU
+# Window         261 sent by IPGU
+# Window         262 sent by IPGU
+# Window         263 sent by IPGU
+# Window         264 sent by IPGU
+# Window         265 sent by IPGU
+# Window         266 sent by IPGU
+# Window         267 sent by IPGU
+# Window         268 sent by IPGU
+# Window         269 sent by IPGU
+# Window         270 sent by IPGU
+# Window         271 sent by IPGU
+# Window         272 sent by IPGU
+# Window         273 sent by IPGU
+# Window         274 sent by IPGU
+# Window         275 sent by IPGU
+# Window         276 sent by IPGU
+# Window         277 sent by IPGU
+# Window         278 sent by IPGU
+# Window         279 sent by IPGU
+# Window         280 sent by IPGU
+# Window         281 sent by IPGU
+# Window         282 sent by IPGU
+# Window         283 sent by IPGU
+# Window         284 sent by IPGU
+# Window         285 sent by IPGU
+# Window         286 sent by IPGU
+# Window         287 sent by IPGU
+# Window         288 sent by IPGU
+# Window         289 sent by IPGU
+# Window         290 sent by IPGU
+# Window         291 sent by IPGU
+# Window         292 sent by IPGU
+# Window         293 sent by IPGU
+# Window         294 sent by IPGU
+# Window         295 sent by IPGU
+# Window         296 sent by IPGU
+# Window         297 sent by IPGU
+# Window         298 sent by IPGU
+# Window         299 sent by IPGU
+# Window         300 sent by IPGU
+# Window         301 sent by IPGU
+# Window         302 sent by IPGU
+# Window         303 sent by IPGU
+# Window         304 sent by IPGU
+# Window         305 sent by IPGU
+# Window         306 sent by IPGU
+# Window         307 sent by IPGU
+# Window         308 sent by IPGU
+# Window         309 sent by IPGU
+# Window         310 sent by IPGU
+# Window         311 sent by IPGU
+# Window         312 sent by IPGU
+# Window         313 sent by IPGU
+# Window         314 sent by IPGU
+# Window         315 sent by IPGU
+# Window         316 sent by IPGU
+# Window         317 sent by IPGU
+# Window         318 sent by IPGU
+# Window         319 sent by IPGU
+# Window         320 sent by IPGU
+# Window         321 sent by IPGU
+# Window         322 sent by IPGU
+# Window         323 sent by IPGU
+# Window         324 sent by IPGU
+# Window         325 sent by IPGU
+# Window         326 sent by IPGU
+# Window         327 sent by IPGU
+# Window         328 sent by IPGU
+# Window         329 sent by IPGU
+# Window         330 sent by IPGU
+# Window         331 sent by IPGU
+# Window         332 sent by IPGU
+# Window         333 sent by IPGU
+# Window         334 sent by IPGU
+# Window         335 sent by IPGU
+# Window         336 sent by IPGU
+# Window         337 sent by IPGU
+# Window         338 sent by IPGU
+# Window         339 sent by IPGU
+# Window         340 sent by IPGU
+# Window         341 sent by IPGU
+# Window         342 sent by IPGU
+# Window         343 sent by IPGU
+# Window         344 sent by IPGU
+# Window         345 sent by IPGU
+# Window         346 sent by IPGU
+# Window         347 sent by IPGU
+# Window         348 sent by IPGU
+# Window         349 sent by IPGU
+# Window         350 sent by IPGU
+# Window         351 sent by IPGU
+# Window         352 sent by IPGU
+# Window         353 sent by IPGU
+# Window         354 sent by IPGU
+# Window         355 sent by IPGU
+# Window         356 sent by IPGU
+# Window         357 sent by IPGU
+# Window         358 sent by IPGU
+# Window         359 sent by IPGU
+# Window         360 sent by IPGU
+# Window         361 sent by IPGU
+# Window         362 sent by IPGU
+# Window         363 sent by IPGU
+# Window         364 sent by IPGU
+# Window         365 sent by IPGU
+# Window         366 sent by IPGU
+# Window         367 sent by IPGU
+# Window         368 sent by IPGU
+# Window         369 sent by IPGU
+# Window         370 sent by IPGU
+# Window         371 sent by IPGU
+# Window         372 sent by IPGU
+# Window         373 sent by IPGU
+# Window         374 sent by IPGU
+# Window         375 sent by IPGU
+# Window         376 sent by IPGU
+# Window         377 sent by IPGU
+# Window         378 sent by IPGU
+# Window         379 sent by IPGU
+# Window         380 sent by IPGU
+# Window         381 sent by IPGU
+# Window         382 sent by IPGU
+# Window         383 sent by IPGU
+# Window         384 sent by IPGU
+# Window         385 sent by IPGU
+# Window         386 sent by IPGU
+# Window         387 sent by IPGU
+# Window         388 sent by IPGU
+# Window         389 sent by IPGU
+# Window         390 sent by IPGU
+# Window         391 sent by IPGU
+# Window         392 sent by IPGU
+# Window         393 sent by IPGU
+# Window         394 sent by IPGU
+# Window         395 sent by IPGU
+# Window         396 sent by IPGU
+# Window         397 sent by IPGU
+# Window         398 sent by IPGU
+# Window         399 sent by IPGU
+# Window         400 sent by IPGU
+# Window         401 sent by IPGU
+# Window         402 sent by IPGU
+# Window         403 sent by IPGU
+# Window         404 sent by IPGU
+# Window         405 sent by IPGU
+# Window         406 sent by IPGU
+# Window         407 sent by IPGU
+# Window         408 sent by IPGU
+# Window         409 sent by IPGU
+# Window         410 sent by IPGU
+# Window         411 sent by IPGU
+# Window         412 sent by IPGU
+# Window         413 sent by IPGU
+# Window         414 sent by IPGU
+# Window         415 sent by IPGU
+# Window         416 sent by IPGU
+# Window         417 sent by IPGU
+# Window         418 sent by IPGU
+# Window         419 sent by IPGU
+# Window         420 sent by IPGU
+# Window         421 sent by IPGU
+# Window         422 sent by IPGU
+# Window         423 sent by IPGU
+# Window         424 sent by IPGU
+# Window         425 sent by IPGU
+# Window         426 sent by IPGU
+# Window         427 sent by IPGU
+# Window         428 sent by IPGU
+# Window         429 sent by IPGU
+# Window         430 sent by IPGU
+# Window         431 sent by IPGU
+# Window         432 sent by IPGU
+# Window         433 sent by IPGU
+# Window         434 sent by IPGU
+# Window         435 sent by IPGU
+# Window         436 sent by IPGU
+# Window         437 sent by IPGU
+# Window         438 sent by IPGU
+# Window         439 sent by IPGU
+# Window         440 sent by IPGU
+# Window         441 sent by IPGU
+# Window         442 sent by IPGU
+# Window         443 sent by IPGU
+# Window         444 sent by IPGU
+# Window         445 sent by IPGU
+# Window         446 sent by IPGU
+# Window         447 sent by IPGU
+# Window         448 sent by IPGU
+# Window         449 sent by IPGU
+# Window         450 sent by IPGU
+# Window         451 sent by IPGU
+# Window         452 sent by IPGU
+# Window         453 sent by IPGU
+# Window         454 sent by IPGU
+# Window         455 sent by IPGU
+# Window         456 sent by IPGU
+# Window         457 sent by IPGU
+# Window         458 sent by IPGU
+# Window         459 sent by IPGU
+# Window         460 sent by IPGU
+# Window         461 sent by IPGU
+# Window         462 sent by IPGU
+# Window         463 sent by IPGU
+# Window         464 sent by IPGU
+# Window         465 sent by IPGU
+# Window         466 sent by IPGU
+# Window         467 sent by IPGU
+# Window         468 sent by IPGU
+# Window         469 sent by IPGU
+# Window         470 sent by IPGU
+# Window         471 sent by IPGU
+# Window         472 sent by IPGU
+# Window         473 sent by IPGU
+# Window         474 sent by IPGU
+# Window         475 sent by IPGU
+# Window         476 sent by IPGU
+# Window         477 sent by IPGU
+# Window         478 sent by IPGU
+# Window         479 sent by IPGU
+# Window         480 sent by IPGU
+# Window         481 sent by IPGU
+# Window         482 sent by IPGU
+# Window         483 sent by IPGU
+# Window         484 sent by IPGU
+# Window         485 sent by IPGU
+# Window         486 sent by IPGU
+# Window         487 sent by IPGU
+# Window         488 sent by IPGU
+# Window         489 sent by IPGU
+# Window         490 sent by IPGU
+# Window         491 sent by IPGU
+# Window         492 sent by IPGU
+# Window         493 sent by IPGU
+# Window         494 sent by IPGU
+# Window         495 sent by IPGU
+# Window         496 sent by IPGU
+# Window         497 sent by IPGU
+# Window         498 sent by IPGU
+# Window         499 sent by IPGU
+# Window         500 sent by IPGU
+# Window         501 sent by IPGU
+# Window         502 sent by IPGU
+# Window         503 sent by IPGU
+# Window         504 sent by IPGU
+# Window         505 sent by IPGU
+# Window         506 sent by IPGU
+# Window         507 sent by IPGU
+# Window         508 sent by IPGU
+# Window         509 sent by IPGU
+# Window         510 sent by IPGU
+# Window         511 sent by IPGU
+# Window         512 sent by IPGU
+# Window         513 sent by IPGU
+# Window         514 sent by IPGU
+# Window         515 sent by IPGU
+# Window         516 sent by IPGU
+# Window         517 sent by IPGU
+# Window         518 sent by IPGU
+# Window         519 sent by IPGU
+# Window         520 sent by IPGU
+# Window         521 sent by IPGU
+# Window         522 sent by IPGU
+# Window         523 sent by IPGU
+# Window         524 sent by IPGU
+# Window         525 sent by IPGU
+# Window         526 sent by IPGU
+# Window         527 sent by IPGU
+# Window         528 sent by IPGU
+# Window         529 sent by IPGU
+# Window         530 sent by IPGU
+# Window         531 sent by IPGU
+# Window         532 sent by IPGU
+# Window         533 sent by IPGU
+# Window         534 sent by IPGU
+# Window         535 sent by IPGU
+# Window         536 sent by IPGU
+# Window         537 sent by IPGU
+# Window         538 sent by IPGU
+# Window         539 sent by IPGU
+# Window         540 sent by IPGU
+# Window         541 sent by IPGU
+# Window         542 sent by IPGU
+# Window         543 sent by IPGU
+# Window         544 sent by IPGU
+# Window         545 sent by IPGU
+# Window         546 sent by IPGU
+# Window         547 sent by IPGU
+# Window         548 sent by IPGU
+# Window         549 sent by IPGU
+# Window         550 sent by IPGU
+# Window         551 sent by IPGU
+# Window         552 sent by IPGU
+# Window         553 sent by IPGU
+# Window         554 sent by IPGU
+# Window         555 sent by IPGU
+# Window         556 sent by IPGU
+# Window         557 sent by IPGU
+# Window         558 sent by IPGU
+# Window         559 sent by IPGU
+# Window         560 sent by IPGU
+# Window         561 sent by IPGU
+# Window         562 sent by IPGU
+# Window         563 sent by IPGU
+# Window         564 sent by IPGU
+# Window         565 sent by IPGU
+# Window         566 sent by IPGU
+# Window         567 sent by IPGU
+# Window         568 sent by IPGU
+# Window         569 sent by IPGU
+# Window         570 sent by IPGU
+# Window         571 sent by IPGU
+# Window         572 sent by IPGU
+# Window         573 sent by IPGU
+# Window         574 sent by IPGU
+# Window         575 sent by IPGU
+# Window         576 sent by IPGU
+# Window         577 sent by IPGU
+# Window         578 sent by IPGU
+# Window         579 sent by IPGU
+# Window         580 sent by IPGU
+# Window         581 sent by IPGU
+# Window         582 sent by IPGU
+# Window         583 sent by IPGU
+# Window         584 sent by IPGU
+# Window         585 sent by IPGU
+# Window         586 sent by IPGU
+# Window         587 sent by IPGU
+# Window         588 sent by IPGU
+# Window         589 sent by IPGU
+# Window         590 sent by IPGU
+# Window         591 sent by IPGU
+# Window         592 sent by IPGU
+# Window         593 sent by IPGU
+# Window         594 sent by IPGU
+# Window         595 sent by IPGU
+# Window         596 sent by IPGU
+# Window         597 sent by IPGU
+# Window         598 sent by IPGU
+# Window         599 sent by IPGU
+# Window         600 sent by IPGU
+# Window         601 sent by IPGU
+# Window         602 sent by IPGU
+# Window         603 sent by IPGU
+# Window         604 sent by IPGU
+# Window         605 sent by IPGU
+# Window         606 sent by IPGU
+# Window         607 sent by IPGU
+# Window         608 sent by IPGU
+# Window         609 sent by IPGU
+# Window         610 sent by IPGU
+# Window         611 sent by IPGU
+# Window         612 sent by IPGU
+# Window         613 sent by IPGU
+# Window         614 sent by IPGU
+# Window         615 sent by IPGU
+# Window         616 sent by IPGU
+# Window         617 sent by IPGU
+# Window         618 sent by IPGU
+# Window         619 sent by IPGU
+# Window         620 sent by IPGU
+# Window         621 sent by IPGU
+# Window         622 sent by IPGU
+# Window         623 sent by IPGU
+# Window         624 sent by IPGU
+# Window         625 sent by IPGU
+# Window         626 sent by IPGU
+# Window         627 sent by IPGU
+# Window         628 sent by IPGU
+# Window         629 sent by IPGU
+# Window         630 sent by IPGU
+# Window         631 sent by IPGU
+# Window         632 sent by IPGU
+# Window         633 sent by IPGU
+# Window         634 sent by IPGU
+# Window         635 sent by IPGU
+# Window         636 sent by IPGU
+# Window         637 sent by IPGU
+# Window         638 sent by IPGU
+# Window         639 sent by IPGU
+# Window         640 sent by IPGU
+# Window         641 sent by IPGU
+# Window         642 sent by IPGU
+# Window         643 sent by IPGU
+# Window         644 sent by IPGU
+# Window         645 sent by IPGU
+# Window         646 sent by IPGU
+# Window         647 sent by IPGU
+# Window         648 sent by IPGU
+# Window         649 sent by IPGU
+# Window         650 sent by IPGU
+# Window         651 sent by IPGU
+# Window         652 sent by IPGU
+# Window         653 sent by IPGU
+# Window         654 sent by IPGU
+# Window         655 sent by IPGU
+# Window         656 sent by IPGU
+# Window         657 sent by IPGU
+# Window         658 sent by IPGU
+# Window         659 sent by IPGU
+# Window         660 sent by IPGU
+# Window         661 sent by IPGU
+# Window         662 sent by IPGU
+# Window         663 sent by IPGU
+# Window         664 sent by IPGU
+# Window         665 sent by IPGU
+# Window         666 sent by IPGU
+# Window         667 sent by IPGU
+# Window         668 sent by IPGU
+# Window         669 sent by IPGU
+# Window         670 sent by IPGU
+# Window         671 sent by IPGU
+# Window         672 sent by IPGU
+# Window         673 sent by IPGU
+# Window         674 sent by IPGU
+# Window         675 sent by IPGU
+# Window         676 sent by IPGU
+# Window         677 sent by IPGU
+# Window         678 sent by IPGU
+# Window         679 sent by IPGU
+# Window         680 sent by IPGU
+# Window         681 sent by IPGU
+# Window         682 sent by IPGU
+# Window         683 sent by IPGU
+# Window         684 sent by IPGU
+# Window         685 sent by IPGU
+# Window         686 sent by IPGU
+# Window         687 sent by IPGU
+# Window         688 sent by IPGU
+# Window         689 sent by IPGU
+# Window         690 sent by IPGU
+# Window         691 sent by IPGU
+# Window         692 sent by IPGU
+# Window         693 sent by IPGU
+# Window         694 sent by IPGU
+# Window         695 sent by IPGU
+# Window         696 sent by IPGU
+# Window         697 sent by IPGU
+# Window         698 sent by IPGU
+# Window         699 sent by IPGU
+# Window         700 sent by IPGU
+# Window         701 sent by IPGU
+# Window         702 sent by IPGU
+# Window         703 sent by IPGU
+# Window         704 sent by IPGU
+# Window         705 sent by IPGU
+# Window         706 sent by IPGU
+# Window         707 sent by IPGU
+# Window         708 sent by IPGU
+# Window         709 sent by IPGU
+# Window         710 sent by IPGU
+# Window         711 sent by IPGU
+# Window         712 sent by IPGU
+# Window         713 sent by IPGU
+# Window         714 sent by IPGU
+# Window         715 sent by IPGU
+# Window         716 sent by IPGU
+# Window         717 sent by IPGU
+# Window         718 sent by IPGU
+# Window         719 sent by IPGU
+# Window         720 sent by IPGU
+# Window         721 sent by IPGU
+# Window         722 sent by IPGU
+# Window         723 sent by IPGU
+# Window         724 sent by IPGU
+# Window         725 sent by IPGU
+# Window         726 sent by IPGU
+# Window         727 sent by IPGU
+# Window         728 sent by IPGU
+# Window         729 sent by IPGU
+# Window         730 sent by IPGU
+# Window         731 sent by IPGU
+# Window         732 sent by IPGU
+# Window         733 sent by IPGU
+# Window         734 sent by IPGU
+# Window         735 sent by IPGU
+# Window         736 sent by IPGU
+# Window         737 sent by IPGU
+# Window         738 sent by IPGU
+# Window         739 sent by IPGU
+# Window         740 sent by IPGU
+# Window         741 sent by IPGU
+# Window         742 sent by IPGU
+# Window         743 sent by IPGU
+# Window         744 sent by IPGU
+# Window         745 sent by IPGU
+# Window         746 sent by IPGU
+# Window         747 sent by IPGU
+# Window         748 sent by IPGU
+# Window         749 sent by IPGU
+# Window         750 sent by IPGU
+# Window         751 sent by IPGU
+# Window         752 sent by IPGU
+# Window         753 sent by IPGU
+# Window         754 sent by IPGU
+# Window         755 sent by IPGU
+# Window         756 sent by IPGU
+# Window         757 sent by IPGU
+# Window         758 sent by IPGU
+# Window         759 sent by IPGU
+# Window         760 sent by IPGU
+# Window         761 sent by IPGU
+# Window         762 sent by IPGU
+# Window         763 sent by IPGU
+# Window         764 sent by IPGU
+# Window         765 sent by IPGU
+# Window         766 sent by IPGU
+# Window         767 sent by IPGU
+# Window         768 sent by IPGU
+# Window         769 sent by IPGU
+# Window         770 sent by IPGU
+# Window         771 sent by IPGU
+# Window         772 sent by IPGU
+# Window         773 sent by IPGU
+# Window         774 sent by IPGU
+# Window         775 sent by IPGU
+# Window         776 sent by IPGU
+# Window         777 sent by IPGU
+# Window         778 sent by IPGU
+# Window         779 sent by IPGU
+# Window         780 sent by IPGU
+# Window         781 sent by IPGU
+# Window         782 sent by IPGU
+# Window         783 sent by IPGU
+# Window         784 sent by IPGU
+# Window         785 sent by IPGU
+# Window         786 sent by IPGU
+# Window         787 sent by IPGU
+# Window         788 sent by IPGU
+# Window         789 sent by IPGU
+# Window         790 sent by IPGU
+# Window         791 sent by IPGU
+# Window         792 sent by IPGU
+# Window         793 sent by IPGU
+# Window         794 sent by IPGU
+# Window         795 sent by IPGU
+# Window         796 sent by IPGU
+# Window         797 sent by IPGU
+# Window         798 sent by IPGU
+# Window         799 sent by IPGU
+# Window         800 sent by IPGU
+# Window         801 sent by IPGU
+# Window         802 sent by IPGU
+# Window         803 sent by IPGU
+# Window         804 sent by IPGU
+# Window         805 sent by IPGU
+# Window         806 sent by IPGU
+# Window         807 sent by IPGU
+# Window         808 sent by IPGU
+# Window         809 sent by IPGU
+# Window         810 sent by IPGU
+# Window         811 sent by IPGU
+# Window         812 sent by IPGU
+# Window         813 sent by IPGU
+# Window         814 sent by IPGU
+# Window         815 sent by IPGU
+# Window         816 sent by IPGU
+# Window         817 sent by IPGU
+# Window         818 sent by IPGU
+# Window         819 sent by IPGU
+# Window         820 sent by IPGU
+# Window         821 sent by IPGU
+# Window         822 sent by IPGU
+# Window         823 sent by IPGU
+# Window         824 sent by IPGU
+# Window         825 sent by IPGU
+# Window         826 sent by IPGU
+# Window         827 sent by IPGU
+# Window         828 sent by IPGU
+# Window         829 sent by IPGU
+# Window         830 sent by IPGU
+# Window         831 sent by IPGU
+# Window         832 sent by IPGU
+# Window         833 sent by IPGU
+# Window         834 sent by IPGU
+# Window         835 sent by IPGU
+# Window         836 sent by IPGU
+# Window         837 sent by IPGU
+# Window         838 sent by IPGU
+# Window         839 sent by IPGU
+# Window         840 sent by IPGU
+# Window         841 sent by IPGU
+# Window         842 sent by IPGU
+# Window         843 sent by IPGU
+# Window         844 sent by IPGU
+# Window         845 sent by IPGU
+# Window         846 sent by IPGU
+# Window         847 sent by IPGU
+# Window         848 sent by IPGU
+# Window         849 sent by IPGU
+# Window         850 sent by IPGU
+# Window         851 sent by IPGU
+# Window         852 sent by IPGU
+# Window         853 sent by IPGU
+# Window         854 sent by IPGU
+# Window         855 sent by IPGU
+# Window         856 sent by IPGU
+# Window         857 sent by IPGU
+# Window         858 sent by IPGU
+# Window         859 sent by IPGU
+# Window         860 sent by IPGU
+# Window         861 sent by IPGU
+# Window         862 sent by IPGU
+# Window         863 sent by IPGU
+# Window         864 sent by IPGU
+# Window         865 sent by IPGU
+# Window         866 sent by IPGU
+# Window         867 sent by IPGU
+# Window         868 sent by IPGU
+# Window         869 sent by IPGU
+# Window         870 sent by IPGU
+# Window         871 sent by IPGU
+# Window         872 sent by IPGU
+# Window         873 sent by IPGU
+# Window         874 sent by IPGU
+# Window         875 sent by IPGU
+# Window         876 sent by IPGU
+# Window         877 sent by IPGU
+# Window         878 sent by IPGU
+# Window         879 sent by IPGU
+# Window         880 sent by IPGU
+# Window         881 sent by IPGU
+# Window         882 sent by IPGU
+# Window         883 sent by IPGU
+# Window         884 sent by IPGU
+# Window         885 sent by IPGU
+# Window         886 sent by IPGU
+# Window         887 sent by IPGU
+# Window         888 sent by IPGU
+# Window         889 sent by IPGU
+# Window         890 sent by IPGU
+# Window         891 sent by IPGU
+# Window         892 sent by IPGU
+# Window         893 sent by IPGU
+# Window         894 sent by IPGU
+# Window         895 sent by IPGU
+# Window         896 sent by IPGU
+# Window         897 sent by IPGU
+# Window         898 sent by IPGU
+# Window         899 sent by IPGU
+# Window         900 sent by IPGU
+# Window         901 sent by IPGU
+# Window         902 sent by IPGU
+# Window         903 sent by IPGU
+# Window         904 sent by IPGU
+# Window         905 sent by IPGU
+# Window         906 sent by IPGU
+# Window         907 sent by IPGU
+# Window         908 sent by IPGU
+# Window         909 sent by IPGU
+# Window         910 sent by IPGU
+# Window         911 sent by IPGU
+# Window         912 sent by IPGU
+# Window         913 sent by IPGU
+# Window         914 sent by IPGU
+# Window         915 sent by IPGU
+# Window         916 sent by IPGU
+# Window         917 sent by IPGU
+# Window         918 sent by IPGU
+# Window         919 sent by IPGU
+# Window         920 sent by IPGU
+# Window         921 sent by IPGU
+# Window         922 sent by IPGU
+# Window         923 sent by IPGU
+# Window         924 sent by IPGU
+# Window         925 sent by IPGU
+# Window         926 sent by IPGU
+# Window         927 sent by IPGU
+# Window         928 sent by IPGU
+# Window         929 sent by IPGU
+# Window         930 sent by IPGU
+# Window         931 sent by IPGU
+# Window         932 sent by IPGU
+# Window         933 sent by IPGU
+# Window         934 sent by IPGU
+# Window         935 sent by IPGU
+# Window         936 sent by IPGU
+# Window         937 sent by IPGU
+# Window         938 sent by IPGU
+# Window         939 sent by IPGU
+# Window         940 sent by IPGU
+# Window         941 sent by IPGU
+# Window         942 sent by IPGU
+# Window         943 sent by IPGU
+# Window         944 sent by IPGU
+# Window         945 sent by IPGU
+# Window         946 sent by IPGU
+# Window         947 sent by IPGU
+# Window         948 sent by IPGU
+# Window         949 sent by IPGU
+# Window         950 sent by IPGU
+# Window         951 sent by IPGU
+# Window         952 sent by IPGU
+# Window         953 sent by IPGU
+# Window         954 sent by IPGU
+# Window         955 sent by IPGU
+# Window         956 sent by IPGU
+# Window         957 sent by IPGU
+# Window         958 sent by IPGU
+# Window         959 sent by IPGU
+# Window         960 sent by IPGU
+# Window         961 sent by IPGU
+# Window         962 sent by IPGU
+# Window         963 sent by IPGU
+# Window         964 sent by IPGU
+# Window         965 sent by IPGU
+# Window         966 sent by IPGU
+# Window         967 sent by IPGU
+# Window         968 sent by IPGU
+# Window         969 sent by IPGU
+# Window         970 sent by IPGU
+# Window         971 sent by IPGU
+# Window         972 sent by IPGU
+# Window         973 sent by IPGU
+# Window         974 sent by IPGU
+# Window         975 sent by IPGU
+# Window         976 sent by IPGU
+# Window         977 sent by IPGU
+# Window         978 sent by IPGU
+# Window         979 sent by IPGU
+# Window         980 sent by IPGU
+# Window         981 sent by IPGU
+# Window         982 sent by IPGU
+# Window         983 sent by IPGU
+# Window         984 sent by IPGU
+# Window         985 sent by IPGU
+# Window         986 sent by IPGU
+# Window         987 sent by IPGU
+# Window         988 sent by IPGU
+# Window         989 sent by IPGU
+# Window         990 sent by IPGU
+# Window         991 sent by IPGU
+# Window         992 sent by IPGU
+# Window         993 sent by IPGU
+# Window         994 sent by IPGU
+# Window         995 sent by IPGU
+# Window         996 sent by IPGU
+# Window         997 sent by IPGU
+# Window         998 sent by IPGU
+# Window         999 sent by IPGU
+# Window        1000 sent by IPGU
+# Window        1001 sent by IPGU
+# Window        1002 sent by IPGU
+# Window        1003 sent by IPGU
+# Window        1004 sent by IPGU
+# Window        1005 sent by IPGU
+# Window        1006 sent by IPGU
+# Window        1007 sent by IPGU
+# Window        1008 sent by IPGU
+# Window        1009 sent by IPGU
+# Window        1010 sent by IPGU
+# Window        1011 sent by IPGU
+# Window        1012 sent by IPGU
+# Window        1013 sent by IPGU
+# Window        1014 sent by IPGU
+# Window        1015 sent by IPGU
+# Window        1016 sent by IPGU
+# Window        1017 sent by IPGU
+# Window        1018 sent by IPGU
+# Window        1019 sent by IPGU
+# Window        1020 sent by IPGU
+# Window        1021 sent by IPGU
+# Window        1022 sent by IPGU
+# Window        1023 sent by IPGU
+# Valid dnn
+# ** Note: $stop    : /filespace/s/sjain75/ece554/capstone/hw/pipeline_wrapper_tb.sv(118)
+#    Time: 1165522315 ns  Iteration: 2  Instance: /pipeline_wrapper_tb
+# Break in NamedForkStat hello at /filespace/s/sjain75/ece554/capstone/hw/pipeline_wrapper_tb.sv line 118
+restart
+# ** Note: (vsim-12125) Error and warning message counts have been reset to '0' because of 'restart'.
+# ** Note: (vsim-8009) Loading existing optimized design _opt
+# ** Note: (vsim-12126) Error and warning message counts have been restored: Errors=0, Warnings=20.
+# Loading work.pipeline_wrapper_tb(fast)
+# Loading work.pipeline_wrapper(fast)
+# Loading work.ipgu(fast)
+# Loading work.out_fifo(fast)
+# Loading work.heu(fast)
+# Loading work.rdn_fp(fast)
+# Loading work.neuron(fast__1)
+# Loading work.neuron(fast__2)
+# Loading work.bcau(fast)
+# Loading work.dnn(fast)
+# Loading work.dnn_weight_ld(fast)
+# ** Warning: (vsim-PLI-3691) Expected a system task, not a system function '$fread'.
+#    Time: 0 ns  Iteration: 0  Region: /pipeline_wrapper_tb/#anonblk#81554610#77#4#/#anonblk#81554610#78#4# File: /filespace/s/sjain75/ece554/capstone/hw/pipeline_wrapper_tb.sv Line: 79
+run -all
+# Reading Image
+# ** Note: $stop    : /filespace/s/sjain75/ece554/capstone/hw/pipeline_wrapper_tb.sv(102)
+#    Time: 14935 ns  Iteration: 3  Instance: /pipeline_wrapper_tb
+# Break in Module pipeline_wrapper_tb at /filespace/s/sjain75/ece554/capstone/hw/pipeline_wrapper_tb.sv line 102
+run -all
+# ** Note: $stop    : /filespace/s/sjain75/ece554/capstone/hw/pipeline_wrapper_tb.sv(101)
+#    Time: 87735 ns  Iteration: 3  Instance: /pipeline_wrapper_tb
+# Break in Module pipeline_wrapper_tb at /filespace/s/sjain75/ece554/capstone/hw/pipeline_wrapper_tb.sv line 101
+run -all
+# done weights
+# Window           0 sent by IPGU
+# Window           1 sent by IPGU
+# Window           2 sent by IPGU
+# Window           3 sent by IPGU
+# Window           4 sent by IPGU
+# Window           5 sent by IPGU
+# Window           6 sent by IPGU
+# Window           7 sent by IPGU
+# Window           8 sent by IPGU
+# Window           9 sent by IPGU
+# Window          10 sent by IPGU
+# Window          11 sent by IPGU
+# Window          12 sent by IPGU
+# Window          13 sent by IPGU
+# Window          14 sent by IPGU
+# Window          15 sent by IPGU
+# Window          16 sent by IPGU
+# Window          17 sent by IPGU
+# Window          18 sent by IPGU
+# Window          19 sent by IPGU
+# Window          20 sent by IPGU
+# Window          21 sent by IPGU
+# Window          22 sent by IPGU
+# Window          23 sent by IPGU
+# Window          24 sent by IPGU
+# Window          25 sent by IPGU
+# Window          26 sent by IPGU
+# Window          27 sent by IPGU
+# Window          28 sent by IPGU
+# Window          29 sent by IPGU
+# Window          30 sent by IPGU
+# Window          31 sent by IPGU
+# Window          32 sent by IPGU
+# Window          33 sent by IPGU
+# Window          34 sent by IPGU
+# Window          35 sent by IPGU
+# Window          36 sent by IPGU
+# Window          37 sent by IPGU
+# Window          38 sent by IPGU
+# Window          39 sent by IPGU
+# Window          40 sent by IPGU
+# Window          41 sent by IPGU
+# Window          42 sent by IPGU
+# Window          43 sent by IPGU
+# Window          44 sent by IPGU
+# Window          45 sent by IPGU
+# Window          46 sent by IPGU
+# Window          47 sent by IPGU
+# Window          48 sent by IPGU
+# Window          49 sent by IPGU
+# Window          50 sent by IPGU
+# Window          51 sent by IPGU
+# Window          52 sent by IPGU
+# Window          53 sent by IPGU
+# Window          54 sent by IPGU
+# Window          55 sent by IPGU
+# Window          56 sent by IPGU
+# Window          57 sent by IPGU
+# Window          58 sent by IPGU
+# Window          59 sent by IPGU
+# Window          60 sent by IPGU
+# Window          61 sent by IPGU
+# Window          62 sent by IPGU
+# Window          63 sent by IPGU
+# Window          64 sent by IPGU
+# Window          65 sent by IPGU
+# Window          66 sent by IPGU
+# Window          67 sent by IPGU
+# Window          68 sent by IPGU
+# Window          69 sent by IPGU
+# Window          70 sent by IPGU
+# Window          71 sent by IPGU
+# Window          72 sent by IPGU
+# Window          73 sent by IPGU
+# Window          74 sent by IPGU
+# Window          75 sent by IPGU
+# Window          76 sent by IPGU
+# Window          77 sent by IPGU
+# Window          78 sent by IPGU
+# Window          79 sent by IPGU
+# Window          80 sent by IPGU
+# Window          81 sent by IPGU
+# Window          82 sent by IPGU
+# Window          83 sent by IPGU
+# Window          84 sent by IPGU
+# Window          85 sent by IPGU
+# Window          86 sent by IPGU
+# Window          87 sent by IPGU
+# Window          88 sent by IPGU
+# Window          89 sent by IPGU
+# Window          90 sent by IPGU
+# Window          91 sent by IPGU
+# Window          92 sent by IPGU
+# Window          93 sent by IPGU
+# Window          94 sent by IPGU
+# Window          95 sent by IPGU
+# Window          96 sent by IPGU
+# Window          97 sent by IPGU
+# Window          98 sent by IPGU
+# Window          99 sent by IPGU
+# Window         100 sent by IPGU
+# Window         101 sent by IPGU
+# Window         102 sent by IPGU
+# Window         103 sent by IPGU
+# Window         104 sent by IPGU
+# Window         105 sent by IPGU
+# Window         106 sent by IPGU
+# Window         107 sent by IPGU
+# Window         108 sent by IPGU
+# Window         109 sent by IPGU
+# Window         110 sent by IPGU
+# Window         111 sent by IPGU
+# Window         112 sent by IPGU
+# Window         113 sent by IPGU
+# Window         114 sent by IPGU
+# Window         115 sent by IPGU
+# Window         116 sent by IPGU
+# Window         117 sent by IPGU
+# Window         118 sent by IPGU
+# Window         119 sent by IPGU
+# Window         120 sent by IPGU
+# Window         121 sent by IPGU
+# Window         122 sent by IPGU
+# Window         123 sent by IPGU
+# Window         124 sent by IPGU
+# Window         125 sent by IPGU
+# Window         126 sent by IPGU
+# Window         127 sent by IPGU
+# Window         128 sent by IPGU
+# Window         129 sent by IPGU
+# Window         130 sent by IPGU
+# Window         131 sent by IPGU
+# Window         132 sent by IPGU
+# Window         133 sent by IPGU
+# Window         134 sent by IPGU
+# Window         135 sent by IPGU
+# Window         136 sent by IPGU
+# Window         137 sent by IPGU
+# Window         138 sent by IPGU
+# Window         139 sent by IPGU
+# Window         140 sent by IPGU
+# Window         141 sent by IPGU
+# Window         142 sent by IPGU
+# Window         143 sent by IPGU
+# Window         144 sent by IPGU
+# Window         145 sent by IPGU
+# Window         146 sent by IPGU
+# Window         147 sent by IPGU
+# Window         148 sent by IPGU
+# Window         149 sent by IPGU
+# Window         150 sent by IPGU
+# Window         151 sent by IPGU
+# Window         152 sent by IPGU
+# Window         153 sent by IPGU
+# Compile of pipeline_wrapper_tb.sv failed with 2 errors.
+restart
+# ** Note: (vsim-12125) Error and warning message counts have been reset to '0' because of 'restart'.
+# ** Note: (vsim-8009) Loading existing optimized design _opt
+# ** Note: (vsim-12126) Error and warning message counts have been restored: Errors=0, Warnings=20.
+# Loading work.pipeline_wrapper_tb(fast)
+# Loading work.pipeline_wrapper(fast)
+# Loading work.ipgu(fast)
+# Loading work.out_fifo(fast)
+# Loading work.heu(fast)
+# Loading work.rdn_fp(fast)
+# Loading work.neuron(fast__1)
+# Loading work.neuron(fast__2)
+# Loading work.bcau(fast)
+# Loading work.dnn(fast)
+# Loading work.dnn_weight_ld(fast)
+# ** Warning: (vsim-PLI-3691) Expected a system task, not a system function '$fread'.
+#    Time: 0 ns  Iteration: 0  Region: /pipeline_wrapper_tb/#anonblk#81554610#77#4#/#anonblk#81554610#78#4# File: /filespace/s/sjain75/ece554/capstone/hw/pipeline_wrapper_tb.sv Line: 79
+run -all
+# Reading Image
+# ** Note: $stop    : /filespace/s/sjain75/ece554/capstone/hw/pipeline_wrapper_tb.sv(102)
+#    Time: 14935 ns  Iteration: 3  Instance: /pipeline_wrapper_tb
+# Break in Module pipeline_wrapper_tb at /filespace/s/sjain75/ece554/capstone/hw/pipeline_wrapper_tb.sv line 102
+run -all
+# ** Note: $stop    : /filespace/s/sjain75/ece554/capstone/hw/pipeline_wrapper_tb.sv(101)
+#    Time: 87735 ns  Iteration: 3  Instance: /pipeline_wrapper_tb
+# Break in Module pipeline_wrapper_tb at /filespace/s/sjain75/ece554/capstone/hw/pipeline_wrapper_tb.sv line 101
+run -all
+# done weights
+# Window           0 sent by IPGU
+# Window           1 sent by IPGU
+# Window           2 sent by IPGU
+# Window           3 sent by IPGU
+# Window           4 sent by IPGU
+# Window           5 sent by IPGU
+# Window           6 sent by IPGU
+# Window           7 sent by IPGU
+# Window           8 sent by IPGU
+# Window           9 sent by IPGU
+# Window          10 sent by IPGU
+# Window          11 sent by IPGU
+# Window          12 sent by IPGU
+# Window          13 sent by IPGU
+# Window          14 sent by IPGU
+# Window          15 sent by IPGU
+# Window          16 sent by IPGU
+# Window          17 sent by IPGU
+# Window          18 sent by IPGU
+# Window          19 sent by IPGU
+# Window          20 sent by IPGU
+# Window          21 sent by IPGU
+# Window          22 sent by IPGU
+# Window          23 sent by IPGU
+# Window          24 sent by IPGU
+# Window          25 sent by IPGU
+# Window          26 sent by IPGU
+# Window          27 sent by IPGU
+# Window          28 sent by IPGU
+# Window          29 sent by IPGU
+# Window          30 sent by IPGU
+# Window          31 sent by IPGU
+# Window          32 sent by IPGU
+# Window          33 sent by IPGU
+# Window          34 sent by IPGU
+# Window          35 sent by IPGU
+# Window          36 sent by IPGU
+# Window          37 sent by IPGU
+# Window          38 sent by IPGU
+# Window          39 sent by IPGU
+# Window          40 sent by IPGU
+# Window          41 sent by IPGU
+# Window          42 sent by IPGU
+# Window          43 sent by IPGU
+# Window          44 sent by IPGU
+# Window          45 sent by IPGU
+# Window          46 sent by IPGU
+# Window          47 sent by IPGU
+# Window          48 sent by IPGU
+# Window          49 sent by IPGU
+# Window          50 sent by IPGU
+# Window          51 sent by IPGU
+# Window          52 sent by IPGU
+# Window          53 sent by IPGU
+# Window          54 sent by IPGU
+# Window          55 sent by IPGU
+# Window          56 sent by IPGU
+# Window          57 sent by IPGU
+# Window          58 sent by IPGU
+# Window          59 sent by IPGU
+# Window          60 sent by IPGU
+# Window          61 sent by IPGU
+# Window          62 sent by IPGU
+# Window          63 sent by IPGU
+# Window          64 sent by IPGU
+# Window          65 sent by IPGU
+# Window          66 sent by IPGU
+# Window          67 sent by IPGU
+# Window          68 sent by IPGU
+# Window          69 sent by IPGU
+# Window          70 sent by IPGU
+# Window          71 sent by IPGU
+# Window          72 sent by IPGU
+# Window          73 sent by IPGU
+# Window          74 sent by IPGU
+# Window          75 sent by IPGU
+# Window          76 sent by IPGU
+# Window          77 sent by IPGU
+# Window          78 sent by IPGU
+# Window          79 sent by IPGU
+# Window          80 sent by IPGU
+# Window          81 sent by IPGU
+# Window          82 sent by IPGU
+# Window          83 sent by IPGU
+# Window          84 sent by IPGU
+# Window          85 sent by IPGU
+# Window          86 sent by IPGU
+# Window          87 sent by IPGU
+# Window          88 sent by IPGU
+# Window          89 sent by IPGU
+# Window          90 sent by IPGU
+# Window          91 sent by IPGU
+# Window          92 sent by IPGU
+# Window          93 sent by IPGU
+# Window          94 sent by IPGU
+# Window          95 sent by IPGU
+# Window          96 sent by IPGU
+# Window          97 sent by IPGU
+# Window          98 sent by IPGU
+# Window          99 sent by IPGU
+# Window         100 sent by IPGU
+# Window         101 sent by IPGU
+# Window         102 sent by IPGU
+# Window         103 sent by IPGU
+# Window         104 sent by IPGU
+# Window         105 sent by IPGU
+# Window         106 sent by IPGU
+# Window         107 sent by IPGU
+# Window         108 sent by IPGU
+# Window         109 sent by IPGU
+# Window         110 sent by IPGU
+# Window         111 sent by IPGU
+# Window         112 sent by IPGU
+# Window         113 sent by IPGU
+# Window         114 sent by IPGU
+# Window         115 sent by IPGU
+# Window         116 sent by IPGU
+# Window         117 sent by IPGU
+# Window         118 sent by IPGU
+# Window         119 sent by IPGU
+# Window         120 sent by IPGU
+# Window         121 sent by IPGU
+# Window         122 sent by IPGU
+# Window         123 sent by IPGU
+# Window         124 sent by IPGU
+# Window         125 sent by IPGU
+# Window         126 sent by IPGU
+# Window         127 sent by IPGU
+# Window         128 sent by IPGU
+# Window         129 sent by IPGU
+# Window         130 sent by IPGU
+# Window         131 sent by IPGU
+# Window         132 sent by IPGU
+# Window         133 sent by IPGU
+# Window         134 sent by IPGU
+# Window         135 sent by IPGU
+# Window         136 sent by IPGU
+# Window         137 sent by IPGU
+# Window         138 sent by IPGU
+# Window         139 sent by IPGU
+# Window         140 sent by IPGU
+# Window         141 sent by IPGU
+# Window         142 sent by IPGU
+# Window         143 sent by IPGU
+# Window         144 sent by IPGU
+# Window         145 sent by IPGU
+# Window         146 sent by IPGU
+# Window         147 sent by IPGU
+# Window         148 sent by IPGU
+# Window         149 sent by IPGU
+# Window         150 sent by IPGU
+# Window         151 sent by IPGU
+# Window         152 sent by IPGU
+# Window         153 sent by IPGU
+# Window         154 sent by IPGU
+# Window         155 sent by IPGU
+# Window         156 sent by IPGU
+# Window         157 sent by IPGU
+# Window         158 sent by IPGU
+# Window         159 sent by IPGU
+# Window         160 sent by IPGU
+# Window         161 sent by IPGU
+# Window         162 sent by IPGU
+# Window         163 sent by IPGU
+# Window         164 sent by IPGU
+# Window         165 sent by IPGU
+# Window         166 sent by IPGU
+# Window         167 sent by IPGU
+# Window         168 sent by IPGU
+# Window         169 sent by IPGU
+# Window         170 sent by IPGU
+# Window         171 sent by IPGU
+# Window         172 sent by IPGU
+# Window         173 sent by IPGU
+# Window         174 sent by IPGU
+# Window         175 sent by IPGU
+# Window         176 sent by IPGU
+# Window         177 sent by IPGU
+# Window         178 sent by IPGU
+# Window         179 sent by IPGU
+add wave -position insertpoint sim:/pipeline_wrapper_tb/windowCnt
+# Compile of pipeline_wrapper_tb.sv failed with 2 errors.
+# Compile of pipeline_wrapper_tb.sv was successful.
+restart
+# ** Note: (vsim-12125) Error and warning message counts have been reset to '0' because of 'restart'.
+# ** Note: (vsim-3813) Design is being optimized due to module recompilation...
+# ** Warning: /filespace/s/sjain75/ece554/capstone/hw/det_nn.sv(445): (vopt-2241) Connection width does not match width of port 'weight_sel'. The port definition is at: /filespace/s/sjain75/ece554/capstone/hw/neuron.sv(15).
+# ** Warning: /filespace/s/sjain75/ece554/capstone/hw/det_nn.sv(430): (vopt-2241) Connection width does not match width of port 'weight_sel'. The port definition is at: /filespace/s/sjain75/ece554/capstone/hw/neuron.sv(15).
+# ** Warning: /filespace/s/sjain75/ece554/capstone/hw/det_nn.sv(416): (vopt-2241) Connection width does not match width of port 'weight_sel'. The port definition is at: /filespace/s/sjain75/ece554/capstone/hw/neuron.sv(15).
+# ** Warning: /filespace/s/sjain75/ece554/capstone/hw/det_nn.sv(402): (vopt-2241) Connection width does not match width of port 'weight_sel'. The port definition is at: /filespace/s/sjain75/ece554/capstone/hw/neuron.sv(15).
+# ** Warning: /filespace/s/sjain75/ece554/capstone/hw/det_nn.sv(368): (vopt-2241) Connection width does not match width of port 'weight_sel'. The port definition is at: /filespace/s/sjain75/ece554/capstone/hw/neuron.sv(15).
+# ** Warning: /filespace/s/sjain75/ece554/capstone/hw/det_nn.sv(368): (vopt-2241) Connection width does not match width of port 'weight_sel'. The port definition is at: /filespace/s/sjain75/ece554/capstone/hw/neuron.sv(15).
+# ** Warning: /filespace/s/sjain75/ece554/capstone/hw/det_nn.sv(368): (vopt-2241) Connection width does not match width of port 'weight_sel'. The port definition is at: /filespace/s/sjain75/ece554/capstone/hw/neuron.sv(15).
+# ** Warning: /filespace/s/sjain75/ece554/capstone/hw/det_nn.sv(368): (vopt-2241) Connection width does not match width of port 'weight_sel'. The port definition is at: /filespace/s/sjain75/ece554/capstone/hw/neuron.sv(15).
+# ** Warning: /filespace/s/sjain75/ece554/capstone/hw/det_nn.sv(368): (vopt-2241) Connection width does not match width of port 'weight_sel'. The port definition is at: /filespace/s/sjain75/ece554/capstone/hw/neuron.sv(15).
+# ** Warning: /filespace/s/sjain75/ece554/capstone/hw/det_nn.sv(368): (vopt-2241) Connection width does not match width of port 'weight_sel'. The port definition is at: /filespace/s/sjain75/ece554/capstone/hw/neuron.sv(15).
+# ** Warning: /filespace/s/sjain75/ece554/capstone/hw/det_nn.sv(368): (vopt-2241) Connection width does not match width of port 'weight_sel'. The port definition is at: /filespace/s/sjain75/ece554/capstone/hw/neuron.sv(15).
+# ** Warning: /filespace/s/sjain75/ece554/capstone/hw/det_nn.sv(368): (vopt-2241) Connection width does not match width of port 'weight_sel'. The port definition is at: /filespace/s/sjain75/ece554/capstone/hw/neuron.sv(15).
+# ** Warning: /filespace/s/sjain75/ece554/capstone/hw/det_nn.sv(368): (vopt-2241) Connection width does not match width of port 'weight_sel'. The port definition is at: /filespace/s/sjain75/ece554/capstone/hw/neuron.sv(15).
+# ** Warning: /filespace/s/sjain75/ece554/capstone/hw/det_nn.sv(368): (vopt-2241) Connection width does not match width of port 'weight_sel'. The port definition is at: /filespace/s/sjain75/ece554/capstone/hw/neuron.sv(15).
+# ** Warning: /filespace/s/sjain75/ece554/capstone/hw/det_nn.sv(368): (vopt-2241) Connection width does not match width of port 'weight_sel'. The port definition is at: /filespace/s/sjain75/ece554/capstone/hw/neuron.sv(15).
+# ** Warning: /filespace/s/sjain75/ece554/capstone/hw/det_nn.sv(368): (vopt-2241) Connection width does not match width of port 'weight_sel'. The port definition is at: /filespace/s/sjain75/ece554/capstone/hw/neuron.sv(15).
+# ** Warning: /filespace/s/sjain75/ece554/capstone/hw/det_nn.sv(368): (vopt-2241) Connection width does not match width of port 'weight_sel'. The port definition is at: /filespace/s/sjain75/ece554/capstone/hw/neuron.sv(15).
+# ** Warning: /filespace/s/sjain75/ece554/capstone/hw/det_nn.sv(368): (vopt-2241) Connection width does not match width of port 'weight_sel'. The port definition is at: /filespace/s/sjain75/ece554/capstone/hw/neuron.sv(15).
+# ** Warning: /filespace/s/sjain75/ece554/capstone/hw/det_nn.sv(368): (vopt-2241) Connection width does not match width of port 'weight_sel'. The port definition is at: /filespace/s/sjain75/ece554/capstone/hw/neuron.sv(15).
+# ** Warning: /filespace/s/sjain75/ece554/capstone/hw/det_nn.sv(368): (vopt-2241) Connection width does not match width of port 'weight_sel'. The port definition is at: /filespace/s/sjain75/ece554/capstone/hw/neuron.sv(15).
+# ** Note: (vsim-12126) Error and warning message counts have been restored: Errors=0, Warnings=20.
+# Loading sv_std.std
+# Loading work.pipeline_wrapper_tb(fast)
+# Loading work.pipeline_wrapper(fast)
+# Loading work.ipgu(fast)
+# Loading work.out_fifo(fast)
+# Loading work.heu(fast)
+# Loading work.rdn_fp(fast)
+# Loading work.neuron(fast__1)
+# Loading work.neuron(fast__2)
+# Loading work.bcau(fast)
+# Loading work.dnn(fast)
+# Loading work.dnn_weight_ld(fast)
+# ** Warning: (vsim-PLI-3691) Expected a system task, not a system function '$fread'.
+#    Time: 0 ns  Iteration: 0  Region: /pipeline_wrapper_tb/#anonblk#81554610#77#4#/#anonblk#81554610#78#4# File: /filespace/s/sjain75/ece554/capstone/hw/pipeline_wrapper_tb.sv Line: 79
+run -all
+# Reading Image
+# ** Note: $stop    : /filespace/s/sjain75/ece554/capstone/hw/pipeline_wrapper_tb.sv(102)
+#    Time: 14935 ns  Iteration: 3  Instance: /pipeline_wrapper_tb
+# Break in Module pipeline_wrapper_tb at /filespace/s/sjain75/ece554/capstone/hw/pipeline_wrapper_tb.sv line 102
+run -all
+# ** Note: $stop    : /filespace/s/sjain75/ece554/capstone/hw/pipeline_wrapper_tb.sv(101)
+#    Time: 87735 ns  Iteration: 3  Instance: /pipeline_wrapper_tb
+# Break in Module pipeline_wrapper_tb at /filespace/s/sjain75/ece554/capstone/hw/pipeline_wrapper_tb.sv line 101
+run -all
+# done weights
+# Window           0 sent by IPGU
+# ** Note: $stop    : /filespace/s/sjain75/ece554/capstone/hw/pipeline_wrapper_tb.sv(117)
+#    Time: 91775 ns  Iteration: 3  Instance: /pipeline_wrapper_tb
+# Break in NamedBeginStat logSentForever at /filespace/s/sjain75/ece554/capstone/hw/pipeline_wrapper_tb.sv line 117
+run -all
+# Window           1 sent by IPGU
+# ** Note: $stop    : /filespace/s/sjain75/ece554/capstone/hw/pipeline_wrapper_tb.sv(117)
+#    Time: 91785 ns  Iteration: 1  Instance: /pipeline_wrapper_tb
+# Break in NamedBeginStat logSentForever at /filespace/s/sjain75/ece554/capstone/hw/pipeline_wrapper_tb.sv line 117
+run -all
+# Window           2 sent by IPGU
+# ** Note: $stop    : /filespace/s/sjain75/ece554/capstone/hw/pipeline_wrapper_tb.sv(117)
+#    Time: 2368805 ns  Iteration: 2  Instance: /pipeline_wrapper_tb
+# Break in NamedBeginStat logSentForever at /filespace/s/sjain75/ece554/capstone/hw/pipeline_wrapper_tb.sv line 117
+# Compile of pipeline_wrapper_tb.sv was successful.
+restart
+# ** Note: (vsim-12125) Error and warning message counts have been reset to '0' because of 'restart'.
+# ** Note: (vsim-3813) Design is being optimized due to module recompilation...
+# ** Warning: /filespace/s/sjain75/ece554/capstone/hw/det_nn.sv(445): (vopt-2241) Connection width does not match width of port 'weight_sel'. The port definition is at: /filespace/s/sjain75/ece554/capstone/hw/neuron.sv(15).
+# ** Warning: /filespace/s/sjain75/ece554/capstone/hw/det_nn.sv(430): (vopt-2241) Connection width does not match width of port 'weight_sel'. The port definition is at: /filespace/s/sjain75/ece554/capstone/hw/neuron.sv(15).
+# ** Warning: /filespace/s/sjain75/ece554/capstone/hw/det_nn.sv(416): (vopt-2241) Connection width does not match width of port 'weight_sel'. The port definition is at: /filespace/s/sjain75/ece554/capstone/hw/neuron.sv(15).
+# ** Warning: /filespace/s/sjain75/ece554/capstone/hw/det_nn.sv(402): (vopt-2241) Connection width does not match width of port 'weight_sel'. The port definition is at: /filespace/s/sjain75/ece554/capstone/hw/neuron.sv(15).
+# ** Warning: /filespace/s/sjain75/ece554/capstone/hw/det_nn.sv(368): (vopt-2241) Connection width does not match width of port 'weight_sel'. The port definition is at: /filespace/s/sjain75/ece554/capstone/hw/neuron.sv(15).
+# ** Warning: /filespace/s/sjain75/ece554/capstone/hw/det_nn.sv(368): (vopt-2241) Connection width does not match width of port 'weight_sel'. The port definition is at: /filespace/s/sjain75/ece554/capstone/hw/neuron.sv(15).
+# ** Warning: /filespace/s/sjain75/ece554/capstone/hw/det_nn.sv(368): (vopt-2241) Connection width does not match width of port 'weight_sel'. The port definition is at: /filespace/s/sjain75/ece554/capstone/hw/neuron.sv(15).
+# ** Warning: /filespace/s/sjain75/ece554/capstone/hw/det_nn.sv(368): (vopt-2241) Connection width does not match width of port 'weight_sel'. The port definition is at: /filespace/s/sjain75/ece554/capstone/hw/neuron.sv(15).
+# ** Warning: /filespace/s/sjain75/ece554/capstone/hw/det_nn.sv(368): (vopt-2241) Connection width does not match width of port 'weight_sel'. The port definition is at: /filespace/s/sjain75/ece554/capstone/hw/neuron.sv(15).
+# ** Warning: /filespace/s/sjain75/ece554/capstone/hw/det_nn.sv(368): (vopt-2241) Connection width does not match width of port 'weight_sel'. The port definition is at: /filespace/s/sjain75/ece554/capstone/hw/neuron.sv(15).
+# ** Warning: /filespace/s/sjain75/ece554/capstone/hw/det_nn.sv(368): (vopt-2241) Connection width does not match width of port 'weight_sel'. The port definition is at: /filespace/s/sjain75/ece554/capstone/hw/neuron.sv(15).
+# ** Warning: /filespace/s/sjain75/ece554/capstone/hw/det_nn.sv(368): (vopt-2241) Connection width does not match width of port 'weight_sel'. The port definition is at: /filespace/s/sjain75/ece554/capstone/hw/neuron.sv(15).
+# ** Warning: /filespace/s/sjain75/ece554/capstone/hw/det_nn.sv(368): (vopt-2241) Connection width does not match width of port 'weight_sel'. The port definition is at: /filespace/s/sjain75/ece554/capstone/hw/neuron.sv(15).
+# ** Warning: /filespace/s/sjain75/ece554/capstone/hw/det_nn.sv(368): (vopt-2241) Connection width does not match width of port 'weight_sel'. The port definition is at: /filespace/s/sjain75/ece554/capstone/hw/neuron.sv(15).
+# ** Warning: /filespace/s/sjain75/ece554/capstone/hw/det_nn.sv(368): (vopt-2241) Connection width does not match width of port 'weight_sel'. The port definition is at: /filespace/s/sjain75/ece554/capstone/hw/neuron.sv(15).
+# ** Warning: /filespace/s/sjain75/ece554/capstone/hw/det_nn.sv(368): (vopt-2241) Connection width does not match width of port 'weight_sel'. The port definition is at: /filespace/s/sjain75/ece554/capstone/hw/neuron.sv(15).
+# ** Warning: /filespace/s/sjain75/ece554/capstone/hw/det_nn.sv(368): (vopt-2241) Connection width does not match width of port 'weight_sel'. The port definition is at: /filespace/s/sjain75/ece554/capstone/hw/neuron.sv(15).
+# ** Warning: /filespace/s/sjain75/ece554/capstone/hw/det_nn.sv(368): (vopt-2241) Connection width does not match width of port 'weight_sel'. The port definition is at: /filespace/s/sjain75/ece554/capstone/hw/neuron.sv(15).
+# ** Warning: /filespace/s/sjain75/ece554/capstone/hw/det_nn.sv(368): (vopt-2241) Connection width does not match width of port 'weight_sel'. The port definition is at: /filespace/s/sjain75/ece554/capstone/hw/neuron.sv(15).
+# ** Warning: /filespace/s/sjain75/ece554/capstone/hw/det_nn.sv(368): (vopt-2241) Connection width does not match width of port 'weight_sel'. The port definition is at: /filespace/s/sjain75/ece554/capstone/hw/neuron.sv(15).
+# ** Note: (vsim-12126) Error and warning message counts have been restored: Errors=0, Warnings=20.
+# Loading sv_std.std
+# Loading work.pipeline_wrapper_tb(fast)
+# Loading work.pipeline_wrapper(fast)
+# Loading work.ipgu(fast)
+# Loading work.out_fifo(fast)
+# Loading work.heu(fast)
+# Loading work.rdn_fp(fast)
+# Loading work.neuron(fast__1)
+# Loading work.neuron(fast__2)
+# Loading work.bcau(fast)
+# Loading work.dnn(fast)
+# Loading work.dnn_weight_ld(fast)
+# ** Warning: (vsim-PLI-3691) Expected a system task, not a system function '$fread'.
+#    Time: 0 ns  Iteration: 0  Region: /pipeline_wrapper_tb/#anonblk#81554610#77#4#/#anonblk#81554610#78#4# File: /filespace/s/sjain75/ece554/capstone/hw/pipeline_wrapper_tb.sv Line: 79
+run -all
+# Reading Image
+# ** Note: $stop    : /filespace/s/sjain75/ece554/capstone/hw/pipeline_wrapper_tb.sv(102)
+#    Time: 14935 ns  Iteration: 3  Instance: /pipeline_wrapper_tb
+# Break in Module pipeline_wrapper_tb at /filespace/s/sjain75/ece554/capstone/hw/pipeline_wrapper_tb.sv line 102
+run -all
+# ** Note: $stop    : /filespace/s/sjain75/ece554/capstone/hw/pipeline_wrapper_tb.sv(101)
+#    Time: 87735 ns  Iteration: 3  Instance: /pipeline_wrapper_tb
+# Break in Module pipeline_wrapper_tb at /filespace/s/sjain75/ece554/capstone/hw/pipeline_wrapper_tb.sv line 101
+run -all
+# done weights
+# Window           0 sent by IPGU
+# Window           1 sent by IPGU
+# Window           2 sent by IPGU
+# Window           3 sent by IPGU
+# Window           4 sent by IPGU
+# Window           5 sent by IPGU
+# Window           6 sent by IPGU
+# Window           7 sent by IPGU
+# Window           8 sent by IPGU
+# Window           9 sent by IPGU
+# Window          10 sent by IPGU
+# Window          11 sent by IPGU
+# Window          12 sent by IPGU
+# Window          13 sent by IPGU
+# Window          14 sent by IPGU
+# Window          15 sent by IPGU
+# Window          16 sent by IPGU
+# Window          17 sent by IPGU
+# Window          18 sent by IPGU
+# Window          19 sent by IPGU
+# Window          20 sent by IPGU
+# Window          21 sent by IPGU
+# Window          22 sent by IPGU
+# Window          23 sent by IPGU
+# Window          24 sent by IPGU
+# Window          25 sent by IPGU
+# Window          26 sent by IPGU
+# Window          27 sent by IPGU
+# Window          28 sent by IPGU
+# Window          29 sent by IPGU
+# Window          30 sent by IPGU
+# Window          31 sent by IPGU
+# Window          32 sent by IPGU
+# Window          33 sent by IPGU
+# Window          34 sent by IPGU
+# Window          35 sent by IPGU
+# Window          36 sent by IPGU
+# Window          37 sent by IPGU
+# Window          38 sent by IPGU
+# Window          39 sent by IPGU
+# Window          40 sent by IPGU
+# Window          41 sent by IPGU
+# Window          42 sent by IPGU
+# Window          43 sent by IPGU
+# Window          44 sent by IPGU
+# Window          45 sent by IPGU
+# Window          46 sent by IPGU
+# Window          47 sent by IPGU
+# Window          48 sent by IPGU
+# Window          49 sent by IPGU
+# Window          50 sent by IPGU
+# Window          51 sent by IPGU
+# Window          52 sent by IPGU
+# Window          53 sent by IPGU
+# Window          54 sent by IPGU
+# Window          55 sent by IPGU
+# Window          56 sent by IPGU
+# Window          57 sent by IPGU
+# Window          58 sent by IPGU
+# Window          59 sent by IPGU
+# Window          60 sent by IPGU
+# Window          61 sent by IPGU
+# Window          62 sent by IPGU
+# Window          63 sent by IPGU
+# Window          64 sent by IPGU
+# Window          65 sent by IPGU
+# Window          66 sent by IPGU
+# Window          67 sent by IPGU
+# Window          68 sent by IPGU
+# Window          69 sent by IPGU
+# Window          70 sent by IPGU
+# Window          71 sent by IPGU
+# Window          72 sent by IPGU
+# Window          73 sent by IPGU
+# Window          74 sent by IPGU
+# Window          75 sent by IPGU
+# Window          76 sent by IPGU
+# Window          77 sent by IPGU
+# Window          78 sent by IPGU
+# Window          79 sent by IPGU
+# Window          80 sent by IPGU
+# Window          81 sent by IPGU
+# Window          82 sent by IPGU
+# Window          83 sent by IPGU
+# Window          84 sent by IPGU
+# Window          85 sent by IPGU
+# Window          86 sent by IPGU
+# Window          87 sent by IPGU
+# Window          88 sent by IPGU
+# Window          89 sent by IPGU
+# Window          90 sent by IPGU
+# Window          91 sent by IPGU
+# Window          92 sent by IPGU
+# Window          93 sent by IPGU
+# Window          94 sent by IPGU
+# Window          95 sent by IPGU
+# Window          96 sent by IPGU
+# Window          97 sent by IPGU
+# Window          98 sent by IPGU
+# Window          99 sent by IPGU
+# Window         100 sent by IPGU
+# Window         101 sent by IPGU
+# Window         102 sent by IPGU
+# Window         103 sent by IPGU
+# Window         104 sent by IPGU
+# Window         105 sent by IPGU
+# Window         106 sent by IPGU
+# Window         107 sent by IPGU
+# Window         108 sent by IPGU
+# Window         109 sent by IPGU
+# Window         110 sent by IPGU
+# Window         111 sent by IPGU
+# Window         112 sent by IPGU
+# Window         113 sent by IPGU
+# Window         114 sent by IPGU
+# Window         115 sent by IPGU
+# Window         116 sent by IPGU
+# Window         117 sent by IPGU
+# Window         118 sent by IPGU
+# Window         119 sent by IPGU
+# Window         120 sent by IPGU
+# Window         121 sent by IPGU
+# Window         122 sent by IPGU
+# Window         123 sent by IPGU
+# Window         124 sent by IPGU
+# Window         125 sent by IPGU
+# Window         126 sent by IPGU
+# Window         127 sent by IPGU
+# Window         128 sent by IPGU
+# Window         129 sent by IPGU
+# Window         130 sent by IPGU
+# Window         131 sent by IPGU
+# Window         132 sent by IPGU
+# Window         133 sent by IPGU
+# Window         134 sent by IPGU
+# Window         135 sent by IPGU
+# Window         136 sent by IPGU
+# Window         137 sent by IPGU
+# Window         138 sent by IPGU
+# Window         139 sent by IPGU
+# Window         140 sent by IPGU
+# Window         141 sent by IPGU
+# Window         142 sent by IPGU
+# Window         143 sent by IPGU
+# Window         144 sent by IPGU
+# Window         145 sent by IPGU
+# Window         146 sent by IPGU
+# Window         147 sent by IPGU
+# Window         148 sent by IPGU
+# Window         149 sent by IPGU
+# Window         150 sent by IPGU
+# Window         151 sent by IPGU
+# Window         152 sent by IPGU
+# Window         153 sent by IPGU
+# Window         154 sent by IPGU
+# Window         155 sent by IPGU
+# Window         156 sent by IPGU
+# Window         157 sent by IPGU
+# Window         158 sent by IPGU
+# Window         159 sent by IPGU
+# Window         160 sent by IPGU
+# Window         161 sent by IPGU
+# Window         162 sent by IPGU
+# Window         163 sent by IPGU
+# Window         164 sent by IPGU
+# Window         165 sent by IPGU
+# Window         166 sent by IPGU
+# Window         167 sent by IPGU
+# Window         168 sent by IPGU
+# Window         169 sent by IPGU
+# Window         170 sent by IPGU
+# Window         171 sent by IPGU
+# Window         172 sent by IPGU
+# Window         173 sent by IPGU
+# Window         174 sent by IPGU
+# Window         175 sent by IPGU
+# Window         176 sent by IPGU
+# Window         177 sent by IPGU
+# Window         178 sent by IPGU
+# Window         179 sent by IPGU
+# Window         180 sent by IPGU
+# Window         181 sent by IPGU
+# Window         182 sent by IPGU
+# Window         183 sent by IPGU
+# Window         184 sent by IPGU
+# Window         185 sent by IPGU
+# Window         186 sent by IPGU
+# Window         187 sent by IPGU
+# Window         188 sent by IPGU
+# Window         189 sent by IPGU
+# Window         190 sent by IPGU
+# Window         191 sent by IPGU
+# Window         192 sent by IPGU
+# Window         193 sent by IPGU
+# Window         194 sent by IPGU
+# Window         195 sent by IPGU
+# Window         196 sent by IPGU
+# Window         197 sent by IPGU
+# Window         198 sent by IPGU
+# Window         199 sent by IPGU
+# Window         200 sent by IPGU
+# Window         201 sent by IPGU
+# Window         202 sent by IPGU
+# Window         203 sent by IPGU
+# Window         204 sent by IPGU
+# Window         205 sent by IPGU
+# Window         206 sent by IPGU
+# Window         207 sent by IPGU
+# Window         208 sent by IPGU
+# Window         209 sent by IPGU
+# Window         210 sent by IPGU
+# Window         211 sent by IPGU
+# Window         212 sent by IPGU
+# Window         213 sent by IPGU
+# Window         214 sent by IPGU
+# Window         215 sent by IPGU
+# Window         216 sent by IPGU
+# Window         217 sent by IPGU
+# Window         218 sent by IPGU
+# Window         219 sent by IPGU
+# Window         220 sent by IPGU
+# Window         221 sent by IPGU
+# Window         222 sent by IPGU
+# Window         223 sent by IPGU
+# Window         224 sent by IPGU
+# Window         225 sent by IPGU
+# Window         226 sent by IPGU
+# Window         227 sent by IPGU
+# Window         228 sent by IPGU
+# Window         229 sent by IPGU
+# Window         230 sent by IPGU
+# Window         231 sent by IPGU
+# Window         232 sent by IPGU
+# Window         233 sent by IPGU
+# Window         234 sent by IPGU
+# Window         235 sent by IPGU
+# Window         236 sent by IPGU
+# Window         237 sent by IPGU
+# Window         238 sent by IPGU
+# Window         239 sent by IPGU
+# Window         240 sent by IPGU
+# Window         241 sent by IPGU
+# Window         242 sent by IPGU
+# Window         243 sent by IPGU
+# Window         244 sent by IPGU
+# Window         245 sent by IPGU
+# Window         246 sent by IPGU
+# Window         247 sent by IPGU
+# Window         248 sent by IPGU
+# Window         249 sent by IPGU
+# Window         250 sent by IPGU
+# Window         251 sent by IPGU
+# Window         252 sent by IPGU
+# Window         253 sent by IPGU
+# Window         254 sent by IPGU
+# Window         255 sent by IPGU
+# Window         256 sent by IPGU
+# Window         257 sent by IPGU
+# Window         258 sent by IPGU
+# Window         259 sent by IPGU
+# Window         260 sent by IPGU
+# Window         261 sent by IPGU
+# Window         262 sent by IPGU
+# Window         263 sent by IPGU
+# Window         264 sent by IPGU
+# Window         265 sent by IPGU
+# Window         266 sent by IPGU
+# Window         267 sent by IPGU
+# Window         268 sent by IPGU
+# Window         269 sent by IPGU
+# Window         270 sent by IPGU
+# Window         271 sent by IPGU
+# Window         272 sent by IPGU
+# Window         273 sent by IPGU
+# Window         274 sent by IPGU
+# Window         275 sent by IPGU
+# Window         276 sent by IPGU
+# Window         277 sent by IPGU
+# Window         278 sent by IPGU
+# Window         279 sent by IPGU
+# Window         280 sent by IPGU
+# Window         281 sent by IPGU
+# Window         282 sent by IPGU
+# Window         283 sent by IPGU
+# Window         284 sent by IPGU
+# Window         285 sent by IPGU
+# Window         286 sent by IPGU
+# Window         287 sent by IPGU
+# Window         288 sent by IPGU
+# Window         289 sent by IPGU
+# Window         290 sent by IPGU
+# Window         291 sent by IPGU
+# Window         292 sent by IPGU
+# Window         293 sent by IPGU
+# Window         294 sent by IPGU
+# Window         295 sent by IPGU
+# Window         296 sent by IPGU
+# Window         297 sent by IPGU
+# Window         298 sent by IPGU
+# Window         299 sent by IPGU
+# Window         300 sent by IPGU
+# Window         301 sent by IPGU
+# Window         302 sent by IPGU
+# Window         303 sent by IPGU
+# Window         304 sent by IPGU
+# Window         305 sent by IPGU
+# Window         306 sent by IPGU
+# Window         307 sent by IPGU
+# Window         308 sent by IPGU
+# Window         309 sent by IPGU
+# Window         310 sent by IPGU
+# Window         311 sent by IPGU
+# Window         312 sent by IPGU
+# Window         313 sent by IPGU
+# Window         314 sent by IPGU
+# Window         315 sent by IPGU
+# Window         316 sent by IPGU
+# Window         317 sent by IPGU
+# Window         318 sent by IPGU
+# Window         319 sent by IPGU
+# Window         320 sent by IPGU
+# Window         321 sent by IPGU
+# Window         322 sent by IPGU
+# Window         323 sent by IPGU
+# Window         324 sent by IPGU
+# Window         325 sent by IPGU
+# Window         326 sent by IPGU
+# Window         327 sent by IPGU
+# Window         328 sent by IPGU
+# Window         329 sent by IPGU
+# Window         330 sent by IPGU
+# Window         331 sent by IPGU
+# Window         332 sent by IPGU
+# Window         333 sent by IPGU
+# Window         334 sent by IPGU
+# Window         335 sent by IPGU
+# Window         336 sent by IPGU
+# Window         337 sent by IPGU
+# Window         338 sent by IPGU
+# Window         339 sent by IPGU
+# Window         340 sent by IPGU
+# Window         341 sent by IPGU
+# Window         342 sent by IPGU
+# Window         343 sent by IPGU
+# Window         344 sent by IPGU
+# Window         345 sent by IPGU
+# Window         346 sent by IPGU
+# Window         347 sent by IPGU
+# Window         348 sent by IPGU
+# Window         349 sent by IPGU
+# Window         350 sent by IPGU
+# Window         351 sent by IPGU
+# Window         352 sent by IPGU
+# Window         353 sent by IPGU
+# Window         354 sent by IPGU
+# Window         355 sent by IPGU
+# Window         356 sent by IPGU
+# Window         357 sent by IPGU
+# Window         358 sent by IPGU
+# Window         359 sent by IPGU
+# Window         360 sent by IPGU
+# Window         361 sent by IPGU
+# Window         362 sent by IPGU
+# Window         363 sent by IPGU
+# Window         364 sent by IPGU
+# Window         365 sent by IPGU
+# Window         366 sent by IPGU
+# Window         367 sent by IPGU
+# Window         368 sent by IPGU
+# Window         369 sent by IPGU
+# Window         370 sent by IPGU
+# Window         371 sent by IPGU
+# Window         372 sent by IPGU
+# Window         373 sent by IPGU
+# Window         374 sent by IPGU
+# Window         375 sent by IPGU
+# Window         376 sent by IPGU
+# Window         377 sent by IPGU
+# Window         378 sent by IPGU
+# Window         379 sent by IPGU
+# Window         380 sent by IPGU
+# Window         381 sent by IPGU
+# Window         382 sent by IPGU
+# Window         383 sent by IPGU
+# Window         384 sent by IPGU
+# Window         385 sent by IPGU
+# Window         386 sent by IPGU
+# Window         387 sent by IPGU
+# Window         388 sent by IPGU
+# Window         389 sent by IPGU
+# Window         390 sent by IPGU
+# Window         391 sent by IPGU
+# Window         392 sent by IPGU
+# Window         393 sent by IPGU
+# Window         394 sent by IPGU
+# Window         395 sent by IPGU
+# Window         396 sent by IPGU
+# Window         397 sent by IPGU
+# Window         398 sent by IPGU
+# Window         399 sent by IPGU
+# Window         400 sent by IPGU
+# Window         401 sent by IPGU
+# Window         402 sent by IPGU
+# Window         403 sent by IPGU
+# Window         404 sent by IPGU
+# Window         405 sent by IPGU
+# Window         406 sent by IPGU
+# Window         407 sent by IPGU
+# Window         408 sent by IPGU
+# Window         409 sent by IPGU
+# Window         410 sent by IPGU
+# Window         411 sent by IPGU
+# Window         412 sent by IPGU
+# Window         413 sent by IPGU
+# Window         414 sent by IPGU
+# Window         415 sent by IPGU
+# Window         416 sent by IPGU
+# Window         417 sent by IPGU
+# Window         418 sent by IPGU
+# Window         419 sent by IPGU
+# Window         420 sent by IPGU
+# Window         421 sent by IPGU
+# Window         422 sent by IPGU
+# Window         423 sent by IPGU
+# Window         424 sent by IPGU
+# Window         425 sent by IPGU
+# Window         426 sent by IPGU
+# Window         427 sent by IPGU
+# Window         428 sent by IPGU
+# Window         429 sent by IPGU
+# Window         430 sent by IPGU
+# Window         431 sent by IPGU
+# Window         432 sent by IPGU
+# Window         433 sent by IPGU
+# Window         434 sent by IPGU
+# Window         435 sent by IPGU
+# Window         436 sent by IPGU
+# Window         437 sent by IPGU
+# Window         438 sent by IPGU
+# Window         439 sent by IPGU
+# Window         440 sent by IPGU
+# Window         441 sent by IPGU
+# Window         442 sent by IPGU
+# Window         443 sent by IPGU
+# Window         444 sent by IPGU
+# Window         445 sent by IPGU
+# Window         446 sent by IPGU
+# Window         447 sent by IPGU
+# Window         448 sent by IPGU
+# Window         449 sent by IPGU
+# Window         450 sent by IPGU
+# Window         451 sent by IPGU
+# Window         452 sent by IPGU
+# Window         453 sent by IPGU
+# Window         454 sent by IPGU
+# Window         455 sent by IPGU
+# Window         456 sent by IPGU
+# Window         457 sent by IPGU
+# Window         458 sent by IPGU
+# Window         459 sent by IPGU
+# Window         460 sent by IPGU
+# Window         461 sent by IPGU
+# Window         462 sent by IPGU
+# Window         463 sent by IPGU
+# Window         464 sent by IPGU
+# Window         465 sent by IPGU
+# Window         466 sent by IPGU
+# Window         467 sent by IPGU
+# Window         468 sent by IPGU
+# Window         469 sent by IPGU
+# Window         470 sent by IPGU
+# Window         471 sent by IPGU
+# Window         472 sent by IPGU
+# Window         473 sent by IPGU
+# Window         474 sent by IPGU
+# Window         475 sent by IPGU
+# Window         476 sent by IPGU
+# Window         477 sent by IPGU
+# Window         478 sent by IPGU
+# Window         479 sent by IPGU
+# Window         480 sent by IPGU
+# Window         481 sent by IPGU
+# Window         482 sent by IPGU
+# Window         483 sent by IPGU
+# Window         484 sent by IPGU
+# Window         485 sent by IPGU
+# Window         486 sent by IPGU
+# Window         487 sent by IPGU
+# Window         488 sent by IPGU
+# Window         489 sent by IPGU
+# Window         490 sent by IPGU
+# Window         491 sent by IPGU
+# Window         492 sent by IPGU
+# Window         493 sent by IPGU
+# Window         494 sent by IPGU
+# Window         495 sent by IPGU
+# Window         496 sent by IPGU
+# Window         497 sent by IPGU
+# Window         498 sent by IPGU
+# Window         499 sent by IPGU
+# Window         500 sent by IPGU
+# Window         501 sent by IPGU
+# Window         502 sent by IPGU
+# Window         503 sent by IPGU
+# Window         504 sent by IPGU
+# Window         505 sent by IPGU
+# Window         506 sent by IPGU
+# Window         507 sent by IPGU
+# Window         508 sent by IPGU
+# Window         509 sent by IPGU
+# Window         510 sent by IPGU
+# Window         511 sent by IPGU
+# Valid dnn
+# ** Note: $stop    : /filespace/s/sjain75/ece554/capstone/hw/pipeline_wrapper_tb.sv(119)
+#    Time: 1165522315 ns  Iteration: 2  Instance: /pipeline_wrapper_tb
+# Break in NamedForkStat hello at /filespace/s/sjain75/ece554/capstone/hw/pipeline_wrapper_tb.sv line 119
+# Compile of a_neuron.sv was successful.
+# Compile of a_neuron_tb.sv was successful.
+# Compile of b_neuron.sv was successful.
+# Compile of b_neuron_tb.sv was successful.
+# Compile of bcau.sv was successful.
+# Compile of bcau_comp_unit.sv was successful.
+# Compile of bcau_ctrl_unit.sv was successful.
+# Compile of c_neuron.sv was successful.
+# Compile of c_neuron_tb.sv was successful.
+# Compile of control_wrapper.sv was successful.
+# Compile of control_wrapper_test.sv was successful.
+# Compile of ctrl_unit.sv was successful.
+# Compile of decode.sv was successful.
+# Compile of det_nn.sv was successful.
+# Compile of det_nn_tb.sv was successful.
+# Compile of dnn.sv was successful.
+# Compile of dnn_ctrl_unit.sv was successful.
+# Compile of dnn_weight_ld.sv was successful.
+# Compile of fp_adder.sv was successful.
+# Compile of fp_divider.sv was successful.
+# Compile of fp_exp.sv was successful.
+# Compile of fp_mult.sv was successful.
+# Compile of fp_tanh.sv was successful.
+# Compile of fp_tb.sv was successful.
+# Compile of heu.sv was successful.
+# Compile of heu_calc_unit.sv was successful.
+# Compile of heu_ctrl_unit.sv was successful.
+# Compile of heu_sum_lut.sv was successful.
+# Compile of heu_sum_unit.sv was successful.
+# Compile of heu_tb.sv was successful.
+# Compile of heu_visual_tb.sv was successful.
+# Compile of instruction_fetch.sv was successful.
+# Compile of ipgu.sv was successful.
+# Compile of ipgu_addr_compute.sv was successful.
+# Compile of ipgu_ctrl_unit.sv was successful.
+# Compile of ipgu_demo.sv was successful.
+# Compile of ipgu_mult_lut.sv was successful.
+# Compile of ipgu_unit_test.sv was successful.
+# Compile of iru.sv was successful.
+# Compile of iru_comp_unit.sv was successful.
+# Compile of iru_cos_lut.sv was successful.
+# Compile of iru_ctrl_unit.sv was successful.
+# Compile of iru_in_buffer.sv was successful.
+# Compile of iru_out_buffer.sv was successful.
+# Compile of iru_sin_lut.sv was successful.
+# Compile of iru_tb.sv was successful.
+# Compile of layer.sv was successful.
+# Compile of long_to_fp.sv was successful.
+# Compile of neuron.sv was successful.
+# Compile of neuron_tb.sv was successful.
+# Compile of qmult.sv was successful.
+# Compile of ram.sv was successful.
+# Compile of ram_wrAll.sv was successful.
+# Compile of rdn_ctrl_unit.sv was successful.
+# Compile of rdn_ctrl_unit_fp.sv was successful.
+# Compile of rdn_fp.sv was successful.
+# Compile of rdn_fp_tb.sv was successful.
+# Compile of rdn_weight_ld.sv was successful.
+# Compile of rdn_weight_ld_fp.sv was successful.
+# Compile of rdn_weight_ld_fp_tb.sv was successful.
+# Compile of rdn_weight_ld_tb.sv was successful.
+# Compile of rot_nn.sv was successful.
+# Compile of rot_nn_tb.sv was successful.
+# 63 compiles, 0 failed with no errors.
+restart
+# ** Note: (vsim-12125) Error and warning message counts have been reset to '0' because of 'restart'.
+# ** Note: (vsim-3813) Design is being optimized due to module recompilation...
+# ** Warning: /filespace/s/sjain75/ece554/capstone/hw/det_nn.sv(445): (vopt-2241) Connection width does not match width of port 'weight_sel'. The port definition is at: /filespace/s/sjain75/ece554/capstone/hw/neuron.sv(15).
+# ** Warning: /filespace/s/sjain75/ece554/capstone/hw/det_nn.sv(430): (vopt-2241) Connection width does not match width of port 'weight_sel'. The port definition is at: /filespace/s/sjain75/ece554/capstone/hw/neuron.sv(15).
+# ** Warning: /filespace/s/sjain75/ece554/capstone/hw/det_nn.sv(416): (vopt-2241) Connection width does not match width of port 'weight_sel'. The port definition is at: /filespace/s/sjain75/ece554/capstone/hw/neuron.sv(15).
+# ** Warning: /filespace/s/sjain75/ece554/capstone/hw/det_nn.sv(402): (vopt-2241) Connection width does not match width of port 'weight_sel'. The port definition is at: /filespace/s/sjain75/ece554/capstone/hw/neuron.sv(15).
+# ** Warning: /filespace/s/sjain75/ece554/capstone/hw/det_nn.sv(368): (vopt-2241) Connection width does not match width of port 'weight_sel'. The port definition is at: /filespace/s/sjain75/ece554/capstone/hw/neuron.sv(15).
+# ** Warning: /filespace/s/sjain75/ece554/capstone/hw/det_nn.sv(368): (vopt-2241) Connection width does not match width of port 'weight_sel'. The port definition is at: /filespace/s/sjain75/ece554/capstone/hw/neuron.sv(15).
+# ** Warning: /filespace/s/sjain75/ece554/capstone/hw/det_nn.sv(368): (vopt-2241) Connection width does not match width of port 'weight_sel'. The port definition is at: /filespace/s/sjain75/ece554/capstone/hw/neuron.sv(15).
+# ** Warning: /filespace/s/sjain75/ece554/capstone/hw/det_nn.sv(368): (vopt-2241) Connection width does not match width of port 'weight_sel'. The port definition is at: /filespace/s/sjain75/ece554/capstone/hw/neuron.sv(15).
+# ** Warning: /filespace/s/sjain75/ece554/capstone/hw/det_nn.sv(368): (vopt-2241) Connection width does not match width of port 'weight_sel'. The port definition is at: /filespace/s/sjain75/ece554/capstone/hw/neuron.sv(15).
+# ** Warning: /filespace/s/sjain75/ece554/capstone/hw/det_nn.sv(368): (vopt-2241) Connection width does not match width of port 'weight_sel'. The port definition is at: /filespace/s/sjain75/ece554/capstone/hw/neuron.sv(15).
+# ** Warning: /filespace/s/sjain75/ece554/capstone/hw/det_nn.sv(368): (vopt-2241) Connection width does not match width of port 'weight_sel'. The port definition is at: /filespace/s/sjain75/ece554/capstone/hw/neuron.sv(15).
+# ** Warning: /filespace/s/sjain75/ece554/capstone/hw/det_nn.sv(368): (vopt-2241) Connection width does not match width of port 'weight_sel'. The port definition is at: /filespace/s/sjain75/ece554/capstone/hw/neuron.sv(15).
+# ** Warning: /filespace/s/sjain75/ece554/capstone/hw/det_nn.sv(368): (vopt-2241) Connection width does not match width of port 'weight_sel'. The port definition is at: /filespace/s/sjain75/ece554/capstone/hw/neuron.sv(15).
+# ** Warning: /filespace/s/sjain75/ece554/capstone/hw/det_nn.sv(368): (vopt-2241) Connection width does not match width of port 'weight_sel'. The port definition is at: /filespace/s/sjain75/ece554/capstone/hw/neuron.sv(15).
+# ** Warning: /filespace/s/sjain75/ece554/capstone/hw/det_nn.sv(368): (vopt-2241) Connection width does not match width of port 'weight_sel'. The port definition is at: /filespace/s/sjain75/ece554/capstone/hw/neuron.sv(15).
+# ** Warning: /filespace/s/sjain75/ece554/capstone/hw/det_nn.sv(368): (vopt-2241) Connection width does not match width of port 'weight_sel'. The port definition is at: /filespace/s/sjain75/ece554/capstone/hw/neuron.sv(15).
+# ** Warning: /filespace/s/sjain75/ece554/capstone/hw/det_nn.sv(368): (vopt-2241) Connection width does not match width of port 'weight_sel'. The port definition is at: /filespace/s/sjain75/ece554/capstone/hw/neuron.sv(15).
+# ** Warning: /filespace/s/sjain75/ece554/capstone/hw/det_nn.sv(368): (vopt-2241) Connection width does not match width of port 'weight_sel'. The port definition is at: /filespace/s/sjain75/ece554/capstone/hw/neuron.sv(15).
+# ** Warning: /filespace/s/sjain75/ece554/capstone/hw/det_nn.sv(368): (vopt-2241) Connection width does not match width of port 'weight_sel'. The port definition is at: /filespace/s/sjain75/ece554/capstone/hw/neuron.sv(15).
+# ** Warning: /filespace/s/sjain75/ece554/capstone/hw/det_nn.sv(368): (vopt-2241) Connection width does not match width of port 'weight_sel'. The port definition is at: /filespace/s/sjain75/ece554/capstone/hw/neuron.sv(15).
+# ** Note: (vopt-143) Recognized 1 FSM in module "fp_mult(fast)".
+# ** Note: (vopt-143) Recognized 1 FSM in module "fp_tanh(fast)".
+# ** Note: (vopt-143) Recognized 1 FSM in module "det_nn(fast)".
+# ** Note: (vopt-143) Recognized 1 FSM in module "fp_exp(fast)".
+# ** Note: (vopt-143) Recognized 1 FSM in module "dnn_ctrl_unit(fast)".
+# ** Note: (vopt-143) Recognized 1 FSM in module "fp_adder(fast)".
+# ** Note: (vopt-143) Recognized 1 FSM in module "neuron(fast__9)".
+# ** Note: (vopt-143) Recognized 1 FSM in module "neuron(fast__8)".
+# ** Note: (vopt-143) Recognized 1 FSM in module "neuron(fast__7)".
+# ** Note: (vopt-143) Recognized 1 FSM in module "neuron(fast__6)".
+# ** Note: (vopt-143) Recognized 1 FSM in module "neuron(fast__5)".
+# ** Note: (vopt-143) Recognized 1 FSM in module "neuron(fast__4)".
+# ** Note: (vopt-143) Recognized 1 FSM in module "neuron(fast__3)".
+# ** Note: (vopt-143) Recognized 1 FSM in module "fp_divider(fast)".
+# ** Note: (vopt-143) Recognized 1 FSM in module "long_to_fp(fast)".
+# ** Note: (vsim-12126) Error and warning message counts have been restored: Errors=0, Warnings=20.
+# Loading sv_std.std
+# Loading work.pipeline_wrapper_tb(fast)
+# Loading work.pipeline_wrapper(fast)
+# Loading work.ipgu(fast)
+# Loading work.out_fifo(fast)
+# Loading work.heu(fast)
+# Loading work.rdn_fp(fast)
+# Loading work.neuron(fast__1)
+# Loading work.neuron(fast__2)
+# Loading work.bcau(fast)
+# Loading work.dnn(fast)
+# Loading work.dnn_weight_ld(fast)
+# ** Warning: (vsim-PLI-3691) Expected a system task, not a system function '$fread'.
+#    Time: 0 ns  Iteration: 0  Region: /pipeline_wrapper_tb/#anonblk#81554610#77#4#/#anonblk#81554610#78#4# File: /filespace/s/sjain75/ece554/capstone/hw/pipeline_wrapper_tb.sv Line: 79
+run -all
+# Reading Image
+# ** Note: $stop    : /filespace/s/sjain75/ece554/capstone/hw/pipeline_wrapper_tb.sv(102)
+#    Time: 14935 ns  Iteration: 3  Instance: /pipeline_wrapper_tb
+# Break in Module pipeline_wrapper_tb at /filespace/s/sjain75/ece554/capstone/hw/pipeline_wrapper_tb.sv line 102
+run -all
+# ** Note: $stop    : /filespace/s/sjain75/ece554/capstone/hw/pipeline_wrapper_tb.sv(101)
+#    Time: 87735 ns  Iteration: 3  Instance: /pipeline_wrapper_tb
+# Break in Module pipeline_wrapper_tb at /filespace/s/sjain75/ece554/capstone/hw/pipeline_wrapper_tb.sv line 101
+run -all
+# done weights
+# Window           0 sent by IPGU
+# Window           1 sent by IPGU
+# Window           2 sent by IPGU
+# Window           3 sent by IPGU
+# Window           4 sent by IPGU
+# Window           5 sent by IPGU
+# Window           6 sent by IPGU
+# Window           7 sent by IPGU
+# Window           8 sent by IPGU
+# Window           9 sent by IPGU
+# Window          10 sent by IPGU
+# Window          11 sent by IPGU
+# Window          12 sent by IPGU
+# Window          13 sent by IPGU
+# Window          14 sent by IPGU
+# Window          15 sent by IPGU
+# Window          16 sent by IPGU
+# Window          17 sent by IPGU
+# Window          18 sent by IPGU
+# Window          19 sent by IPGU
+# Window          20 sent by IPGU
+# Window          21 sent by IPGU
+# Window          22 sent by IPGU
+# Window          23 sent by IPGU
+# Window          24 sent by IPGU
+# Window          25 sent by IPGU
+# Window          26 sent by IPGU
+# Window          27 sent by IPGU
+# Window          28 sent by IPGU
+# Window          29 sent by IPGU
+# Window          30 sent by IPGU
+# Window          31 sent by IPGU
+# Window          32 sent by IPGU
+# Window          33 sent by IPGU
+# Window          34 sent by IPGU
+# Window          35 sent by IPGU
+# Window          36 sent by IPGU
+# Window          37 sent by IPGU
+# Window          38 sent by IPGU
+# Window          39 sent by IPGU
+# Window          40 sent by IPGU
+# Window          41 sent by IPGU
+# Window          42 sent by IPGU
+# Window          43 sent by IPGU
+# Window          44 sent by IPGU
+# Window          45 sent by IPGU
+# Window          46 sent by IPGU
+# Window          47 sent by IPGU
+# Window          48 sent by IPGU
+# Window          49 sent by IPGU
+# Window          50 sent by IPGU
+# Window          51 sent by IPGU
+# Window          52 sent by IPGU
+# Window          53 sent by IPGU
+# Window          54 sent by IPGU
+# Window          55 sent by IPGU
+# Window          56 sent by IPGU
+# Window          57 sent by IPGU
+# Window          58 sent by IPGU
+# Window          59 sent by IPGU
+# Window          60 sent by IPGU
+# Window          61 sent by IPGU
+# Window          62 sent by IPGU
+# Window          63 sent by IPGU
+# Window          64 sent by IPGU
+# Window          65 sent by IPGU
+# Window          66 sent by IPGU
+# Window          67 sent by IPGU
+# Window          68 sent by IPGU
+# Window          69 sent by IPGU
+# Window          70 sent by IPGU
+# Window          71 sent by IPGU
+# Window          72 sent by IPGU
+# Window          73 sent by IPGU
+# Window          74 sent by IPGU
+# Window          75 sent by IPGU
+# Window          76 sent by IPGU
+# Window          77 sent by IPGU
+# Window          78 sent by IPGU
+# Window          79 sent by IPGU
+# Window          80 sent by IPGU
+# Window          81 sent by IPGU
+# Window          82 sent by IPGU
+# Window          83 sent by IPGU
+# Window          84 sent by IPGU
+# Window          85 sent by IPGU
+# Window          86 sent by IPGU
+# Window          87 sent by IPGU
+# Window          88 sent by IPGU
+# Window          89 sent by IPGU
+# Window          90 sent by IPGU
+# Window          91 sent by IPGU
+# Window          92 sent by IPGU
+# Window          93 sent by IPGU
+# Window          94 sent by IPGU
+# Window          95 sent by IPGU
+# Window          96 sent by IPGU
+# Window          97 sent by IPGU
+# Window          98 sent by IPGU
+# Window          99 sent by IPGU
+# Window         100 sent by IPGU
+# Window         101 sent by IPGU
+# Window         102 sent by IPGU
+# Window         103 sent by IPGU
+# Window         104 sent by IPGU
+# Window         105 sent by IPGU
+# Window         106 sent by IPGU
+# Window         107 sent by IPGU
+# Window         108 sent by IPGU
+# Window         109 sent by IPGU
+# Window         110 sent by IPGU
+# Window         111 sent by IPGU
+# Window         112 sent by IPGU
+# Window         113 sent by IPGU
+# Window         114 sent by IPGU
+# Window         115 sent by IPGU
+# Window         116 sent by IPGU
+# Window         117 sent by IPGU
+# Window         118 sent by IPGU
+# Window         119 sent by IPGU
+# Window         120 sent by IPGU
+# Window         121 sent by IPGU
+# Window         122 sent by IPGU
+# Window         123 sent by IPGU
+# Window         124 sent by IPGU
+# Window         125 sent by IPGU
+# Window         126 sent by IPGU
+# Window         127 sent by IPGU
+# Window         128 sent by IPGU
+# Window         129 sent by IPGU
+# Window         130 sent by IPGU
+# Window         131 sent by IPGU
+# Window         132 sent by IPGU
+# Window         133 sent by IPGU
+# Window         134 sent by IPGU
+# Window         135 sent by IPGU
+# Window         136 sent by IPGU
+# Window         137 sent by IPGU
+# Window         138 sent by IPGU
+# Window         139 sent by IPGU
+# Window         140 sent by IPGU
+# Window         141 sent by IPGU
+# Window         142 sent by IPGU
+# Window         143 sent by IPGU
+# Window         144 sent by IPGU
+# Window         145 sent by IPGU
+# Window         146 sent by IPGU
+# Window         147 sent by IPGU
+# Window         148 sent by IPGU
+# Window         149 sent by IPGU
+# Window         150 sent by IPGU
+# Window         151 sent by IPGU
+# Window         152 sent by IPGU
+# Window         153 sent by IPGU
+# Window         154 sent by IPGU
+# Window         155 sent by IPGU
+# Window         156 sent by IPGU
+# Window         157 sent by IPGU
+# Window         158 sent by IPGU
+# Window         159 sent by IPGU
+# Window         160 sent by IPGU
+# Window         161 sent by IPGU
+# Window         162 sent by IPGU
+# Window         163 sent by IPGU
+# Window         164 sent by IPGU
+# Window         165 sent by IPGU
+# Window         166 sent by IPGU
+# Window         167 sent by IPGU
+# Window         168 sent by IPGU
+# Window         169 sent by IPGU
+# Window         170 sent by IPGU
+# Window         171 sent by IPGU
+# Window         172 sent by IPGU
+# Window         173 sent by IPGU
+# Window         174 sent by IPGU
+# Window         175 sent by IPGU
+# Window         176 sent by IPGU
+# Window         177 sent by IPGU
+# Window         178 sent by IPGU
+# Window         179 sent by IPGU
+# Window         180 sent by IPGU
+# Window         181 sent by IPGU
+# Window         182 sent by IPGU
+# Window         183 sent by IPGU
+# Window         184 sent by IPGU
+# Window         185 sent by IPGU
+# Window         186 sent by IPGU
+# Window         187 sent by IPGU
+# Window         188 sent by IPGU
+# Window         189 sent by IPGU
+# Window         190 sent by IPGU
+# Window         191 sent by IPGU
+# Window         192 sent by IPGU
+# Window         193 sent by IPGU
+# Window         194 sent by IPGU
+# Window         195 sent by IPGU
+# Window         196 sent by IPGU
+# Window         197 sent by IPGU
+# Window         198 sent by IPGU
+# Window         199 sent by IPGU
+# Window         200 sent by IPGU
+# Window         201 sent by IPGU
+# Window         202 sent by IPGU
+# Window         203 sent by IPGU
+# Window         204 sent by IPGU
+# Window         205 sent by IPGU
+# Window         206 sent by IPGU
+# Window         207 sent by IPGU
+# Window         208 sent by IPGU
+# Window         209 sent by IPGU
+# Window         210 sent by IPGU
+# Window         211 sent by IPGU
+# Window         212 sent by IPGU
+# Window         213 sent by IPGU
+# Window         214 sent by IPGU
+# Window         215 sent by IPGU
+# Window         216 sent by IPGU
+# Window         217 sent by IPGU
+# Window         218 sent by IPGU
+# Window         219 sent by IPGU
+# Window         220 sent by IPGU
+# Window         221 sent by IPGU
+# Window         222 sent by IPGU
+# Window         223 sent by IPGU
+# Window         224 sent by IPGU
+# Window         225 sent by IPGU
+# Window         226 sent by IPGU
+# Window         227 sent by IPGU
+# Window         228 sent by IPGU
+# Window         229 sent by IPGU
+# Window         230 sent by IPGU
+# Window         231 sent by IPGU
+# Window         232 sent by IPGU
+# Window         233 sent by IPGU
+# Window         234 sent by IPGU
+# Window         235 sent by IPGU
+# Window         236 sent by IPGU
+# Window         237 sent by IPGU
+# Window         238 sent by IPGU
+# Window         239 sent by IPGU
+# Window         240 sent by IPGU
+# Window         241 sent by IPGU
+# Window         242 sent by IPGU
+# Window         243 sent by IPGU
+# Window         244 sent by IPGU
+# Window         245 sent by IPGU
+# Window         246 sent by IPGU
+# Window         247 sent by IPGU
+# Window         248 sent by IPGU
+# Window         249 sent by IPGU
+# Window         250 sent by IPGU
+# Window         251 sent by IPGU
+# Window         252 sent by IPGU
+# Window         253 sent by IPGU
+# Window         254 sent by IPGU
+# Window         255 sent by IPGU
+# Window         256 sent by IPGU
+# Window         257 sent by IPGU
+# Window         258 sent by IPGU
+# Window         259 sent by IPGU
+# Window         260 sent by IPGU
+# Window         261 sent by IPGU
+# Window         262 sent by IPGU
+# Window         263 sent by IPGU
+# Window         264 sent by IPGU
+# Window         265 sent by IPGU
+# Window         266 sent by IPGU
+# Window         267 sent by IPGU
+# Window         268 sent by IPGU
+# Window         269 sent by IPGU
+# Window         270 sent by IPGU
+# Window         271 sent by IPGU
+# Window         272 sent by IPGU
+# Window         273 sent by IPGU
+# Window         274 sent by IPGU
+# Window         275 sent by IPGU
+# Window         276 sent by IPGU
+# Window         277 sent by IPGU
+# Window         278 sent by IPGU
+# Window         279 sent by IPGU
+# Window         280 sent by IPGU
+# Window         281 sent by IPGU
+# Window         282 sent by IPGU
+# Window         283 sent by IPGU
+# Window         284 sent by IPGU
+# Window         285 sent by IPGU
+# Window         286 sent by IPGU
+# Window         287 sent by IPGU
+# Window         288 sent by IPGU
+# Window         289 sent by IPGU
+# Window         290 sent by IPGU
+# Window         291 sent by IPGU
+# Window         292 sent by IPGU
+# Window         293 sent by IPGU
+# Window         294 sent by IPGU
+# Window         295 sent by IPGU
+# Window         296 sent by IPGU
+# Window         297 sent by IPGU
+# Window         298 sent by IPGU
+# Window         299 sent by IPGU
+# Window         300 sent by IPGU
+# Window         301 sent by IPGU
+# Window         302 sent by IPGU
+# Window         303 sent by IPGU
+# Window         304 sent by IPGU
+# Window         305 sent by IPGU
+# Window         306 sent by IPGU
+# Window         307 sent by IPGU
+# Window         308 sent by IPGU
+# Window         309 sent by IPGU
+# Window         310 sent by IPGU
+# Window         311 sent by IPGU
+# Window         312 sent by IPGU
+# Window         313 sent by IPGU
+# Window         314 sent by IPGU
+# Window         315 sent by IPGU
+# Window         316 sent by IPGU
+# Window         317 sent by IPGU
+# Window         318 sent by IPGU
+# Window         319 sent by IPGU
+# Window         320 sent by IPGU
+# Window         321 sent by IPGU
+# Window         322 sent by IPGU
+# Window         323 sent by IPGU
+# Window         324 sent by IPGU
+# Window         325 sent by IPGU
+# Window         326 sent by IPGU
+# Window         327 sent by IPGU
+# Window         328 sent by IPGU
+# Window         329 sent by IPGU
+# Window         330 sent by IPGU
+# Window         331 sent by IPGU
+# Window         332 sent by IPGU
+# Window         333 sent by IPGU
+# Window         334 sent by IPGU
+# Window         335 sent by IPGU
+# Window         336 sent by IPGU
+# Window         337 sent by IPGU
+# Window         338 sent by IPGU
+# Window         339 sent by IPGU
+# Window         340 sent by IPGU
+# Window         341 sent by IPGU
+# Window         342 sent by IPGU
+# Window         343 sent by IPGU
+# Window         344 sent by IPGU
+# Window         345 sent by IPGU
+# Window         346 sent by IPGU
+# Window         347 sent by IPGU
+# Window         348 sent by IPGU
+# Window         349 sent by IPGU
+# Window         350 sent by IPGU
+# Window         351 sent by IPGU
+# Window         352 sent by IPGU
+# Window         353 sent by IPGU
+# Window         354 sent by IPGU
+# Window         355 sent by IPGU
+# Window         356 sent by IPGU
+# Window         357 sent by IPGU
+# Window         358 sent by IPGU
+# Window         359 sent by IPGU
+# Window         360 sent by IPGU
+# Window         361 sent by IPGU
+# Window         362 sent by IPGU
+# Window         363 sent by IPGU
+# Window         364 sent by IPGU
+# Window         365 sent by IPGU
+# Window         366 sent by IPGU
+# Window         367 sent by IPGU
+# Window         368 sent by IPGU
+# Window         369 sent by IPGU
+# Window         370 sent by IPGU
+# Window         371 sent by IPGU
+# Window         372 sent by IPGU
+# Window         373 sent by IPGU
+# Window         374 sent by IPGU
+# Window         375 sent by IPGU
+# Window         376 sent by IPGU
+# Window         377 sent by IPGU
+# Window         378 sent by IPGU
+# Window         379 sent by IPGU
+# Window         380 sent by IPGU
+# Window         381 sent by IPGU
+# Window         382 sent by IPGU
+# Window         383 sent by IPGU
+# Window         384 sent by IPGU
+# Window         385 sent by IPGU
+# Window         386 sent by IPGU
+# Window         387 sent by IPGU
+# Window         388 sent by IPGU
+# Window         389 sent by IPGU
+# Window         390 sent by IPGU
+# Window         391 sent by IPGU
+# Window         392 sent by IPGU
+# Window         393 sent by IPGU
+# Window         394 sent by IPGU
+# Window         395 sent by IPGU
+# Window         396 sent by IPGU
+# Window         397 sent by IPGU
+# Window         398 sent by IPGU
+# Window         399 sent by IPGU
+# Window         400 sent by IPGU
+# Window         401 sent by IPGU
+# Window         402 sent by IPGU
+# Window         403 sent by IPGU
+# Window         404 sent by IPGU
+# Window         405 sent by IPGU
+# Window         406 sent by IPGU
+# Window         407 sent by IPGU
+# Window         408 sent by IPGU
+# Window         409 sent by IPGU
+# Window         410 sent by IPGU
+# Window         411 sent by IPGU
+# Window         412 sent by IPGU
+# Window         413 sent by IPGU
+# Window         414 sent by IPGU
+# Window         415 sent by IPGU
+# Window         416 sent by IPGU
+# Window         417 sent by IPGU
+# Window         418 sent by IPGU
+# Window         419 sent by IPGU
+# Window         420 sent by IPGU
+# Window         421 sent by IPGU
+# Window         422 sent by IPGU
+# Window         423 sent by IPGU
+# Window         424 sent by IPGU
+# Window         425 sent by IPGU
+# Window         426 sent by IPGU
+# Window         427 sent by IPGU
+# Window         428 sent by IPGU
+# Window         429 sent by IPGU
+# Window         430 sent by IPGU
+# Window         431 sent by IPGU
+# Window         432 sent by IPGU
+# Window         433 sent by IPGU
+# Window         434 sent by IPGU
+# Window         435 sent by IPGU
+# Window         436 sent by IPGU
+# Window         437 sent by IPGU
+# Window         438 sent by IPGU
+# Window         439 sent by IPGU
+# Window         440 sent by IPGU
+# Window         441 sent by IPGU
+# Window         442 sent by IPGU
+# Window         443 sent by IPGU
+# Window         444 sent by IPGU
+# Window         445 sent by IPGU
+# Window         446 sent by IPGU
+# Window         447 sent by IPGU
+# Window         448 sent by IPGU
+# Window         449 sent by IPGU
+# Window         450 sent by IPGU
+# Window         451 sent by IPGU
+# Window         452 sent by IPGU
+# Window         453 sent by IPGU
+# Window         454 sent by IPGU
+# Window         455 sent by IPGU
+# Window         456 sent by IPGU
+# Window         457 sent by IPGU
+# Window         458 sent by IPGU
+# Window         459 sent by IPGU
+# Window         460 sent by IPGU
+# Window         461 sent by IPGU
+# Window         462 sent by IPGU
+# Window         463 sent by IPGU
+# Window         464 sent by IPGU
+# Window         465 sent by IPGU
+# Window         466 sent by IPGU
+# Window         467 sent by IPGU
+# Window         468 sent by IPGU
+# Window         469 sent by IPGU
+# Window         470 sent by IPGU
+# Window         471 sent by IPGU
+# Window         472 sent by IPGU
+# Window         473 sent by IPGU
+# Window         474 sent by IPGU
+# Window         475 sent by IPGU
+# Window         476 sent by IPGU
+# Window         477 sent by IPGU
+# Window         478 sent by IPGU
+# Window         479 sent by IPGU
+# Window         480 sent by IPGU
+# Window         481 sent by IPGU
+# Window         482 sent by IPGU
+# Window         483 sent by IPGU
+# Window         484 sent by IPGU
+# Window         485 sent by IPGU
+# Window         486 sent by IPGU
+# Window         487 sent by IPGU
+# Window         488 sent by IPGU
+# Window         489 sent by IPGU
+# Window         490 sent by IPGU
+# Window         491 sent by IPGU
+# Window         492 sent by IPGU
+# Window         493 sent by IPGU
+# Window         494 sent by IPGU
+# Window         495 sent by IPGU
+# Window         496 sent by IPGU
+# Window         497 sent by IPGU
+# Window         498 sent by IPGU
+# Window         499 sent by IPGU
+# Window         500 sent by IPGU
+# Window         501 sent by IPGU
+# Window         502 sent by IPGU
+# Window         503 sent by IPGU
+# Window         504 sent by IPGU
+# Window         505 sent by IPGU
+# Window         506 sent by IPGU
+# Window         507 sent by IPGU
+# Window         508 sent by IPGU
+# Window         509 sent by IPGU
+# Window         510 sent by IPGU
+# Window         511 sent by IPGU
+# Valid dnn
+# ** Note: $stop    : /filespace/s/sjain75/ece554/capstone/hw/pipeline_wrapper_tb.sv(119)
+#    Time: 1165522315 ns  Iteration: 2  Instance: /pipeline_wrapper_tb
+# Break in NamedForkStat hello at /filespace/s/sjain75/ece554/capstone/hw/pipeline_wrapper_tb.sv line 119
+run -all
+# Window         512 sent by IPGU
+# Window         513 sent by IPGU
+# Window         514 sent by IPGU
+# Window         515 sent by IPGU
+# Window         516 sent by IPGU
+# Window         517 sent by IPGU
+# Window         518 sent by IPGU
+# Window         519 sent by IPGU
+# Window         520 sent by IPGU
+# Window         521 sent by IPGU
+# Window         522 sent by IPGU
+# Window         523 sent by IPGU
+# Window         524 sent by IPGU
+# Window         525 sent by IPGU
+# Window         526 sent by IPGU
+# Window         527 sent by IPGU
+# Window         528 sent by IPGU
+# Window         529 sent by IPGU
+# Window         530 sent by IPGU
+# Window         531 sent by IPGU
+# Window         532 sent by IPGU
+# Window         533 sent by IPGU
+# Window         534 sent by IPGU
+# Window         535 sent by IPGU
+# Window         536 sent by IPGU
+# Window         537 sent by IPGU
+# Window         538 sent by IPGU
+# Window         539 sent by IPGU
+# Window         540 sent by IPGU
+# Window         541 sent by IPGU
+# Window         542 sent by IPGU
+# Window         543 sent by IPGU
+# Window         544 sent by IPGU
+# Window         545 sent by IPGU
+# Window         546 sent by IPGU
+# Window         547 sent by IPGU
+# Window         548 sent by IPGU
+# Window         549 sent by IPGU
+# Window         550 sent by IPGU
+# Window         551 sent by IPGU
+# Window         552 sent by IPGU
+# Window         553 sent by IPGU
+# Window         554 sent by IPGU
+# Window         555 sent by IPGU
+# Window         556 sent by IPGU
+# Window         557 sent by IPGU
+# Window         558 sent by IPGU
+# Window         559 sent by IPGU
+# Window         560 sent by IPGU
+# Window         561 sent by IPGU
+# Window         562 sent by IPGU
+# Window         563 sent by IPGU
+# Window         564 sent by IPGU
+# Window         565 sent by IPGU
+# Window         566 sent by IPGU
+# Window         567 sent by IPGU
+# Window         568 sent by IPGU
+# Window         569 sent by IPGU
+# Window         570 sent by IPGU
+# Window         571 sent by IPGU
+# Window         572 sent by IPGU
+# Window         573 sent by IPGU
+# Window         574 sent by IPGU
+# Window         575 sent by IPGU
+# Window         576 sent by IPGU
+# Window         577 sent by IPGU
+# Window         578 sent by IPGU
+# Window         579 sent by IPGU
+# Window         580 sent by IPGU
+# Window         581 sent by IPGU
+# Window         582 sent by IPGU
+# Window         583 sent by IPGU
+# Window         584 sent by IPGU
+# Window         585 sent by IPGU
+# Window         586 sent by IPGU
+# Window         587 sent by IPGU
+# Window         588 sent by IPGU
+# Window         589 sent by IPGU
+# Window         590 sent by IPGU
+# Window         591 sent by IPGU
+# Window         592 sent by IPGU
+# Window         593 sent by IPGU
+# Window         594 sent by IPGU
+# Window         595 sent by IPGU
+# Window         596 sent by IPGU
+# Window         597 sent by IPGU
+# Window         598 sent by IPGU
+# Window         599 sent by IPGU
+# Window         600 sent by IPGU
+# Window         601 sent by IPGU
+# Window         602 sent by IPGU
+# Window         603 sent by IPGU
+# Window         604 sent by IPGU
+# Window         605 sent by IPGU
+# Window         606 sent by IPGU
+# Window         607 sent by IPGU
+# Window         608 sent by IPGU
+# Window         609 sent by IPGU
+# Window         610 sent by IPGU
+# Window         611 sent by IPGU
+# Window         612 sent by IPGU
+# Window         613 sent by IPGU
+# Window         614 sent by IPGU
+# Window         615 sent by IPGU
+# Window         616 sent by IPGU
+# Window         617 sent by IPGU
+# Window         618 sent by IPGU
+# Window         619 sent by IPGU
+# Window         620 sent by IPGU
+# Window         621 sent by IPGU
+# Window         622 sent by IPGU
+# Window         623 sent by IPGU
+# Window         624 sent by IPGU
+# Window         625 sent by IPGU
+# Window         626 sent by IPGU
+# Window         627 sent by IPGU
+# Window         628 sent by IPGU
+# Window         629 sent by IPGU
+# Window         630 sent by IPGU
+# Window         631 sent by IPGU
+# Window         632 sent by IPGU
+# Window         633 sent by IPGU
+# Window         634 sent by IPGU
+# Window         635 sent by IPGU
+# Window         636 sent by IPGU
+# Window         637 sent by IPGU
+# Window         638 sent by IPGU
+# Window         639 sent by IPGU
+# Window         640 sent by IPGU
+# Window         641 sent by IPGU
+# Window         642 sent by IPGU
+# Window         643 sent by IPGU
+# Window         644 sent by IPGU
+# Window         645 sent by IPGU
+# Window         646 sent by IPGU
+# Window         647 sent by IPGU
+# Window         648 sent by IPGU
+# Window         649 sent by IPGU
+# Window         650 sent by IPGU
+# Window         651 sent by IPGU
+# Window         652 sent by IPGU
+# Window         653 sent by IPGU
+# Window         654 sent by IPGU
+# Window         655 sent by IPGU
+# Window         656 sent by IPGU
+# Window         657 sent by IPGU
+# Window         658 sent by IPGU
+# Window         659 sent by IPGU
+# Window         660 sent by IPGU
+# Window         661 sent by IPGU
+# Window         662 sent by IPGU
+# Window         663 sent by IPGU
+# Window         664 sent by IPGU
+# Window         665 sent by IPGU
+# Window         666 sent by IPGU
+# Window         667 sent by IPGU
+# Window         668 sent by IPGU
+# Window         669 sent by IPGU
+# Window         670 sent by IPGU
+# Window         671 sent by IPGU
+# Window         672 sent by IPGU
+# Window         673 sent by IPGU
+# Window         674 sent by IPGU
+# Window         675 sent by IPGU
+# Window         676 sent by IPGU
+# Window         677 sent by IPGU
+# Window         678 sent by IPGU
+# Window         679 sent by IPGU
+# Window         680 sent by IPGU
+# Window         681 sent by IPGU
+# Window         682 sent by IPGU
+# Window         683 sent by IPGU
+# Window         684 sent by IPGU
+# Window         685 sent by IPGU
+# Window         686 sent by IPGU
+# Window         687 sent by IPGU
+# Window         688 sent by IPGU
+# Window         689 sent by IPGU
+# Window         690 sent by IPGU
+# Window         691 sent by IPGU
+# Window         692 sent by IPGU
+# Window         693 sent by IPGU
+# Window         694 sent by IPGU
+# Window         695 sent by IPGU
+# Window         696 sent by IPGU
+# Window         697 sent by IPGU
+# Window         698 sent by IPGU
+# Window         699 sent by IPGU
+# Window         700 sent by IPGU
+# Window         701 sent by IPGU
+# Window         702 sent by IPGU
+# Window         703 sent by IPGU
+# Window         704 sent by IPGU
+# Window         705 sent by IPGU
+# Window         706 sent by IPGU
+# Window         707 sent by IPGU
+# Window         708 sent by IPGU
+# Window         709 sent by IPGU
+# Window         710 sent by IPGU
+# Window         711 sent by IPGU
+# Window         712 sent by IPGU
+# Window         713 sent by IPGU
+# Window         714 sent by IPGU
+# Window         715 sent by IPGU
+# Window         716 sent by IPGU
+# Window         717 sent by IPGU
+# Window         718 sent by IPGU
+# Window         719 sent by IPGU
+# Window         720 sent by IPGU
+# Window         721 sent by IPGU
+# Window         722 sent by IPGU
+# Window         723 sent by IPGU
+# Window         724 sent by IPGU
+# Window         725 sent by IPGU
+# Window         726 sent by IPGU
+# Window         727 sent by IPGU
+# Window         728 sent by IPGU
+# Window         729 sent by IPGU
+# Window         730 sent by IPGU
+# Window         731 sent by IPGU
+# Window         732 sent by IPGU
+# Window         733 sent by IPGU
+# Window         734 sent by IPGU
+# Window         735 sent by IPGU
+# Window         736 sent by IPGU
+# Window         737 sent by IPGU
+# Window         738 sent by IPGU
+# Window         739 sent by IPGU
+# Window         740 sent by IPGU
+# Window         741 sent by IPGU
+# Window         742 sent by IPGU
+# Window         743 sent by IPGU
+# Window         744 sent by IPGU
+# Window         745 sent by IPGU
+# Window         746 sent by IPGU
+# Window         747 sent by IPGU
+# Window         748 sent by IPGU
+# Window         749 sent by IPGU
+# Window         750 sent by IPGU
+# Window         751 sent by IPGU
+# Window         752 sent by IPGU
+# Window         753 sent by IPGU
+# Window         754 sent by IPGU
+# Window         755 sent by IPGU
+# Window         756 sent by IPGU
+# Window         757 sent by IPGU
+# Window         758 sent by IPGU
+# Window         759 sent by IPGU
+# Window         760 sent by IPGU
+# Window         761 sent by IPGU
+# Window         762 sent by IPGU
+# Window         763 sent by IPGU
+# Window         764 sent by IPGU
+# Window         765 sent by IPGU
+# Window         766 sent by IPGU
+# Window         767 sent by IPGU
+# Window         768 sent by IPGU
+# Window         769 sent by IPGU
+# Window         770 sent by IPGU
+# Window         771 sent by IPGU
+# Window         772 sent by IPGU
+# Window         773 sent by IPGU
+# Window         774 sent by IPGU
+# Window         775 sent by IPGU
+# Window         776 sent by IPGU
+# Window         777 sent by IPGU
+# Window         778 sent by IPGU
+# Window         779 sent by IPGU
+# Window         780 sent by IPGU
+# Window         781 sent by IPGU
+# Window         782 sent by IPGU
+# Window         783 sent by IPGU
+# Window         784 sent by IPGU
+# Window         785 sent by IPGU
+# Window         786 sent by IPGU
+# Window         787 sent by IPGU
+# Window         788 sent by IPGU
+# Window         789 sent by IPGU
+# Window         790 sent by IPGU
+# Window         791 sent by IPGU
+# Window         792 sent by IPGU
+# Window         793 sent by IPGU
+# Window         794 sent by IPGU
+# Window         795 sent by IPGU
+# Window         796 sent by IPGU
+# Window         797 sent by IPGU
+# Window         798 sent by IPGU
+# Window         799 sent by IPGU
+# Window         800 sent by IPGU
+# Window         801 sent by IPGU
+# Window         802 sent by IPGU
+# Window         803 sent by IPGU
+# Window         804 sent by IPGU
+# Window         805 sent by IPGU
+# Window         806 sent by IPGU
+# Window         807 sent by IPGU
+# Window         808 sent by IPGU
+# Window         809 sent by IPGU
+# Window         810 sent by IPGU
+# Window         811 sent by IPGU
+# Window         812 sent by IPGU
+# Window         813 sent by IPGU
+# Window         814 sent by IPGU
+# Window         815 sent by IPGU
+# Window         816 sent by IPGU
+# Window         817 sent by IPGU
+# Window         818 sent by IPGU
+# Window         819 sent by IPGU
+# Window         820 sent by IPGU
+# Window         821 sent by IPGU
+# Window         822 sent by IPGU
+# Window         823 sent by IPGU
+# Window         824 sent by IPGU
+# Window         825 sent by IPGU
+# Window         826 sent by IPGU
+# Window         827 sent by IPGU
+# Window         828 sent by IPGU
+# Window         829 sent by IPGU
+# Window         830 sent by IPGU
+# Window         831 sent by IPGU
+# Window         832 sent by IPGU
+# Window         833 sent by IPGU
+# Window         834 sent by IPGU
+# Window         835 sent by IPGU
+# Window         836 sent by IPGU
+# Window         837 sent by IPGU
+# Window         838 sent by IPGU
+# Window         839 sent by IPGU
+# Window         840 sent by IPGU
+# Window         841 sent by IPGU
+# Window         842 sent by IPGU
+# Window         843 sent by IPGU
+# Window         844 sent by IPGU
+# Window         845 sent by IPGU
+# Window         846 sent by IPGU
+# Window         847 sent by IPGU
+# Window         848 sent by IPGU
+# Window         849 sent by IPGU
+# Window         850 sent by IPGU
+# Window         851 sent by IPGU
+# Window         852 sent by IPGU
+# Window         853 sent by IPGU
+# Window         854 sent by IPGU
+# Window         855 sent by IPGU
+# Window         856 sent by IPGU
+# Window         857 sent by IPGU
+# Window         858 sent by IPGU
+# Window         859 sent by IPGU
+# Window         860 sent by IPGU
+# Window         861 sent by IPGU
+# Window         862 sent by IPGU
+# Window         863 sent by IPGU
+# Window         864 sent by IPGU
+# Window         865 sent by IPGU
+# Window         866 sent by IPGU
+# Window         867 sent by IPGU
+# Window         868 sent by IPGU
+# Window         869 sent by IPGU
+# Window         870 sent by IPGU
+# Window         871 sent by IPGU
+# Window         872 sent by IPGU
+# Window         873 sent by IPGU
+# Window         874 sent by IPGU
+# Window         875 sent by IPGU
+# Window         876 sent by IPGU
+# Window         877 sent by IPGU
+# Window         878 sent by IPGU
+# Window         879 sent by IPGU
+# Window         880 sent by IPGU
+# Window         881 sent by IPGU
+# Window         882 sent by IPGU
+# Window         883 sent by IPGU
+# Window         884 sent by IPGU
+# Window         885 sent by IPGU
+# Window         886 sent by IPGU
+# Window         887 sent by IPGU
+# Window         888 sent by IPGU
+# Window         889 sent by IPGU
+# Window         890 sent by IPGU
+# Window         891 sent by IPGU
+# Window         892 sent by IPGU
+# Window         893 sent by IPGU
+# Window         894 sent by IPGU
+# Window         895 sent by IPGU
+# Window         896 sent by IPGU
+# Window         897 sent by IPGU
+# Window         898 sent by IPGU
+# Window         899 sent by IPGU
+# Window         900 sent by IPGU
+# Window         901 sent by IPGU
+# Window         902 sent by IPGU
+# Window         903 sent by IPGU
+# Window         904 sent by IPGU
+# Window         905 sent by IPGU
+# Window         906 sent by IPGU
+# Window         907 sent by IPGU
+# Window         908 sent by IPGU
+# Window         909 sent by IPGU
+# Window         910 sent by IPGU
+# Window         911 sent by IPGU
+# Window         912 sent by IPGU
+# Window         913 sent by IPGU
+# Window         914 sent by IPGU
+# Window         915 sent by IPGU
+# Window         916 sent by IPGU
+# Window         917 sent by IPGU
+# Window         918 sent by IPGU
+# Window         919 sent by IPGU
+# Window         920 sent by IPGU
+# Window         921 sent by IPGU
+# Window         922 sent by IPGU
+# Window         923 sent by IPGU
+# Window         924 sent by IPGU
+# Window         925 sent by IPGU
+# Window         926 sent by IPGU
+# Window         927 sent by IPGU
+# Window         928 sent by IPGU
+# Window         929 sent by IPGU
+# Window         930 sent by IPGU
+# Window         931 sent by IPGU
+# Window         932 sent by IPGU
+# Window         933 sent by IPGU
+# Window         934 sent by IPGU
+# Window         935 sent by IPGU
+# Window         936 sent by IPGU
+# Window         937 sent by IPGU
+# Window         938 sent by IPGU
+# Window         939 sent by IPGU
+# Window         940 sent by IPGU
+# Window         941 sent by IPGU
+# Window         942 sent by IPGU
+# Window         943 sent by IPGU
+# Window         944 sent by IPGU
+# Window         945 sent by IPGU
+# Window         946 sent by IPGU
+# Window         947 sent by IPGU
+# Window         948 sent by IPGU
+# Window         949 sent by IPGU
+# Window         950 sent by IPGU
+# Window         951 sent by IPGU
+# Window         952 sent by IPGU
+# Window         953 sent by IPGU
+# Window         954 sent by IPGU
+# Window         955 sent by IPGU
+# Window         956 sent by IPGU
+# Window         957 sent by IPGU
+# Window         958 sent by IPGU
+# Window         959 sent by IPGU
+# Window         960 sent by IPGU
+# Window         961 sent by IPGU
+# Window         962 sent by IPGU
+# Window         963 sent by IPGU
+# Window         964 sent by IPGU
+# Window         965 sent by IPGU
+# Window         966 sent by IPGU
+# Window         967 sent by IPGU
+# Window         968 sent by IPGU
+# Window         969 sent by IPGU
+# Window         970 sent by IPGU
+# Window         971 sent by IPGU
+# Window         972 sent by IPGU
+# Window         973 sent by IPGU
+# Window         974 sent by IPGU
+# Window         975 sent by IPGU
+# Window         976 sent by IPGU
+# Window         977 sent by IPGU
+# Window         978 sent by IPGU
+# Window         979 sent by IPGU
+# Window         980 sent by IPGU
+# Window         981 sent by IPGU
+# Window         982 sent by IPGU
+# Window         983 sent by IPGU
+# Window         984 sent by IPGU
+# Window         985 sent by IPGU
+# Window         986 sent by IPGU
+# Window         987 sent by IPGU
+# Window         988 sent by IPGU
+# Window         989 sent by IPGU
+# Window         990 sent by IPGU
+# Window         991 sent by IPGU
+# Window         992 sent by IPGU
+# Window         993 sent by IPGU
+# Window         994 sent by IPGU
+# Window         995 sent by IPGU
+# Window         996 sent by IPGU
+# Window         997 sent by IPGU
+# Window         998 sent by IPGU
+# Window         999 sent by IPGU
+# Window        1000 sent by IPGU
+# Window        1001 sent by IPGU
+# Window        1002 sent by IPGU
+# Window        1003 sent by IPGU
+# Window        1004 sent by IPGU
+# Window        1005 sent by IPGU
+# Window        1006 sent by IPGU
+# Window        1007 sent by IPGU
+# Window        1008 sent by IPGU
+# Window        1009 sent by IPGU
+# Window        1010 sent by IPGU
+# Window        1011 sent by IPGU
+# Window        1012 sent by IPGU
+# Window        1013 sent by IPGU
+# Window        1014 sent by IPGU
+# Window        1015 sent by IPGU
+# Window        1016 sent by IPGU
+# Window        1017 sent by IPGU
+# Window        1018 sent by IPGU
+# Window        1019 sent by IPGU
+# Window        1020 sent by IPGU
+# Window        1021 sent by IPGU
+# Window        1022 sent by IPGU
+# Window        1023 sent by IPGU
+# Window        1024 sent by IPGU
+# Window        1025 sent by IPGU
+# Window        1026 sent by IPGU
+# Window        1027 sent by IPGU
+# Window        1028 sent by IPGU
+# Window        1029 sent by IPGU
+# Window        1030 sent by IPGU
+# Window        1031 sent by IPGU
+# Window        1032 sent by IPGU
+# Window        1033 sent by IPGU
+# Window        1034 sent by IPGU
+# Window        1035 sent by IPGU
+# Window        1036 sent by IPGU
+# Window        1037 sent by IPGU
+# Window        1038 sent by IPGU
+# Window        1039 sent by IPGU
+# Window        1040 sent by IPGU
+# Window        1041 sent by IPGU
+# Window        1042 sent by IPGU
+# Window        1043 sent by IPGU
+# Window        1044 sent by IPGU
+# Window        1045 sent by IPGU
+# Window        1046 sent by IPGU
+# Window        1047 sent by IPGU
+# Window        1048 sent by IPGU
+# Window        1049 sent by IPGU
+# Window        1050 sent by IPGU
+# Window        1051 sent by IPGU
+# Window        1052 sent by IPGU
+# Window        1053 sent by IPGU
+# Window        1054 sent by IPGU
+# Window        1055 sent by IPGU
+# Window        1056 sent by IPGU
+# Window        1057 sent by IPGU
+# Window        1058 sent by IPGU
+# Window        1059 sent by IPGU
+# Window        1060 sent by IPGU
+# Window        1061 sent by IPGU
+# Window        1062 sent by IPGU
+# Window        1063 sent by IPGU
+# Window        1064 sent by IPGU
+# Window        1065 sent by IPGU
+# Window        1066 sent by IPGU
+# Window        1067 sent by IPGU
+# Window        1068 sent by IPGU
+# Window        1069 sent by IPGU
+# Window        1070 sent by IPGU
+# Window        1071 sent by IPGU
+# Window        1072 sent by IPGU
+# Window        1073 sent by IPGU
+# Window        1074 sent by IPGU
+# Window        1075 sent by IPGU
+# Window        1076 sent by IPGU
+# Window        1077 sent by IPGU
+# Window        1078 sent by IPGU
+# Window        1079 sent by IPGU
+# Window        1080 sent by IPGU
+# Window        1081 sent by IPGU
+# Window        1082 sent by IPGU
+# Window        1083 sent by IPGU
+# Window        1084 sent by IPGU
+# Window        1085 sent by IPGU
+# Window        1086 sent by IPGU
+# Window        1087 sent by IPGU
+# Window        1088 sent by IPGU
+# Window        1089 sent by IPGU
+# Window        1090 sent by IPGU
+# Window        1091 sent by IPGU
+# Window        1092 sent by IPGU
+# Window        1093 sent by IPGU
+# Window        1094 sent by IPGU
+# Window        1095 sent by IPGU
+# Window        1096 sent by IPGU
+# Window        1097 sent by IPGU
+# Window        1098 sent by IPGU
+# Window        1099 sent by IPGU
+# Window        1100 sent by IPGU
+# Window        1101 sent by IPGU
+# Window        1102 sent by IPGU
+# Window        1103 sent by IPGU
+# Window        1104 sent by IPGU
+# Window        1105 sent by IPGU
+# Window        1106 sent by IPGU
+# Window        1107 sent by IPGU
+# Window        1108 sent by IPGU
+# Window        1109 sent by IPGU
+# Window        1110 sent by IPGU
+# Window        1111 sent by IPGU
+# Window        1112 sent by IPGU
+# Window        1113 sent by IPGU
+# Window        1114 sent by IPGU
+# Window        1115 sent by IPGU
+# Window        1116 sent by IPGU
+# Window        1117 sent by IPGU
+# Window        1118 sent by IPGU
+# Window        1119 sent by IPGU
+# Window        1120 sent by IPGU
+# Window        1121 sent by IPGU
+# Window        1122 sent by IPGU
+# Window        1123 sent by IPGU
+# Window        1124 sent by IPGU
+# Window        1125 sent by IPGU
+# Window        1126 sent by IPGU
+# Window        1127 sent by IPGU
+# Window        1128 sent by IPGU
+# Window        1129 sent by IPGU
+# Window        1130 sent by IPGU
+# Window        1131 sent by IPGU
+# Window        1132 sent by IPGU
+# Window        1133 sent by IPGU
+# Window        1134 sent by IPGU
+# Window        1135 sent by IPGU
+# Window        1136 sent by IPGU
+# Window        1137 sent by IPGU
+# Window        1138 sent by IPGU
+# Window        1139 sent by IPGU
+# Window        1140 sent by IPGU
+# Window        1141 sent by IPGU
+# Window        1142 sent by IPGU
+# Window        1143 sent by IPGU
+# Window        1144 sent by IPGU
+# Window        1145 sent by IPGU
+# Window        1146 sent by IPGU
+# Window        1147 sent by IPGU
+# Window        1148 sent by IPGU
+# Window        1149 sent by IPGU
+# Window        1150 sent by IPGU
+# Window        1151 sent by IPGU
+# Window        1152 sent by IPGU
+# Window        1153 sent by IPGU
+# Window        1154 sent by IPGU
+# Window        1155 sent by IPGU
+# Window        1156 sent by IPGU
+# Window        1157 sent by IPGU
+# Window        1158 sent by IPGU
+# Window        1159 sent by IPGU
+# Window        1160 sent by IPGU
+# Window        1161 sent by IPGU
+# Window        1162 sent by IPGU
+# Window        1163 sent by IPGU
+# Window        1164 sent by IPGU
+# Window        1165 sent by IPGU
+# Window        1166 sent by IPGU
+# Window        1167 sent by IPGU
+# Window        1168 sent by IPGU
+# Window        1169 sent by IPGU
+# Window        1170 sent by IPGU
+# Window        1171 sent by IPGU
+# Window        1172 sent by IPGU
+# Window        1173 sent by IPGU
+# Window        1174 sent by IPGU
+# Window        1175 sent by IPGU
+# Window        1176 sent by IPGU
+# Window        1177 sent by IPGU
+# Window        1178 sent by IPGU
+# Window        1179 sent by IPGU
+# Window        1180 sent by IPGU
+# Window        1181 sent by IPGU
+# Window        1182 sent by IPGU
+# Window        1183 sent by IPGU
+# Window        1184 sent by IPGU
+# Window        1185 sent by IPGU
+# Window        1186 sent by IPGU
+# Window        1187 sent by IPGU
+# Window        1188 sent by IPGU
+# Window        1189 sent by IPGU
+# Window        1190 sent by IPGU
+# Window        1191 sent by IPGU
+# Window        1192 sent by IPGU
+# Window        1193 sent by IPGU
+# Window        1194 sent by IPGU
+# Window        1195 sent by IPGU
+# Window        1196 sent by IPGU
+# Window        1197 sent by IPGU
+# Window        1198 sent by IPGU
+# Window        1199 sent by IPGU
+# Window        1200 sent by IPGU
+# Window        1201 sent by IPGU
+# Window        1202 sent by IPGU
+# Window        1203 sent by IPGU
+# Window        1204 sent by IPGU
+# Window        1205 sent by IPGU
+# Window        1206 sent by IPGU
+# Window        1207 sent by IPGU
+# Window        1208 sent by IPGU
+# Window        1209 sent by IPGU
+# Window        1210 sent by IPGU
+# Window        1211 sent by IPGU
+# Window        1212 sent by IPGU
+# Window        1213 sent by IPGU
+# Window        1214 sent by IPGU
+# Window        1215 sent by IPGU
+# Window        1216 sent by IPGU
+# Window        1217 sent by IPGU
+# Window        1218 sent by IPGU
+# Window        1219 sent by IPGU
+# Window        1220 sent by IPGU
+# Window        1221 sent by IPGU
+# Window        1222 sent by IPGU
+# Window        1223 sent by IPGU
+# Window        1224 sent by IPGU
+# Window        1225 sent by IPGU
+# Window        1226 sent by IPGU
+# Window        1227 sent by IPGU
+# Window        1228 sent by IPGU
+# Window        1229 sent by IPGU
+# Window        1230 sent by IPGU
+# Window        1231 sent by IPGU
+# Window        1232 sent by IPGU
+# Window        1233 sent by IPGU
+# Window        1234 sent by IPGU
+# Window        1235 sent by IPGU
+# Window        1236 sent by IPGU
+# Window        1237 sent by IPGU
+# Window        1238 sent by IPGU
+# Window        1239 sent by IPGU
+# Window        1240 sent by IPGU
+# Window        1241 sent by IPGU
+# Window        1242 sent by IPGU
+# Window        1243 sent by IPGU
+# Window        1244 sent by IPGU
+# Window        1245 sent by IPGU
+# Window        1246 sent by IPGU
+# Window        1247 sent by IPGU
+# Window        1248 sent by IPGU
+# Window        1249 sent by IPGU
+# Window        1250 sent by IPGU
+# Window        1251 sent by IPGU
+# Window        1252 sent by IPGU
+# Window        1253 sent by IPGU
+# Window        1254 sent by IPGU
+# Window        1255 sent by IPGU
+# Window        1256 sent by IPGU
+# Window        1257 sent by IPGU
+# Window        1258 sent by IPGU
+# Window        1259 sent by IPGU
+# Window        1260 sent by IPGU
+# Window        1261 sent by IPGU
+# Window        1262 sent by IPGU
+# Window        1263 sent by IPGU
+# Window        1264 sent by IPGU
+# Window        1265 sent by IPGU
+# Window        1266 sent by IPGU
+# Window        1267 sent by IPGU
+# Window        1268 sent by IPGU
+# Window        1269 sent by IPGU
+# Window        1270 sent by IPGU
+# Window        1271 sent by IPGU
+# Window        1272 sent by IPGU
+# Window        1273 sent by IPGU
+# Window        1274 sent by IPGU
+# Window        1275 sent by IPGU
+# Window        1276 sent by IPGU
+# Window        1277 sent by IPGU
+# Window        1278 sent by IPGU
+# Window        1279 sent by IPGU
+# Window        1280 sent by IPGU
+# Window        1281 sent by IPGU
+# Window        1282 sent by IPGU
+# Window        1283 sent by IPGU
+# Window        1284 sent by IPGU
+# Window        1285 sent by IPGU
+# Window        1286 sent by IPGU
+# Window        1287 sent by IPGU
+# Window        1288 sent by IPGU
+# Window        1289 sent by IPGU
+# Window        1290 sent by IPGU
+# Window        1291 sent by IPGU
+# Window        1292 sent by IPGU
+# Window        1293 sent by IPGU
+# Window        1294 sent by IPGU
+# Window        1295 sent by IPGU
+# Window        1296 sent by IPGU
+# Window        1297 sent by IPGU
+# Window        1298 sent by IPGU
+# Window        1299 sent by IPGU
+# Window        1300 sent by IPGU
+# Window        1301 sent by IPGU
+# Window        1302 sent by IPGU
+# Window        1303 sent by IPGU
+# Window        1304 sent by IPGU
+# Window        1305 sent by IPGU
+# Window        1306 sent by IPGU
+# Window        1307 sent by IPGU
+# Window        1308 sent by IPGU
+# Window        1309 sent by IPGU
+# Window        1310 sent by IPGU
+# Window        1311 sent by IPGU
+# Window        1312 sent by IPGU
+# Window        1313 sent by IPGU
+# Window        1314 sent by IPGU
+# Window        1315 sent by IPGU
+# Window        1316 sent by IPGU
+# Window        1317 sent by IPGU
+# Window        1318 sent by IPGU
+# Window        1319 sent by IPGU
+# Window        1320 sent by IPGU
+# Window        1321 sent by IPGU
+# Window        1322 sent by IPGU
+# Window        1323 sent by IPGU
+# Window        1324 sent by IPGU
+# Window        1325 sent by IPGU
+# Window        1326 sent by IPGU
+# Window        1327 sent by IPGU
+# Window        1328 sent by IPGU
+# Window        1329 sent by IPGU
+# Window        1330 sent by IPGU
+# Window        1331 sent by IPGU
+# Window        1332 sent by IPGU
+# Window        1333 sent by IPGU
+# Window        1334 sent by IPGU
+# Window        1335 sent by IPGU
+# Window        1336 sent by IPGU
+# Window        1337 sent by IPGU
+# Window        1338 sent by IPGU
+# Window        1339 sent by IPGU
+# Window        1340 sent by IPGU
+# Window        1341 sent by IPGU
+# Window        1342 sent by IPGU
+# Window        1343 sent by IPGU
+# Window        1344 sent by IPGU
+# Window        1345 sent by IPGU
+# Window        1346 sent by IPGU
+# Window        1347 sent by IPGU
+# Window        1348 sent by IPGU
+# Window        1349 sent by IPGU
+# Window        1350 sent by IPGU
+# Window        1351 sent by IPGU
+# Window        1352 sent by IPGU
+# Window        1353 sent by IPGU
+# Window        1354 sent by IPGU
+# Window        1355 sent by IPGU
+# Window        1356 sent by IPGU
+# Window        1357 sent by IPGU
+# Window        1358 sent by IPGU
+# Window        1359 sent by IPGU
+# Window        1360 sent by IPGU
+# Window        1361 sent by IPGU
+# Window        1362 sent by IPGU
+# Window        1363 sent by IPGU
+# Window        1364 sent by IPGU
+# Window        1365 sent by IPGU
+# Window        1366 sent by IPGU
+# Window        1367 sent by IPGU
+# Window        1368 sent by IPGU
+# Window        1369 sent by IPGU
+# Window        1370 sent by IPGU
+# Window        1371 sent by IPGU
+# Window        1372 sent by IPGU
+# Window        1373 sent by IPGU
+# Window        1374 sent by IPGU
+# Window        1375 sent by IPGU
+# Window        1376 sent by IPGU
+# Window        1377 sent by IPGU
+# Window        1378 sent by IPGU
+# Window        1379 sent by IPGU
+# Window        1380 sent by IPGU
+# Window        1381 sent by IPGU
+# Window        1382 sent by IPGU
+# Window        1383 sent by IPGU
+# Window        1384 sent by IPGU
+# Window        1385 sent by IPGU
+# Window        1386 sent by IPGU
+# Window        1387 sent by IPGU
+# Window        1388 sent by IPGU
+# Window        1389 sent by IPGU
+# Window        1390 sent by IPGU
+# Window        1391 sent by IPGU
+# Window        1392 sent by IPGU
+# Window        1393 sent by IPGU
+# Window        1394 sent by IPGU
+# Window        1395 sent by IPGU
+# Window        1396 sent by IPGU
+# Window        1397 sent by IPGU
+# Window        1398 sent by IPGU
+# Window        1399 sent by IPGU
+# Window        1400 sent by IPGU
+# Window        1401 sent by IPGU
+# Window        1402 sent by IPGU
+# Window        1403 sent by IPGU
+# Window        1404 sent by IPGU
+# Window        1405 sent by IPGU
+# Window        1406 sent by IPGU
+# Window        1407 sent by IPGU
+# Window        1408 sent by IPGU
+# Window        1409 sent by IPGU
+# Window        1410 sent by IPGU
+# Window        1411 sent by IPGU
+# Window        1412 sent by IPGU
+# Window        1413 sent by IPGU
+# Window        1414 sent by IPGU
+# Window        1415 sent by IPGU
+# Window        1416 sent by IPGU
+# Window        1417 sent by IPGU
+# Window        1418 sent by IPGU
+# Window        1419 sent by IPGU
+# Window        1420 sent by IPGU
+# Window        1421 sent by IPGU
+# Window        1422 sent by IPGU
+# Window        1423 sent by IPGU
+# Window        1424 sent by IPGU
+# Window        1425 sent by IPGU
+# Window        1426 sent by IPGU
+# Window        1427 sent by IPGU
+# Window        1428 sent by IPGU
+# Window        1429 sent by IPGU
+# Window        1430 sent by IPGU
+# Window        1431 sent by IPGU
+# Window        1432 sent by IPGU
+# Window        1433 sent by IPGU
+# Window        1434 sent by IPGU
+# Window        1435 sent by IPGU
+# Window        1436 sent by IPGU
+# Window        1437 sent by IPGU
+# Window        1438 sent by IPGU
+# Window        1439 sent by IPGU
+# Window        1440 sent by IPGU
+# Window        1441 sent by IPGU
+# Window        1442 sent by IPGU
+# Window        1443 sent by IPGU
+# Window        1444 sent by IPGU
+# Window        1445 sent by IPGU
+# Window        1446 sent by IPGU
+# Window        1447 sent by IPGU
+# Window        1448 sent by IPGU
+# Window        1449 sent by IPGU
+# Window        1450 sent by IPGU
+# Window        1451 sent by IPGU
+# Window        1452 sent by IPGU
+# Window        1453 sent by IPGU
+# Window        1454 sent by IPGU
+# Window        1455 sent by IPGU
+# Window        1456 sent by IPGU
+# Window        1457 sent by IPGU
+# Window        1458 sent by IPGU
+# Window        1459 sent by IPGU
+# Window        1460 sent by IPGU
+# Window        1461 sent by IPGU
+# Window        1462 sent by IPGU
+# Window        1463 sent by IPGU
+# Window        1464 sent by IPGU
+# Window        1465 sent by IPGU
+# Window        1466 sent by IPGU
+# Window        1467 sent by IPGU
+# Window        1468 sent by IPGU
+# Window        1469 sent by IPGU
+# Window        1470 sent by IPGU
+# Window        1471 sent by IPGU
+# Window        1472 sent by IPGU
+# Window        1473 sent by IPGU
+# Window        1474 sent by IPGU
+# Window        1475 sent by IPGU
+# Window        1476 sent by IPGU
+# Window        1477 sent by IPGU
+# Window        1478 sent by IPGU
+# Window        1479 sent by IPGU
+# Window        1480 sent by IPGU
+# Window        1481 sent by IPGU
+# Window        1482 sent by IPGU
+# Window        1483 sent by IPGU
+# Window        1484 sent by IPGU
+# Window        1485 sent by IPGU
+# Window        1486 sent by IPGU
+# Window        1487 sent by IPGU
+# Window        1488 sent by IPGU
+# Window        1489 sent by IPGU
+# Window        1490 sent by IPGU
+# Window        1491 sent by IPGU
+# Window        1492 sent by IPGU
+# Window        1493 sent by IPGU
+# Window        1494 sent by IPGU
+# Window        1495 sent by IPGU
+# Window        1496 sent by IPGU
+# Window        1497 sent by IPGU
+# Window        1498 sent by IPGU
+# Window        1499 sent by IPGU
+# Window        1500 sent by IPGU
+# Window        1501 sent by IPGU
+# Window        1502 sent by IPGU
+# Window        1503 sent by IPGU
+# Window        1504 sent by IPGU
+# Window        1505 sent by IPGU
+# Window        1506 sent by IPGU
+# Window        1507 sent by IPGU
+# Window        1508 sent by IPGU
+# Window        1509 sent by IPGU
+# Window        1510 sent by IPGU
+# Window        1511 sent by IPGU
+# Window        1512 sent by IPGU
+# Window        1513 sent by IPGU
+# Window        1514 sent by IPGU
+# Window        1515 sent by IPGU
+# Window        1516 sent by IPGU
+# Window        1517 sent by IPGU
+# Window        1518 sent by IPGU
+# Window        1519 sent by IPGU
+# Window        1520 sent by IPGU
+# Window        1521 sent by IPGU
+# Window        1522 sent by IPGU
+# Window        1523 sent by IPGU
+# Window        1524 sent by IPGU
+# Window        1525 sent by IPGU
+# Window        1526 sent by IPGU
+# Window        1527 sent by IPGU
+# Window        1528 sent by IPGU
+# Window        1529 sent by IPGU
+# Window        1530 sent by IPGU
+# Window        1531 sent by IPGU
+# Window        1532 sent by IPGU
+# Window        1533 sent by IPGU
+# Window        1534 sent by IPGU
+# Window        1535 sent by IPGU
+# Window        1536 sent by IPGU
+# Window        1537 sent by IPGU
+# Window        1538 sent by IPGU
+# Window        1539 sent by IPGU
+# Window        1540 sent by IPGU
+# Window        1541 sent by IPGU
+# Window        1542 sent by IPGU
+# Window        1543 sent by IPGU
+# Window        1544 sent by IPGU
+# Window        1545 sent by IPGU
+# Window        1546 sent by IPGU
+# Window        1547 sent by IPGU
+# Window        1548 sent by IPGU
+# Window        1549 sent by IPGU
+# Window        1550 sent by IPGU
+# Window        1551 sent by IPGU
+# Window        1552 sent by IPGU
+# Window        1553 sent by IPGU
+# Window        1554 sent by IPGU
+# Window        1555 sent by IPGU
+# Window        1556 sent by IPGU
+# Window        1557 sent by IPGU
+# Window        1558 sent by IPGU
+# Window        1559 sent by IPGU
+# Window        1560 sent by IPGU
+# Window        1561 sent by IPGU
+# Window        1562 sent by IPGU
+# Window        1563 sent by IPGU
+# Window        1564 sent by IPGU
+# Window        1565 sent by IPGU
+# Window        1566 sent by IPGU
+# Window        1567 sent by IPGU
+# Window        1568 sent by IPGU
+# Window        1569 sent by IPGU
+# Window        1570 sent by IPGU
+# Window        1571 sent by IPGU
+# Window        1572 sent by IPGU
+# Window        1573 sent by IPGU
+# Window        1574 sent by IPGU
+# Window        1575 sent by IPGU
+# Window        1576 sent by IPGU
+# Window        1577 sent by IPGU
+# Window        1578 sent by IPGU
+# Window        1579 sent by IPGU
+# Window        1580 sent by IPGU
+# Window        1581 sent by IPGU
+# Window        1582 sent by IPGU
+# Window        1583 sent by IPGU
+# Window        1584 sent by IPGU
+# Window        1585 sent by IPGU
+# Window        1586 sent by IPGU
+# Window        1587 sent by IPGU
+# Window        1588 sent by IPGU
+# Window        1589 sent by IPGU
+# Window        1590 sent by IPGU
+# Window        1591 sent by IPGU
+# Window        1592 sent by IPGU
+# Window        1593 sent by IPGU
+# Window        1594 sent by IPGU
+# Window        1595 sent by IPGU
+# Window        1596 sent by IPGU
+# Window        1597 sent by IPGU
+# Window        1598 sent by IPGU
+# Window        1599 sent by IPGU
+# Window        1600 sent by IPGU
+# Window        1601 sent by IPGU
+# Window        1602 sent by IPGU
+# Window        1603 sent by IPGU
+# Window        1604 sent by IPGU
+# Window        1605 sent by IPGU
+# Window        1606 sent by IPGU
+# Window        1607 sent by IPGU
+# Window        1608 sent by IPGU
+# Window        1609 sent by IPGU
+# Window        1610 sent by IPGU
+# Window        1611 sent by IPGU
+# Window        1612 sent by IPGU
+# Window        1613 sent by IPGU
+# Window        1614 sent by IPGU
+# Window        1615 sent by IPGU
+# Window        1616 sent by IPGU
+# Window        1617 sent by IPGU
+# Window        1618 sent by IPGU
+# Window        1619 sent by IPGU
+# Window        1620 sent by IPGU
+# Window        1621 sent by IPGU
+# Window        1622 sent by IPGU
+# Window        1623 sent by IPGU
+# Window        1624 sent by IPGU
+# Window        1625 sent by IPGU
+# Window        1626 sent by IPGU
+# Window        1627 sent by IPGU
+# Window        1628 sent by IPGU
+# Window        1629 sent by IPGU
+# Window        1630 sent by IPGU
+# Window        1631 sent by IPGU
+# Window        1632 sent by IPGU
+# Window        1633 sent by IPGU
+# Window        1634 sent by IPGU
+# Window        1635 sent by IPGU
+# Window        1636 sent by IPGU
+# Window        1637 sent by IPGU
+# Window        1638 sent by IPGU
+# Window        1639 sent by IPGU
+# Window        1640 sent by IPGU
+# Window        1641 sent by IPGU
+# Window        1642 sent by IPGU
+# Window        1643 sent by IPGU
+# Window        1644 sent by IPGU
+# Window        1645 sent by IPGU
+# Window        1646 sent by IPGU
+# Window        1647 sent by IPGU
+# Window        1648 sent by IPGU
+# Window        1649 sent by IPGU
+# Window        1650 sent by IPGU
+# Window        1651 sent by IPGU
+# Window        1652 sent by IPGU
+# Window        1653 sent by IPGU
+# Window        1654 sent by IPGU
+# Window        1655 sent by IPGU
+# Window        1656 sent by IPGU
+# Window        1657 sent by IPGU
+# Window        1658 sent by IPGU
+# Window        1659 sent by IPGU
+# Window        1660 sent by IPGU
+# Window        1661 sent by IPGU
+# Window        1662 sent by IPGU
+# Window        1663 sent by IPGU
+# Window        1664 sent by IPGU
+# Window        1665 sent by IPGU
+# Window        1666 sent by IPGU
+# Window        1667 sent by IPGU
+# Window        1668 sent by IPGU
+# Window        1669 sent by IPGU
+# Window        1670 sent by IPGU
+# Window        1671 sent by IPGU
+# Window        1672 sent by IPGU
+# Window        1673 sent by IPGU
+# Window        1674 sent by IPGU
+# Window        1675 sent by IPGU
+# Window        1676 sent by IPGU
+# Window        1677 sent by IPGU
+# Window        1678 sent by IPGU
+# Window        1679 sent by IPGU
+# Window        1680 sent by IPGU
+# Window        1681 sent by IPGU
+# Window        1682 sent by IPGU
+# Window        1683 sent by IPGU
+# Window        1684 sent by IPGU
+# Window        1685 sent by IPGU
+# Window        1686 sent by IPGU
+# Window        1687 sent by IPGU
+# Window        1688 sent by IPGU
+# Window        1689 sent by IPGU
+# Window        1690 sent by IPGU
+# Window        1691 sent by IPGU
+# Window        1692 sent by IPGU
+# Window        1693 sent by IPGU
+# Window        1694 sent by IPGU
+# Window        1695 sent by IPGU
+# Window        1696 sent by IPGU
+# Window        1697 sent by IPGU
+# Window        1698 sent by IPGU
+# Window        1699 sent by IPGU
+# Window        1700 sent by IPGU
+# Window        1701 sent by IPGU
+# Window        1702 sent by IPGU
+# Window        1703 sent by IPGU
+# Window        1704 sent by IPGU
+# Window        1705 sent by IPGU
+# Window        1706 sent by IPGU
+# Window        1707 sent by IPGU
+# Window        1708 sent by IPGU
+# Window        1709 sent by IPGU
+# Window        1710 sent by IPGU
+# Window        1711 sent by IPGU
+# Window        1712 sent by IPGU
+# Window        1713 sent by IPGU
+# Window        1714 sent by IPGU
+# Window        1715 sent by IPGU
+# Window        1716 sent by IPGU
+# Window        1717 sent by IPGU
+# Window        1718 sent by IPGU
+# Window        1719 sent by IPGU
+# Window        1720 sent by IPGU
+# Window        1721 sent by IPGU
+# Window        1722 sent by IPGU
+# Window        1723 sent by IPGU
+# Window        1724 sent by IPGU
+# Window        1725 sent by IPGU
+# Window        1726 sent by IPGU
+# Window        1727 sent by IPGU
+# Window        1728 sent by IPGU
+# Window        1729 sent by IPGU
+# Window        1730 sent by IPGU
+# Window        1731 sent by IPGU
+# Window        1732 sent by IPGU
+# Window        1733 sent by IPGU
+# Window        1734 sent by IPGU
+# Window        1735 sent by IPGU
+# Window        1736 sent by IPGU
+# Window        1737 sent by IPGU
+# Window        1738 sent by IPGU
+# Window        1739 sent by IPGU
+# Window        1740 sent by IPGU
+# Window        1741 sent by IPGU
+# Window        1742 sent by IPGU
+# Window        1743 sent by IPGU
+# Window        1744 sent by IPGU
+# Window        1745 sent by IPGU
+# Window        1746 sent by IPGU
+# Window        1747 sent by IPGU
+# Window        1748 sent by IPGU
+# Window        1749 sent by IPGU
+# Window        1750 sent by IPGU
+# Window        1751 sent by IPGU
+# Window        1752 sent by IPGU
+# Window        1753 sent by IPGU
+# Window        1754 sent by IPGU
+# Window        1755 sent by IPGU
+# Window        1756 sent by IPGU
+# Window        1757 sent by IPGU
+# Window        1758 sent by IPGU
+# Window        1759 sent by IPGU
+# Window        1760 sent by IPGU
+# Window        1761 sent by IPGU
+# Window        1762 sent by IPGU
+# Window        1763 sent by IPGU
+# Window        1764 sent by IPGU
+# Window        1765 sent by IPGU
+# Window        1766 sent by IPGU
+# Window        1767 sent by IPGU
+# Window        1768 sent by IPGU
+# Window        1769 sent by IPGU
+# Window        1770 sent by IPGU
+# Window        1771 sent by IPGU
+# Window        1772 sent by IPGU
+# Window        1773 sent by IPGU
+# Window        1774 sent by IPGU
+# Window        1775 sent by IPGU
+# Window        1776 sent by IPGU
+# Window        1777 sent by IPGU
+# Window        1778 sent by IPGU
+# Window        1779 sent by IPGU
+# Window        1780 sent by IPGU
+# Window        1781 sent by IPGU
+# Window        1782 sent by IPGU
+# Window        1783 sent by IPGU
+# Window        1784 sent by IPGU
+# Window        1785 sent by IPGU
+# Window        1786 sent by IPGU
+# Window        1787 sent by IPGU
+# Window        1788 sent by IPGU
+# Window        1789 sent by IPGU
+# Window        1790 sent by IPGU
+# Window        1791 sent by IPGU
+# Window        1792 sent by IPGU
+# Window        1793 sent by IPGU
+# Window        1794 sent by IPGU
+# Window        1795 sent by IPGU
+# Window        1796 sent by IPGU
+# Window        1797 sent by IPGU
+# Window        1798 sent by IPGU
+# Window        1799 sent by IPGU
+# Window        1800 sent by IPGU
+# Window        1801 sent by IPGU
+# Window        1802 sent by IPGU
+# Window        1803 sent by IPGU
+# Done ipgu sending
+# ** Note: $stop    : /filespace/s/sjain75/ece554/capstone/hw/pipeline_wrapper_tb.sv(123)
+#    Time: 4104139295 ns  Iteration: 2  Instance: /pipeline_wrapper_tb
+# Break in NamedForkStat hello at /filespace/s/sjain75/ece554/capstone/hw/pipeline_wrapper_tb.sv line 123
+run -all
+# Window        1804 sent by IPGU
+# Window        1805 sent by IPGU

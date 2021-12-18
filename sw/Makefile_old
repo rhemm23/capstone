@@ -7,8 +7,6 @@ AFU_JSON_INFO_HDR = ./afu_json_info.h
 BBB_DIR = ${FPGA_BBB_CCI_SRC}/BBB_cci_mpf/sw/include/
 
 # Build directory
-
-prefix = /usr/local
 OBJDIR = obj
 CFLAGS += -I./$(OBJDIR) -I$(BBB_DIR) -I/filespace/s/sjain75/opae/include/
 CPPFLAGS += -I./$(OBJDIR) -I$(BBB_DIR) -I/filespace/s/sjain75/opae/include/
@@ -31,7 +29,7 @@ $(BIN_DIR)/afu_ase: $(AFU_JSON_INFO_HDR) $(SRCS)
 
 $(BIN_DIR)/afu: $(AFU_JSON_INFO_HDR) $(SRCS)
 	mkdir -p $(BIN_DIR)
-	gcc $(CFLAGS) $(CPPFLAGS) -o $@ $^ $(LDFLAGS) $(C_LINK) -lopae-c
+	gcc $(CFLAGS) $(CPPFLAGS) -o $@ $^ #$(C_LINK) -lopae-c
 
 clean:
 	rm -rf $(BIN_DIR)
@@ -41,4 +39,4 @@ $(AFU_JSON_INFO_HDR): $(AFU_JSON_INFO)
 
 $(BIN_DIR)/%.o: %.c $(AFU_JSON_INFO_HDR)
 	mkdir -p $(BIN_DIR)
-	gcc $(CFLAGS) $(CPPFLAGS) -c $< -o $@ $(LDFLAGS) 
+	gcc $(CFLAGS) $(CPPFLAGS) -c $< -o $@ $(C_LINK)

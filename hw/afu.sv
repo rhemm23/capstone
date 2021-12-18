@@ -101,7 +101,7 @@ module afu
     .rst_n(rst_n),
     .rdn_load_weights(begin_rdn_load),
     .dnn_load_weights(begin_dnn_load),
-    .weight_mem_ready(read_request_valid),
+    .weight_mem_ready(data_valid),
     .rdn_weight_data(rdn_weights),
     .dnn_weight_data(dnn_weights),
     .results_acceptable(dnnResRdy),

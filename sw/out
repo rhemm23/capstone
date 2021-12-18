@@ -1,0 +1,25 @@
+mkdir -p ./bin
+gcc -I./obj -I/filespace/s/sjain75/intel-fpga-bbb/BBB_cci_mpf/sw/include/ -I/filespace/s/sjain75/opae/include/ -I/filespace/s/sjain75/opae/include -I./obj -I/filespace/s/sjain75/intel-fpga-bbb/BBB_cci_mpf/sw/include/ -I/filespace/s/sjain75/opae/include/ -I/filespace/s/sjain75/opae/include -o bin/afu afu_json_info.h main.c compiler.c afu.c 
+/usr/bin/ld: /tmp/ccNwgOco.o: in function `close_afu':
+afu.c:(.text+0x90): undefined reference to `fpgaReleaseBuffer'
+/usr/bin/ld: afu.c:(.text+0xc1): undefined reference to `fpgaUnmapMMIO'
+/usr/bin/ld: afu.c:(.text+0xee): undefined reference to `fpgaClose'
+/usr/bin/ld: afu.c:(.text+0x11b): undefined reference to `fpgaDestroyToken'
+/usr/bin/ld: afu.c:(.text+0x148): undefined reference to `fpgaDestroyProperties'
+/usr/bin/ld: /tmp/ccNwgOco.o: in function `setup_afu':
+afu.c:(.text+0x1cc): undefined reference to `uuid_parse'
+/usr/bin/ld: afu.c:(.text+0x1f1): undefined reference to `fpgaGetProperties'
+/usr/bin/ld: afu.c:(.text+0x21d): undefined reference to `fpgaPropertiesSetObjectType'
+/usr/bin/ld: afu.c:(.text+0x24f): undefined reference to `fpgaPropertiesSetGUID'
+/usr/bin/ld: afu.c:(.text+0x28f): undefined reference to `fpgaEnumerate'
+/usr/bin/ld: afu.c:(.text+0x2c6): undefined reference to `fpgaOpen'
+/usr/bin/ld: afu.c:(.text+0x2f7): undefined reference to `fpgaMapMMIO'
+/usr/bin/ld: /tmp/ccNwgOco.o: in function `read_afu_csr':
+afu.c:(.text+0x371): undefined reference to `fpgaReadMMIO64'
+/usr/bin/ld: /tmp/ccNwgOco.o: in function `write_afu_csr':
+afu.c:(.text+0x3ea): undefined reference to `fpgaWriteMMIO64'
+/usr/bin/ld: /tmp/ccNwgOco.o: in function `create_afu_buffer':
+afu.c:(.text+0x481): undefined reference to `fpgaPrepareBuffer'
+/usr/bin/ld: afu.c:(.text+0x4b7): undefined reference to `fpgaGetIOAddress'
+collect2: error: ld returned 1 exit status
+make: *** [Makefile:32: bin/afu] Error 1

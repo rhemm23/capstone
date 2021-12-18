@@ -116,7 +116,7 @@ pipeline_wrapper data_pipeline
 		wait(data_pipeline.IPGU.rdyHeu&&data_pipeline.IPGU.vldIpgu) begin $display("Window %d sent by IPGU", windowCnt); windowCnt++; 
 @(posedge clk); @(posedge clk); end
        	end
-        repeat(4) wait(dnn_out_vld) begin $display("Valid dnn"); $stop(); end		
+        wait(dnn_out_vld) begin $display("Valid dnn"); $stop(); end		
 	@(posedge ipgu_in_rdy) begin
 	    disable logSentForever;
             $display("Done ipgu sending");
