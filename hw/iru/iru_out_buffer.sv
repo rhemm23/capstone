@@ -29,7 +29,7 @@ module iru_out_buffer
     end else begin
       for (integer i = 0; i < 5; i++) begin
         if (wr[i]) begin
-          data[row[i]][col[i]] <= d[i]; // TODO: Make sure there is no contention
+          data[row[i]][col[i]] <= d[i];
         end
       end
     end
