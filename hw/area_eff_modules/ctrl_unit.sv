@@ -168,7 +168,7 @@ module ctrl_unit
           nxt_state = EXECUTING;
         end
       EXECUTING:  begin
-        if(begin_proc) begin
+        if(begin_proc && rdyIpgu) begin
           rd_reg_sel = 2'b00;
           initIpgu = 1'b1;
           read_request_valid = 1'b1;
