@@ -5,14 +5,11 @@ module decode
      */
     input clk,
     input rst_n,
-    //instruction_fetch -> Decode
     input [3:0] opcode,
-    
-    //ctrl_unit (registers) <- Decode
+   
     output logic [1:0] reg_sel,
     output logic reg_wr_en,
     output logic halt,        
-    //ctrl_unit (cmds) <- Decode
     output logic begin_rdn_load,
     output logic begin_dnn_load,
     output logic begin_proc           
